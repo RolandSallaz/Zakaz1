@@ -1,0 +1,106 @@
+@import '../../variables';
+
+.SlickCard {
+  width: 100%;
+  height: 370px;
+  display: flex;
+  color: $mainTextColor;
+
+  &__image-container {
+    width: 100%;
+    position: relative;
+  }
+
+  &__screenshot {
+    transition: scale 0.3s ease; /* Добавляем плавную анимацию для свойства transform */
+    z-index: 2;
+    max-width: 256px;
+    object-fit: cover;
+
+    &:hover {
+      scale: 1.05;
+    }
+  }
+
+  &__image {
+    border-radius: $averageBorderRadius 0 0 $averageBorderRadius;
+    width: 100%;
+    flex-grow: 1;
+    object-position: center;
+    object-fit: contain;
+  }
+
+  &__name {
+    font-size: 30px;
+    margin-top: 20px;
+  }
+
+  &__container {
+    width: 100%;
+    height: 99%;
+    position: relative;
+    border-radius: 0 $averageBorderRadius $averageBorderRadius 0;
+    background-color: $backgroundColor;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  &__screenshot-container {
+    height: 70%;
+    margin: 10px;
+    gap: 10px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__tag-container {
+
+    display: flex;
+    gap: 5px;
+    z-index: 2;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+}
+
+//slick
+
+.slick {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.slick-slider,
+.slick-slider .slick-list,
+.slick-slider .slick-list .slick-track {
+  height: 100%;
+}
+
+.slick-arrow {
+  display: none;
+  width: 0;
+  height: 0;
+
+  &:before {
+    content: '';
+  }
+}
+
+.slick-dots {
+  bottom: -30px;
+}
+
+.slick-dots > li > button:before {
+  font-size: 30px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: $mainColor;
+}
+

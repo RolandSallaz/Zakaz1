@@ -1,0 +1,43 @@
+@import '../../variables';
+
+.SidePanel {
+  width: 320px;
+  padding: 10px;
+  position: sticky;
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  &__discount-filter {
+    color:$mainColor;
+  }
+  &__price-filter{
+    color:$mainColor;
+  }
+}
+
+
+.MuiAutocomplete-root {
+  width: 100%;
+}
+.MuiAutocomplete-root .MuiFormControl-root .MuiInputBase-root {
+  border: 1px solid $mainColor;
+}
+.MuiAutocomplete-root .MuiFormControl-root .MuiFormLabel-root {
+  color: $mainColor;
+}
+.MuiAutocomplete-root .MuiFormControl-root .MuiInputBase-root .MuiSvgIcon-root {
+  color: $mainColor;
+}
+
+.base-Popper-root *{
+  background-color: $backgroundColor;
+  color:$mainColor;
+}
+
+
+//slider
+
+.MuiSlider-colorPrimary{
+  color:$mainColor !important;
+}

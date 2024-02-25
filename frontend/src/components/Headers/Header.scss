@@ -1,0 +1,51 @@
+@import '../../variables';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  color: $mainTextColor;
+  height: 60px;
+}
+
+.search-input {
+  background-color: $backgroundColor;
+  border: none;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  height: 60px;
+  color: $mainTextColor;
+  flex-grow: 1;
+
+  &:focus{
+    outline-style: solid;
+    outline-color:$mainColor;
+    border: none;
+  }
+}
+
+.MuiButtonBase-root:hover{
+  opacity: 0.8;
+}
+
+.MuiPopover-root .MuiPaper-root{
+  background: none;
+}
+
+.MuiList-root {
+  color:$mainTextColor;
+  background-color: $backgroundColor;
+}
+
+.MuiButtonBase-root .MuiTouchRipple-root{
+  color:$mainColor;
+}
+
+.MuiPopover-root .MuiPaper-root .MuiList-root .MuiButtonBase-root{
+  font-size: 18px;
+  font-weight: 400;
+  &:hover {
+    background-color: $mainColor;
+    color:black;
+  }
+}

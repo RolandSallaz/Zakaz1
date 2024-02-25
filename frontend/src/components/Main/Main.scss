@@ -1,0 +1,28 @@
+@import '../../variables';
+
+.main {
+  margin-top: 30px;
+  flex-grow: 1;
+  &__heading {
+    color: $mainColor;
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  &__container {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+.cards {
+  padding: 10px;
+  flex-grow: 1;
+  border-radius: 4px;
+  background-color: $backgroundColor;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* определение количества и размеров колонок */
+  gap: 10px; /* промежуток между элементами */
+  align-items: start; /* выравнивание по верхнему краю */
+}
