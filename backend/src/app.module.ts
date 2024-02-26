@@ -6,6 +6,8 @@ import { GamesModule } from './games/games.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 import { CodesModule } from './codes/codes.module';
+import { EmailModule } from './email/email.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { CodesModule } from './codes/codes.module';
     TagsModule,
     UsersModule,
     CodesModule,
+    EmailModule, 
+    AuthModule,
   ],
   controllers: [AppController],
 })

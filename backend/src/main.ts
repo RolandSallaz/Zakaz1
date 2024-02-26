@@ -9,6 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   app.useGlobalFilters(new EntityNotFoundExceptionFilter());
   app.useGlobalInterceptors(new TypeOrmErrorMapperInterceptor());
+  app.enableCors();
   await app.listen(PORT, () => console.log('Server started'));
 }
 bootstrap();
