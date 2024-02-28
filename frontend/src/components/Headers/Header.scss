@@ -1,10 +1,16 @@
-@import '../../variables';
+@import "../../variables";
 
 .header {
   display: flex;
   justify-content: space-between;
   color: $mainTextColor;
   height: 60px;
+  gap: 10px;
+  &__avatar {
+    width: "60px";
+    height: "60px";
+
+  }
 }
 
 .search-input {
@@ -17,35 +23,57 @@
   color: $mainTextColor;
   flex-grow: 1;
 
-  &:focus{
+  &:focus {
     outline-style: solid;
-    outline-color:$mainColor;
+    outline-color: $mainColor;
     border: none;
   }
 }
 
-.MuiButtonBase-root:hover{
+.login-button {
+  padding: 0 10px;
+  border: none;
+  border-radius: $averageBorderRadius;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1a1918;
+  color:$mainColor;
+  gap:10px;
+  font-size: 15px;
+  font-weight: 600;
+  &__logo {
+    background-color: $mainColor;
+    padding: 1px;
+    border-radius: 50%;
+    width: 40px;
+  }
+}
+
+//mui
+.MuiButtonBase-root:hover {
   opacity: 0.8;
 }
 
-.MuiPopover-root .MuiPaper-root{
+.MuiPopover-root .MuiPaper-root {
   background: none;
 }
 
 .MuiList-root {
-  color:$mainTextColor;
+  color: $mainTextColor;
   background-color: $backgroundColor;
 }
 
-.MuiButtonBase-root .MuiTouchRipple-root{
-  color:$mainColor;
+.MuiButtonBase-root .MuiTouchRipple-root {
+  color: $mainColor;
 }
 
-.MuiPopover-root .MuiPaper-root .MuiList-root .MuiButtonBase-root{
+.MuiPopover-root .MuiPaper-root .MuiList-root .MuiButtonBase-root {
   font-size: 18px;
   font-weight: 400;
   &:hover {
     background-color: $mainColor;
-    color:black;
+    color: black;
   }
 }
