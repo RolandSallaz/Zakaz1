@@ -1,0 +1,9 @@
+@import '../../variables.scss';
+
+.tab {
+  height: 30px;
+  &_active {
+    background-color: $mainColor;
+    color: white;
+  }
+}

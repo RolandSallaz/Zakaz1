@@ -42,3 +42,30 @@ export interface ILogin {
   token: string;
   user: IUser;
 }
+
+export interface ITag {
+  name: string;
+  id?: number;
+}
+
+export interface IFIle {
+  destination: string;
+  encoding: string;
+  fildName: string;
+  mimetype: string;
+  originalname: string;
+  path: string;
+  size: number;
+}
+
+export interface createGameDto {
+  name: string;
+  description: string;
+  logo: string;
+  screenshots: string[];
+  price: number;
+  discount: number;
+  enabled: boolean;
+  keys: string[];
+  tags: ITag[];
+}

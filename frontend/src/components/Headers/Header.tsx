@@ -50,12 +50,21 @@ export function Header(props: Props) {
           <div>
             <MenuItem
               onClick={() => {
+                navigate('/');
+                handleClose();
+              }}
+            >
+              На главную
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
                 navigate('/lk');
                 handleClose();
               }}
             >
               Мои Покупки
             </MenuItem>
+
             {user.role == ROLES.ADMIN && (
               <MenuItem
                 onClick={() => {

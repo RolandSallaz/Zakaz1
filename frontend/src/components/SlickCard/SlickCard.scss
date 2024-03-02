@@ -2,19 +2,21 @@
 
 .SlickCard {
   width: 100%;
-  height: 370px;
+  height: 319px;
   display: flex;
   color: $mainTextColor;
 
   &__image-container {
     width: 100%;
     position: relative;
+    display: flex;
+    align-items: self-end;
   }
 
   &__screenshot {
     transition: scale 0.3s ease; /* Добавляем плавную анимацию для свойства transform */
     z-index: 2;
-    max-width: 256px;
+    max-width: 209px;
     object-fit: cover;
 
     &:hover {
@@ -37,7 +39,7 @@
 
   &__container {
     width: 100%;
-    height: 99%;
+    height: 100%;
     position: relative;
     border-radius: 0 $averageBorderRadius $averageBorderRadius 0;
     background-color: $backgroundColor;
@@ -58,7 +60,6 @@
   }
 
   &__tag-container {
-
     display: flex;
     gap: 5px;
     z-index: 2;
@@ -103,4 +104,3 @@
 .slick-dots li.slick-active button:before {
   color: $mainColor;
 }
-

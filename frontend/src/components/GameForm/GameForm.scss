@@ -1,0 +1,98 @@
+@import '../../variables.scss';
+.GameForm {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  &__heading {
+    padding: 20px 0;
+    color: $mainColor;
+    text-align: center;
+  }
+  &__switch {
+    color: $mainColor;
+  }
+  &__submit {
+    font-size: 20px;
+    border: 1px solid $mainColor;
+  }
+  &__input {
+    border: 1px solid $transparent-background;
+  }
+  &__img {
+    width: 100%;
+    height: 100%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    position: absolute;
+    z-index: 1;
+    object-fit: contain;
+  }
+  &__tags {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 300px;
+    &_container {
+      min-height: 100px;
+      gap: 5px;
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  &__info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    &_addition {
+      align-items: start;
+    }
+  }
+  &__image-file {
+    cursor: pointer;
+    width: 209px;
+    height: 117px;
+    background-color: $backgroundColor;
+    border: 1px solid $mainColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5em;
+    color: $mainColor;
+    position: relative;
+    &::after {
+      content: '+';
+    }
+    &_logo {
+      width: 557px;
+      height: 319px;
+    }
+  }
+  &__file {
+    display: none;
+  }
+  &__container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__screenshots-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 144px);
+    gap: 10px;
+  }
+  &__input {
+    margin: 10px;
+    &_name {
+      font-size: 30px;
+    }
+  }
+}

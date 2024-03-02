@@ -9,15 +9,16 @@ import Auth from '../Auth/Auth';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Snackbar } from '@mui/material';
 import { closeSnackBar, login } from '../../services/slices/appSlice';
-import { checkAuth } from '../../services/api';
+import { checkAuth, getAllGames } from '../../services/api';
 import { useEffect } from 'react';
 import Admin from '../Admin/Admin';
+import useErrorHandler from '../../hooks/useErrorHandler';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const { handleError } = useErrorHandler();
   useEffect(() => {
     const token = localStorage.getItem('jwt');
     if (token) {
@@ -27,6 +28,8 @@ function App() {
         })
         .catch(console.log);
     }
+
+    getAllGames().then(console.log).catch(handleError);
   }, [navigate]);
 
   return (
@@ -43,13 +46,13 @@ function App() {
           }
         />
         <Route
-          path={'/admin'}
+          path={'/admin/*'}
           element={
             <ProtectedRoute adminRequire>
               <Admin />
             </ProtectedRoute>
-          }
-        />
+          }></Route>
+
         <Route path="/auth" element={<Auth />} />
       </Routes>
       <Footer />

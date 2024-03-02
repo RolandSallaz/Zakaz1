@@ -1,8 +1,9 @@
 @import '../../variables';
 
-.GameTag{
-  color:$mainColor;
+.GameTag {
+  color: $mainColor;
   padding: 5px 10px;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: $averageBorderRadius;
+  height: 28px;
 }

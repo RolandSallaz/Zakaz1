@@ -5,15 +5,16 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   children?: React.ReactNode;
+  additionalClass?: string;
 };
 
-export function Lk({ children }: Props) {
+export function Lk({ children, additionalClass }: Props) {
   return (
-    <main className={'main Lk'}>
-      <Link className="link" to={'/'}>
+    <main className={`main Lk ${additionalClass}`}>
+      <Link className="link Lk__link" to={'/'}>
         Вернуться на главную
       </Link>
-      {children}
+      <div className="main__container">{children}</div>
     </main>
   );
 }

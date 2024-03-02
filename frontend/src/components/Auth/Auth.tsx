@@ -1,12 +1,12 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
-import './Auth.scss';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import UseFormValidator from '../../hooks/useFormValidator';
-import { authLogin, sendEmail } from '../../services/api';
-import { IAuthFormDto } from '../../utils/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { login, openSnackBar } from '../../services/slices/appSlice';
 import useErrorHandler from '../../hooks/useErrorHandler';
+import useFormValidator from '../../hooks/useFormValidator';
+import { authLogin, sendEmail } from '../../services/api';
+import { login, openSnackBar } from '../../services/slices/appSlice';
+import { IAuthFormDto } from '../../utils/types';
+import './Auth.scss';
 
 enum AuthStateEnum {
   sendEmail,
@@ -14,7 +14,7 @@ enum AuthStateEnum {
 }
 
 export default function Auth() {
-  const { values, handleChange } = UseFormValidator<IAuthFormDto>({
+  const { values, handleChange } = useFormValidator<IAuthFormDto>({
     email: '',
     authCode: 0
   });
@@ -115,16 +115,14 @@ export default function Auth() {
               <button
                 className="auth-form__button auth-form__button_small-text"
                 onClick={handleEditEmail}
-                type="button"
-              >
+                type="button">
                 Изменить емейл
               </button>
               <button
                 className="auth-form__button auth-form__button_small-text"
                 disabled={isSendAgainButtonDisabled}
                 onClick={() => sendCodeToEmail()}
-                type="button"
-              >
+                type="button">
                 Отправить код повторно
               </button>
             </div>
