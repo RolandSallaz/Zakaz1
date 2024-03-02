@@ -1,9 +1,11 @@
+import { Key } from '@/keys/entities/key.entity';
 import { Tag } from 'src/tags/entities/tag.entity';
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -14,16 +16,22 @@ export class Game {
   @Column()
   name: string;
   @Column()
-  price: number;
+  description: string;
   @Column()
+  price: number;
+  @Column({ default: 0 })
   discount: number;
   @Column()
-  visits: number;
-  @Column()
   logo: string;
-  @Column({ type: 'jsonb', array: true, default: [] })
-  screenshots: string[];
-  @ManyToMany(() => Tag)
+  @Column({ type: 'text', nullable: true }) // Используем тип 'text' для хранения JSON строки
+  screenshots: string;
+  @Column({ default: true })
+  enabled: boolean;
+  @OneToMany(() => Key, (key) => key.gameId) // Добавляем отношение "одна игра имеет много ключей"
+  @JoinTable()
+  keys: Key[]; // Массив ключей для данной игры
+
+  @ManyToMany(() => Tag, (tag) => tag.id)
   @JoinTable()
   tags: Tag[];
 }

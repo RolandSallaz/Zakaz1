@@ -11,16 +11,17 @@ export class TagsService {
     @InjectRepository(Tag)
     private tagsRepository: Repository<Tag>,
   ) {}
-  async create(createTagDto: CreateTagDto) {
+
+  async create(createTagDto: CreateTagDto): Promise<Tag> {
     return this.tagsRepository.save(createTagDto);
   }
 
-  async findAll() {
+  async findAll(): Promise<Tag[]> {
     return this.tagsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  async findOneByName(name: string): Promise<Tag> {
+    return await this.tagsRepository.findOne({ where: { name } });
   }
 
   update(id: number, updateTagDto: UpdateTagDto) {

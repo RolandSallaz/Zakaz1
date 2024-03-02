@@ -7,11 +7,15 @@ export class User {
   id: number;
 
   @Column({ unique: true })
+  @IsEmail()
   email: string;
 
   @Column({ default: 'user' })
   role: string;
 
-  @Column({ type: 'jsonb', array: true, default: [] }) // Используйте jsonb для хранения массива
+  @Column({ type: 'jsonb', array: true, default: [] })
   orders: any[];
+
+  @Column({ nullable: true })
+  authCode: number;
 }
