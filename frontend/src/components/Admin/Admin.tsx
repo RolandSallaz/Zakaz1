@@ -6,6 +6,9 @@ import { Lk } from '../Lk/Lk';
 import { SidePanel } from '../SidePanel/SidePanel';
 import './Admin.scss';
 import GameForm from '../GameForm/GameForm';
+import SectionWithSearch from '../SectionWithSearch/SectionWithSearch';
+import { useAppSelector } from '../../hooks/redux';
+import { GameCard } from '../GameCard/GameCard';
 
 enum ADMIN_TABS {
   games,
@@ -21,13 +24,7 @@ enum ADMIN_SUBTABS {
 export default function Admin() {
   const [adminSubTab, setAdminSubTab] = useState<ADMIN_SUBTABS>(ADMIN_SUBTABS.editOrDelete);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    checkAdminAuth(token!).catch(() => {
-      // navigate('/');
-    });
-  }, []);
+  const { games } = useAppSelector((state) => state.games);
 
   return (
     <Lk additionalClass="admin">
@@ -55,6 +52,16 @@ export default function Admin() {
                 </div>
                 <Routes>
                   <Route path="add" element={<GameForm />}></Route>
+                  <Route
+                    path="edit"
+                    element={
+                      <SectionWithSearch
+                        children={games.map((item) => (
+                          <GameCard game={item} key={item.id} />
+                        ))}
+                        options={games.map((item) => item.name)}
+                      />
+                    }></Route>
                 </Routes>
               </div>
             }

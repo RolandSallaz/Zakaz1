@@ -1,13 +1,11 @@
-// @flow
-import * as React from 'react';
 import { SyntheticEvent, useState } from 'react';
-import './SlickCard.scss';
-import { Price } from '../Price/Price';
-import { IPrice } from '../../utils/types';
 import { GameTag } from '../GameTag/GameTag';
+import { Price } from '../Price/Price';
+import './SlickCard.scss';
 
 type Props = {
-  price: IPrice;
+  price: number;
+  discount: number;
 };
 
 export function SlickCard({ price }: Props) {
@@ -26,9 +24,9 @@ export function SlickCard({ price }: Props) {
       <div className={'SlickCard__image-container'}>
         <img className={'SlickCard__image'} src={image} alt={'Игровая обложка'} />
         <div className={'SlickCard__tag-container'}>
-          <GameTag tag={'MOBA'} />
-          <GameTag tag={'Новинки'} />
-          <GameTag tag={'Со скидкой'} />
+          <GameTag tag={{ name: 'Test' }} />
+          <GameTag tag={{ name: 'Test' }} />
+          <GameTag tag={{ name: 'Test' }} />
         </div>
       </div>
       <div className={'SlickCard__container'}>
@@ -107,7 +105,7 @@ export function SlickCard({ price }: Props) {
             }
           />
         </div>
-        <Price price={price} />
+        {/* <Price price={price} /> */}
       </div>
     </div>
   );

@@ -1,10 +1,6 @@
-// @flow
-import * as React from 'react';
 import './Footer.scss';
 
-type Props = {};
-
-export function Footer(props: Props) {
+export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className={'footer'}>

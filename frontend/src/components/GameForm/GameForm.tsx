@@ -1,16 +1,16 @@
 import { Autocomplete, Switch, TextField, createFilterOptions } from '@mui/material';
-import './GameForm.scss';
-import { GameTag } from '../GameTag/GameTag';
 import { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from 'react';
-import { GameFormDto, ITag } from '../../utils/types';
-import { addTag, getAllTags, postGame, postImage } from '../../services/api';
-import useErrorHandler from '../../hooks/useErrorHandler';
 import { useAppDispatch } from '../../hooks/redux';
-import { openSnackBar } from '../../services/slices/appSlice';
+import useErrorHandler from '../../hooks/useErrorHandler';
 import useFormValidator from '../../hooks/useFormValidator';
+import { addTag, getAllTags, postGame, postImage } from '../../services/api';
+import { openSnackBar } from '../../services/slices/appSlice';
 import { apiUrl } from '../../utils/config';
+import { ITag } from '../../utils/types';
 import CopySteamAppImage from '../CopySteamAppImage/CopySteamAppImage';
+import { GameTag } from '../GameTag/GameTag';
 import Input from '../Input/Input';
+import './GameForm.scss';
 const filter = createFilterOptions<{ name: string }>();
 const addTagText = 'Добавить тег ';
 
@@ -21,6 +21,7 @@ enum TAG_ACTION {
 
 interface formValues {
   name: string;
+  steamId: number;
   description: string;
   price: number;
   discount: number;
@@ -47,6 +48,7 @@ export default function GameForm() {
   });
   const { values, handleChange } = useFormValidator<formValues>({
     name: '',
+    steamId: 0,
     description: '',
     price: 0,
     discount: 0,
@@ -55,9 +57,9 @@ export default function GameForm() {
   const [isGameActive, setIsGameActive] = useState<boolean>(true);
   const { handleError } = useErrorHandler();
   const dispatch = useAppDispatch();
-  function handleTagAdd(event: SyntheticEvent<Element, Event>, newValue: ITag) {
-    const formatedValue = newValue.name.replace(addTagText, '');
-    const newTag = { name: formatedValue };
+
+  function handleTagAdd(e: SyntheticEvent<Element, Event>, newValue: ITag) {
+    const newTag = { name: newValue.name };
     tagManager(newTag, TAG_ACTION.add);
     if (!optionTags.some((item) => item.name == newTag.name)) {
       addTag(newTag)
@@ -70,7 +72,6 @@ export default function GameForm() {
         });
     }
   }
-
   function tagManager(tag: ITag, action: TAG_ACTION) {
     const cbTagWhereToAdd = action == TAG_ACTION.add ? setTags : setOptionTags;
     const cbTagWhereToRemove = action == TAG_ACTION.add ? setOptionTags : setTags;
@@ -113,6 +114,7 @@ export default function GameForm() {
     e.preventDefault();
     const gameDto = {
       name: values.name,
+      steamId: Number(values.steamId),
       description: values.description,
       price: Number(values.price),
       logo: gameImages.gameLogo,
@@ -122,7 +124,7 @@ export default function GameForm() {
         gameImages.screenshot3,
         gameImages.screenshot4
       ],
-      discount: values.discount,
+      discount: Number(values.discount),
       enabled: isGameActive,
       keys: values.keys.split('\n'),
       tags
@@ -152,8 +154,17 @@ export default function GameForm() {
             <img className="GameForm__img" src={`${apiUrl}/${gameImages.gameLogo}`} />
           )}
         </label>
-        <CopySteamAppImage />
+
         <div className="GameForm__container">
+          <Input
+            name="steamId"
+            additionalClass="GameForm__input"
+            onChange={handleChange}
+            required
+            value={values.steamId}
+            label="steamId"
+          />
+          <CopySteamAppImage />
           <Input
             name="name"
             additionalClass="GameForm__input GameForm__input_name"
@@ -162,6 +173,7 @@ export default function GameForm() {
             value={values.name}
             label="Имя"
           />
+
           <h2 className="GameForm__heading">Скриншоты</h2>
           <div className="GameForm__screenshots-container">
             {[1, 2, 3, 4].map((index) => (
@@ -174,10 +186,10 @@ export default function GameForm() {
                   onChange={handleFileInputChange}
                   required
                 />
-                {gameImages[`screenshot${index}`] && (
+                {gameImages[`screenshot${index}` as keyof ImagesDto] && (
                   <img
                     className="GameForm__img"
-                    src={`${apiUrl}/${gameImages[`screenshot${index}`]}`}
+                    src={`${apiUrl}/${gameImages[`screenshot${index}` as keyof ImagesDto]}`}
                     alt={`Screenshot ${index}`}
                   />
                 )}
@@ -190,8 +202,13 @@ export default function GameForm() {
         <div className="GameForm__tags">
           <Autocomplete
             options={optionTags}
-            onChange={handleTagAdd}
-            getOptionLabel={(option: ITag) => option.name as string} // Добавляем это свойство
+            onChange={(event, value) => handleTagAdd(event, value as ITag)}
+            getOptionLabel={(option: ITag | string) => {
+              if (typeof option === 'string') {
+                return option; // если это строка, вернуть ее же
+              }
+              return option.name; // если это объект типа ITag, вернуть его свойство name
+            }}
             filterOptions={(options, params) => {
               const filtered = filter(options, params);
               if (params.inputValue !== '') {

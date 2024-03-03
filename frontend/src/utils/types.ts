@@ -1,17 +1,8 @@
-export interface IPrice {
-  cost: number;
-  discount: number;
-}
-
-export interface IEmail {
-  email: string;
-}
-
 export interface IUser {
-  email: IEmail;
+  email: string;
   role: ROLES;
   id: number;
-  order: [];
+  orders: [];
 }
 
 export enum ROLES {
@@ -58,7 +49,13 @@ export interface IFIle {
   size: number;
 }
 
-export interface createGameDto {
+export interface createGameDto extends Omit<IGame, 'id'> {
+  keys: string[];
+}
+
+export interface IGame {
+  id: number;
+  steamId: number;
   name: string;
   description: string;
   logo: string;
@@ -66,6 +63,5 @@ export interface createGameDto {
   price: number;
   discount: number;
   enabled: boolean;
-  keys: string[];
   tags: ITag[];
 }

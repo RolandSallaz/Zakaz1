@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
-import './CopySteamAppImage.scss';
 import Input from '../Input/Input';
+import './CopySteamAppImage.scss';
 
 export default function CopySteamAppImage() {
   const [appId, setAppId] = useState<number>('');

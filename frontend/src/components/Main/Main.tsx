@@ -1,13 +1,13 @@
-// @flow
-import * as React from 'react';
-import './Main.scss';
-import { GameCard } from '../GameCard/GameCard';
-import Slider from 'react-slick';
-import { SlickCard } from '../SlickCard/SlickCard';
-import { SidePanel } from '../SidePanel/SidePanel';
 import { Autocomplete, Switch, TextField } from '@mui/material';
+import Slider from 'react-slick';
+import { GameCard } from '../GameCard/GameCard';
+import { SidePanel } from '../SidePanel/SidePanel';
+import { SlickCard } from '../SlickCard/SlickCard';
+import './Main.scss';
+import { useAppSelector } from '../../hooks/redux';
 
 export function Main() {
+  const { games } = useAppSelector((state) => state.games);
   const options = ['MOBA', 'Мультиплеер'];
   const settings = {
     dots: true,
@@ -31,8 +31,7 @@ export function Main() {
       </section>
       <div className={'main__container'}>
         <section className={'cards'}>
-          <GameCard price={{ cost: 10, discount: 30 }} />
-          <GameCard price={{ cost: 10, discount: 0 }} />
+          {games?.map((game) => <GameCard game={game} key={game.id} />)}
         </section>
         <SidePanel>
           <Autocomplete

@@ -1,17 +1,15 @@
 // @flow
-import * as React from 'react';
-import './GameCard.scss';
 import { SyntheticEvent, useState } from 'react';
+import { IGame } from '../../utils/types';
 import { Price } from '../Price/Price';
-import { IPrice } from '../../utils/types';
+import './GameCard.scss';
+import { apiUrl } from '../../utils/config';
 
 type Props = {
-  image: string;
-  name: string;
-  price: IPrice;
+  game: IGame;
 };
 
-export function GameCard({ image, name, price }: Props) {
+export function GameCard({ game }: Props) {
   const [isHovered, setIsHovered] = useState<boolean>(false); //Состояние карточки, наведен ли на неё курсор
 
   function handleHover(e: SyntheticEvent) {
@@ -24,12 +22,12 @@ export function GameCard({ image, name, price }: Props) {
       <div className={'gameCard__image-container'}>
         <img
           className={`gameCard__image ${isHovered && 'gameCard__image_hovered'}`}
-          src={'https://cdn.akamai.steamstatic.com/steam/apps/570/header.jpg?t=1707435904'}
+          src={`${apiUrl}/${game.logo}`}
           alt={'Изображение игры'}
         />
-        <Price price={price} />
+        <Price price={game.price} discount={game.discount} />
       </div>
-      <h3 className={'gameCard__name'}>Dota 2</h3>
+      <h3 className={'gameCard__name'}>{game.name}</h3>
     </div>
   );
 }

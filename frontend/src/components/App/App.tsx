@@ -1,18 +1,19 @@
-import './App.scss';
-import { Header } from '../Headers/Header';
-import { Main } from '../Main/Main';
-import { Footer } from '../Footer/Footer';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { Lk } from '../Lk/Lk';
-import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
-import Auth from '../Auth/Auth';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Snackbar } from '@mui/material';
-import { closeSnackBar, login } from '../../services/slices/appSlice';
-import { checkAuth, getAllGames } from '../../services/api';
 import { useEffect } from 'react';
-import Admin from '../Admin/Admin';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
+import { checkAuth, getAllGames } from '../../services/api';
+import { closeSnackBar, login } from '../../services/slices/appSlice';
+import Admin from '../Admin/Admin';
+import Auth from '../Auth/Auth';
+import { Footer } from '../Footer/Footer';
+import { Header } from '../Headers/Header';
+import { Lk } from '../Lk/Lk';
+import { Main } from '../Main/Main';
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
+import './App.scss';
+import { loadGames } from '../../services/slices/gameSlice';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
@@ -22,14 +23,16 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('jwt');
     if (token) {
-      checkAuth(token)
+      checkAuth()
         .then((res) => {
           dispatch(login(res));
         })
         .catch(console.log);
     }
 
-    getAllGames().then(console.log).catch(handleError);
+    getAllGames()
+      .then((res) => dispatch(loadGames(res)))
+      .catch(handleError);
   }, [navigate]);
 
   return (

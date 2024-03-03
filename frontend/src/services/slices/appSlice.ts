@@ -1,12 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ILogin, ISnackbar, IUser } from '../../utils/types';
+import { ISnackbar, IUser, ROLES } from '../../utils/types';
 
 interface IAppState {
   loggedIn: boolean;
   loading: boolean;
-  user: {
-    role: string;
-  };
+  user: IUser;
   snackBar: ISnackbar;
 }
 
@@ -14,7 +12,10 @@ const initialState: IAppState = {
   loggedIn: false,
   loading: false,
   user: {
-    role: ''
+    email: '',
+    role: ROLES.USER,
+    id: 0,
+    orders: []
   },
   snackBar: {
     isOpened: false,

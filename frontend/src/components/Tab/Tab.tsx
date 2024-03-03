@@ -1,4 +1,3 @@
-import React, { SyntheticEvent } from 'react';
 import './Tab.scss';
 
 interface props {

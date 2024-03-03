@@ -27,7 +27,7 @@
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    minmax(200px, 1fr)
+    minmax(225px, 1fr)
   ); /* определение количества и размеров колонок */
   gap: 10px; /* промежуток между элементами */
   align-items: start; /* выравнивание по верхнему краю */

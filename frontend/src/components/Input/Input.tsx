@@ -1,4 +1,4 @@
-import React, { HTMLInputTypeAttribute } from 'react';
+import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
 import './Input.scss';
 
 interface props {

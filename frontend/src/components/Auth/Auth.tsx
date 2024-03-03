@@ -32,7 +32,7 @@ export default function Auth() {
     }
   }
   function sendCodeToEmail() {
-    sendEmail(values)
+    sendEmail({ email: values.email })
       .then(({ message }) => {
         dispatch(openSnackBar({ message }));
         setAuthState(AuthStateEnum.checkCode);
@@ -64,7 +64,7 @@ export default function Auth() {
     if (String(values.authCode).length == 6) {
       authLogin(values)
         .then((res) => {
-          dispatch(login(res));
+          dispatch(login(res.user));
           navigate('/lk');
         })
         .catch(handleError);

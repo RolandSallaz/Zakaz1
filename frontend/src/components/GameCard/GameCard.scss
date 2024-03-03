@@ -8,7 +8,9 @@
   position: relative;
   cursor: pointer;
   overflow: hidden;
-
+  &:hover {
+    color: $mainColor;
+  }
   &__image {
     width: 100%;
     border-radius: 10px 10px 0 0;
@@ -21,6 +23,7 @@
     &-container {
       position: relative;
       display: flex;
+      overflow: hidden;
     }
   }
 
@@ -29,8 +32,10 @@
     border-radius: 0 0 $averageBorderRadius $averageBorderRadius;
     padding: 10px;
     width: 100%;
-    font-size: 23px;
+    font-size: 1.3em;
     text-align: center;
+    text-wrap: nowrap;
+    z-index: 2;
   }
 
   &:after {
