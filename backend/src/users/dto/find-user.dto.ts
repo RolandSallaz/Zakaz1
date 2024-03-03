@@ -1,3 +1,7 @@
-export class FindUserDto  {
-    id: number;
+import { IsEmail, IsNotEmpty } from 'class-validator';
+
+export class FindUserDto {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 }

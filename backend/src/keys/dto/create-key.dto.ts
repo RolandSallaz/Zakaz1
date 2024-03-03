@@ -7,8 +7,5 @@ export class CreateKeyDto {
 
   @IsInt()
   @IsNotEmpty()
-  gameId: number; // Используем gameId вместо экземпляра Game
-
-  @IsString()
-  gameName: string;
+  steamId: number; // Используем gameId вместо экземпляра Game
 }

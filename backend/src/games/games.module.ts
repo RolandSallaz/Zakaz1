@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { KeysService } from '@/keys/keys.service';
 import { KeysModule } from '@/keys/keys.module';
 import { TagsModule } from '@/tags/tags.module';
+import { UsersModule } from '@/users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TagsModule } from '@/tags/tags.module';
     JwtModule,
     KeysModule,
     TagsModule,
+    UsersModule,
   ],
   providers: [GamesService],
   controllers: [GamesController],

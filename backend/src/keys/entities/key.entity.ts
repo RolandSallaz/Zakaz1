@@ -9,9 +9,6 @@ export class Key {
   @Column({ unique: true })
   key: string;
 
-  @ManyToOne(() => Game, (game) => game.id)
-  @Column({ type: 'integer' })
-  gameId: number;
   @Column()
-  gameName: string;
+  steamId: number;
 }

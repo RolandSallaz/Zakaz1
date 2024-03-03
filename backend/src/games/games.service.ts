@@ -21,14 +21,7 @@ export class GamesService {
 
   async create(createGameDto: CreateGameDto) {
     const game = new Game();
-    game.name = createGameDto.name;
-    game.description = createGameDto.description;
-    game.price = createGameDto.price;
-    game.logo = createGameDto.logo;
-    game.screenshots = JSON.stringify(createGameDto.screenshots);
-    game.discount = createGameDto.discount;
-    game.enabled = createGameDto.enabled;
-
+    Object.assign(game, createGameDto);
     // Проверяем, есть ли теги в запросе
     // Проверяем, есть ли имена тегов в запросе
     if (createGameDto.tags && createGameDto.tags.length > 0) {
@@ -43,7 +36,6 @@ export class GamesService {
       game.tags = foundOrCreatedTags;
     }
     await this.gameRepository.save(game);
-
     if (createGameDto.keys && createGameDto.keys.length > 0) {
       const createdKeys = await Promise.all(
         createGameDto.keys.map(async (key) => {
@@ -51,23 +43,20 @@ export class GamesService {
 
           // Если ключ уже существует, обновляем gameId и gameName
           if (existingKey) {
-            existingKey.gameId = game.id;
-            existingKey.gameName = game.name;
+            existingKey.steamId = game.steamId;
             await this.keysService.update(existingKey);
             return existingKey;
           } else {
             // Если ключ не существует, создаем новый
             return await this.keysService.create({
               key,
-              gameId: game.id,
-              gameName: game.name,
+              steamId: game.steamId,
             });
           }
         }),
       );
-
-      return await this.gameRepository.save(game);
     }
+    return game;
   }
 
   async getAllGames(): Promise<Game[]> {

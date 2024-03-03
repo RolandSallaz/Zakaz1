@@ -1,7 +1,13 @@
 import { generateSixDigitCode } from '@/common/filters/helpers/codeGenerator';
 import { AuthUserDto } from '@/users/dto/auth-user.dto';
 import { CreateOrFindUserDto } from '@/users/dto/createOrFind-user.dto';
-import { HttpException, Inject, Injectable, Scope } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  Scope,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { EmailService } from 'src/email/email.service';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
@@ -9,13 +15,13 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthenticatedRequest, IAuthData } from '@/types';
 import { REQUEST } from '@nestjs/core';
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class AuthService {
   constructor(
-    @Inject(REQUEST) private readonly request: AuthenticatedRequest,
     private readonly userService: UsersService,
     private readonly emailService: EmailService,
     private jwtService: JwtService,
+    @Inject(REQUEST) private request: AuthenticatedRequest,
   ) {}
   async findUserAndSendCode({
     email,
@@ -42,11 +48,6 @@ export class AuthService {
   }
 
   async checkAuth(): Promise<User> {
-    const id = this.request.user.id;
-    return await this.userService.findUserById({ id });
-  }
-
-  async checkAdminAuth(): Promise<User> {
-    return await this.checkAuth();
+    return this.request.user;
   }
 }

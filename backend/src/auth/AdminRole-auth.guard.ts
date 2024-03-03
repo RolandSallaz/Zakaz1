@@ -1,22 +1,25 @@
 import {
   Injectable,
-  CanActivate,
   ExecutionContext,
-  UnauthorizedException,
   ForbiddenException,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { JwtAuthGuard } from './jwt-auth.guard';
+
 @Injectable()
 export class AdminRoleAuthGuard extends JwtAuthGuard {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const canActivate = super.canActivate(context); // Вызываем canActivate JwtAuthGuard
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Вызываем метод canActivate родительского класса (JwtAuthGuard)
+    const canActivate = await super.canActivate(context);
+    if (!canActivate) {
+      return false;
+    }
     const req = context.switchToHttp().getRequest();
-    if (req.user.role != 'admin') {
+    const user = req.user;
+    // Проверяем роль пользователя
+    if (user.role !== 'admin') {
       throw new ForbiddenException({ message: 'Недостаточно прав' });
     }
+
     return true;
   }
 }

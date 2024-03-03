@@ -1,13 +1,10 @@
-import { User } from "@/users/entities/user.entity";
+import { User } from '@/users/entities/user.entity';
 
 export interface AuthenticatedRequest extends Request {
-  user: {
-    id: number;
-    role: 'user' | 'admin';
-  };
+  user: User;
 }
 
 export interface IAuthData {
-  user: User,
+  user: User;
   token: string;
 }

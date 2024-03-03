@@ -1,11 +1,18 @@
-import { PickType } from '@nestjs/mapped-types';
-import { PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { IsEmail, IsNumber } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, Validate } from 'class-validator';
 
-export class AuthUserDto{
-    @IsEmail()
-    email: string;
-    @IsNumber()
-    authCode: number;
+function isValidAuthCode(value: number): boolean {
+  const authCodeString = value.toString();
+  return /^\d{6}$/.test(authCodeString);
+}
+
+export class AuthUserDto {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @IsNumber()
+  @Validate(isValidAuthCode, {
+    message: 'Field "authCode" must be a 6-digit number.',
+  })
+  authCode: number;
 }

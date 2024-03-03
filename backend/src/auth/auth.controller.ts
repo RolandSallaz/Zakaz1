@@ -15,11 +15,13 @@ import { AdminRoleAuthGuard } from './AdminRole-auth.guard';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @Post()
   @HttpCode(200)
   findUserAndSendCode(@Body() authDto: CreateOrFindUserDto) {
     return this.authService.findUserAndSendCode(authDto);
   }
+
   @Post('login')
   @HttpCode(200)
   login(@Body() authDto: AuthUserDto) {
@@ -30,11 +32,5 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   checkAuth() {
     return this.authService.checkAuth();
-  }
-
-  @Get('admin')
-  @UseGuards(AdminRoleAuthGuard)
-  checkAdminAuth() {
-    return this.authService.checkAdminAuth();
   }
 }

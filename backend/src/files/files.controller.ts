@@ -24,6 +24,9 @@ export class FilesController {
           cb(null, randomFileName);
         },
       }),
+      limits: {
+        fileSize: 1024 * 1024 * 10, // Установите максимальный размер файла (10MB в данном случае)
+      },
     }),
   )
   public async uploadFile(@UploadedFile() file) {

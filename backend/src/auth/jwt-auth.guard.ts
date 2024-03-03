@@ -1,3 +1,4 @@
+import { UsersService } from '@/users/users.service';
 import {
   Injectable,
   CanActivate,
@@ -8,13 +9,20 @@ import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 require('dotenv').config();
 const { JWT_SECRET = 'jwt_secret' } = process.env;
+
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  private userService: UsersService;
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  constructor(
+    private jwtService: JwtService,
+    private usersService: UsersService,
+  ) {
+    this.userService = usersService;
+  }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Используем тип Promise<boolean> для асинхронной логики
     const req = context.switchToHttp().getRequest();
     try {
       if (!req.headers.authorization.startsWith('Bearer ')) {
@@ -22,7 +30,13 @@ export class JwtAuthGuard implements CanActivate {
       }
       const token = req.headers.authorization.replace('Bearer ', '');
       const { user } = this.jwtService.verify(token, { secret: JWT_SECRET });
-      req.user = user;
+      const findUser = await this.userService.findUserByEmail({
+        email: user.email,
+      });
+      if (!findUser) {
+        throw new UnauthorizedException({ message: 'Авторизация не прошла' });
+      }
+      req.user = findUser;
       return true;
     } catch (e) {
       throw new UnauthorizedException({ message: 'Авторизация не прошла' });

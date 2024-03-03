@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TagsService } from './tags.service';
-import { TagsController } from './tags.controller';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tag } from './entities/tag.entity';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { TagsController } from './tags.controller';
+import { TagsService } from './tags.service';
+import { UsersModule } from '@/users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tag]), JwtModule],
+  imports: [TypeOrmModule.forFeature([Tag]), JwtModule, UsersModule],
   controllers: [TagsController],
   providers: [TagsService],
   exports: [TagsService],
