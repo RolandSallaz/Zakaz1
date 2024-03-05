@@ -73,7 +73,10 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
   const { id } = useParams();
 
   function handleTagAdd(e: SyntheticEvent<Element, Event>, newValue: ITag) {
-    const newTag = { name: newValue.name };
+    if (newValue == null) {
+      return;
+    }
+    const newTag = { name: newValue.name.replace(addTagText, '') };
     tagManager(newTag, TAG_ACTION.add);
     if (!optionTags.some((item) => item.name == newTag.name)) {
       addTag(newTag)
@@ -209,15 +212,16 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
         </label>
 
         <div className="GameForm__container">
-          <Input
-            name="steamId"
-            additionalClass="GameForm__input"
-            onChange={handleChange}
-            required
-            value={values.steamId}
-            label="steamId"
-          />
-          <CopySteamAppImage />
+          <CopySteamAppImage appId={values.steamId}>
+            <Input
+              name="steamId"
+              additionalClass="GameForm__input"
+              onChange={handleChange}
+              required
+              value={values.steamId}
+              label="steamId"
+            />
+          </CopySteamAppImage>
           <Input
             name="name"
             additionalClass="GameForm__input GameForm__input_name"

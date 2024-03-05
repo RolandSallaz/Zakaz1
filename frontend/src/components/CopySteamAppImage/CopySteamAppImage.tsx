@@ -1,18 +1,13 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import Input from '../Input/Input';
 import './CopySteamAppImage.scss';
 
-export default function CopySteamAppImage() {
-  const [appId, setAppId] = useState<number>('');
+interface props {
+  appId: number;
+  children: ReactNode;
+}
 
-  function handleAppidChange(e: ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    if (isNaN(Number(value))) {
-      return;
-    }
-    setAppId(value);
-  }
-
+export default function CopySteamAppImage({ appId, children }: props) {
   function onButtonClick() {
     window
       .open(`https://cdn.akamai.steamstatic.com/steam/apps/${appId}/capsule_616x353.jpg`, '_blank')
@@ -21,20 +16,13 @@ export default function CopySteamAppImage() {
 
   return (
     <div className="CopySteamAppImage">
-      <Input
-        name="steamId"
-        additionalClass="CopySteamAppImage__input"
-        onChange={handleAppidChange}
-        value={appId!}
-        label="SteamAppId"
-        type="number"
-      />
+      {children}
       <button
         type="button"
         className="CopySteamAppImage__button"
         onClick={onButtonClick}
         disabled={!appId}>
-        Получить ссылку на изображение со стима
+        Открыть изображение со стима в новой вкладке
       </button>
     </div>
   );

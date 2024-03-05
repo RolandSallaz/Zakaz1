@@ -5,7 +5,7 @@ import useErrorHandler from '../../hooks/useErrorHandler';
 import { postGame, updateGame } from '../../services/api';
 import { openSnackBar } from '../../services/slices/appSlice';
 import { loadGames } from '../../services/slices/gameSlice';
-import { IGameCreateDto, IGameUpdateDto } from '../../utils/types';
+import { IGame, IGameCreateDto, IGameUpdateDto } from '../../utils/types';
 import { GameCard } from '../GameCard/GameCard';
 import GameForm from '../GameForm/GameForm';
 import { Lk } from '../Lk/Lk';
@@ -22,7 +22,7 @@ export default function Admin() {
   function handleAddGame(gameDto: IGameCreateDto) {
     postGame(gameDto)
       .then((game) => {
-        dispatch(loadGames([...games, game]));
+        addOrUpdateGame(game);
         dispatch(openSnackBar({ message: 'Игра успешно добавлена' }));
       })
       .catch(handleError);
@@ -31,7 +31,7 @@ export default function Admin() {
   function handleChangeGame(gameDto: IGameUpdateDto) {
     updateGame(gameDto)
       .then((game) => {
-        dispatch(loadGames([...games, game]));
+        addOrUpdateGame(game);
         dispatch(openSnackBar({ message: 'Игра успешно обновлена' }));
       })
       .catch(handleError);
@@ -39,6 +39,11 @@ export default function Admin() {
 
   function handleClickOnGame(id: number) {
     navigate(`games/edit/${id}`);
+  }
+
+  function addOrUpdateGame(game: IGame) {
+    const updatedArray = games.map((oldGame) => (game.id == oldGame.id ? game : oldGame));
+    dispatch(loadGames(updatedArray));
   }
 
   return (
