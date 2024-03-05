@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateKeyDto } from './dto/create-key.dto';
-import { UpdateKeyDto } from './dto/update-key.dto';
-import { Repository } from 'typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateKeyDto } from './dto/create-key.dto';
+import { DeleteKeyDto } from './dto/delete-key.dto';
 import { Key } from './entities/key.entity';
+import { createOrUpdateKeyDto } from './dto/createOrUpdate-key.dto';
 
 @Injectable()
 export class KeysService {
@@ -19,18 +20,39 @@ export class KeysService {
   async findByKey(key: string): Promise<Key> {
     return await this.keyRepository.findOne({ where: { key } });
   }
-  findAll() {
-    return `This action returns all keys`;
+
+  async deleteKey(deleteKeyDto: DeleteKeyDto): Promise<{ message: string }> {
+    const key = await this.findByKey(deleteKeyDto.key);
+    if (!key) {
+      throw new NotFoundException('Ключ не найден');
+    }
+
+    await this.keyRepository.remove(key);
+    return { message: 'Ключ удален' };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} key`;
+  async findBySteamId(steamId: number): Promise<Key[]> {
+    return await this.keyRepository.find({ where: { steamId: steamId } });
   }
 
   async update(key: Key): Promise<Key> {
     return await this.keyRepository.save(key);
   }
-  remove(id: number) {
-    return `This action removes a #${id} key`;
+
+  async createOrUpdateSteamId({ key, steamId }: createOrUpdateKeyDto) {
+    let existingKey = await this.findByKey(key);
+
+    // Если ключ уже существует, обновляем gameId и gameName
+    if (existingKey) {
+      existingKey.steamId = steamId;
+      await this.update(existingKey);
+      return existingKey;
+    } else {
+      // Если ключ не существует, создаем новый
+      return await this.create({
+        key,
+        steamId: steamId,
+      });
+    }
   }
 }

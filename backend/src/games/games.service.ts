@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './entities/game.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 import { Key } from '@/keys/entities/key.entity';
 import { KeysService } from '@/keys/keys.service';
 import { TagsService } from '@/tags/tags.service';
+import { FindByIdGameDto } from './dto/findById-game.dto';
+import { UpdateGameDto } from './dto/update-game.dto';
 
 @Injectable()
 export class GamesService {
@@ -36,23 +38,13 @@ export class GamesService {
       game.tags = foundOrCreatedTags;
     }
     await this.gameRepository.save(game);
-    if (createGameDto.keys && createGameDto.keys.length > 0) {
+    if (createGameDto.newKeys.length) {
       const createdKeys = await Promise.all(
-        createGameDto.keys.map(async (key) => {
-          let existingKey = await this.keysService.findByKey(key);
-
-          // Если ключ уже существует, обновляем gameId и gameName
-          if (existingKey) {
-            existingKey.steamId = game.steamId;
-            await this.keysService.update(existingKey);
-            return existingKey;
-          } else {
-            // Если ключ не существует, создаем новый
-            return await this.keysService.create({
-              key,
-              steamId: game.steamId,
-            });
-          }
+        createGameDto.newKeys.map(async (key) => {
+          this.keysService.createOrUpdateSteamId({
+            key,
+            steamId: game.steamId,
+          });
         }),
       );
     }
@@ -61,5 +53,55 @@ export class GamesService {
 
   async getAllGames(): Promise<Game[]> {
     return await this.gameRepository.find({ relations: ['tags'] });
+  }
+
+  async getGame(id: number): Promise<Game> {
+    return await this.gameRepository.findOneOrFail({
+      where: { id: id },
+      relations: ['tags'],
+    });
+  }
+
+  async updateGame(id: number, updateGameDto: UpdateGameDto) {
+    const game = await this.gameRepository.findOneOrFail({ where: { id: id } });
+
+    const foundOrCreatedTags = await Promise.all(
+      updateGameDto.tags.map(
+        async (tagName) => await this.tagsService.findOneByName(tagName.name),
+      ),
+    );
+
+    game.tags = foundOrCreatedTags;
+
+    const { newKeys, keysToRemove, ...dataToUpdate } = updateGameDto;
+    const newGame = await this.gameRepository.save({
+      ...game,
+      ...dataToUpdate,
+    });
+
+    //сохраним новые ключи
+    if (updateGameDto.newKeys.length) {
+      const createdKeys = await Promise.all(
+        updateGameDto.newKeys.map(async (key) => {
+          this.keysService.createOrUpdateSteamId({
+            key,
+            steamId: game.steamId,
+          });
+        }),
+      );
+    }
+
+    //удалим удаленные и старые ключи
+    if (updateGameDto.keysToRemove.length) {
+      const deleteKeys = await Promise.all(
+        updateGameDto.keysToRemove.map(async (key) => {
+          this.keysService.deleteKey({
+            key,
+          });
+        }),
+      );
+    }
+
+    return newGame;
   }
 }

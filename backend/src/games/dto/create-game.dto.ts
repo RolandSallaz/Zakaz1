@@ -36,5 +36,5 @@ export class CreateGameDto {
   enabled?: boolean;
 
   @IsArray()
-  keys?: string[];
+  newKeys?: string[];
 }

@@ -14,7 +14,7 @@ export class Game {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   steamId: number;
 
   @Column()
