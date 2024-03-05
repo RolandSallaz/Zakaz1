@@ -22,6 +22,13 @@ function useFormValidator<T>(initialValues: T) {
     [values, errors]
   );
 
+  const mutateValue = useCallback(
+    ({ valueName, value }: { valueName: string; value: number | string }) => {
+      setValues((prev) => ({ ...prev, [valueName]: value }) as T);
+    },
+    [values]
+  );
+
   const resetForm = useCallback(
     (newValues = {}, newErrors: FormErrors = {}, newIsValid: boolean = false) => {
       setValues(newValues as T);
@@ -31,7 +38,7 @@ function useFormValidator<T>(initialValues: T) {
     []
   );
 
-  return { values, handleChange, errors, isValid, resetForm };
+  return { values, handleChange, errors, isValid, resetForm, mutateValue };
 }
 
 export default useFormValidator;

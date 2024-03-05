@@ -1,12 +1,20 @@
 import { Autocomplete, Switch, TextField, createFilterOptions } from '@mui/material';
 import { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import useFormValidator from '../../hooks/useFormValidator';
-import { addTag, getAllTags, postGame, postImage } from '../../services/api';
+import { addTag, getAllTags, getGameById, getKeysBySteamId, postImage } from '../../services/api';
 import { openSnackBar } from '../../services/slices/appSlice';
 import { apiUrl } from '../../utils/config';
-import { ITag } from '../../utils/types';
+import {
+  IGame,
+  IGameCreateDto,
+  IGameUpdateDto,
+  IKeyDto,
+  IRequestError,
+  ITag
+} from '../../utils/types';
 import CopySteamAppImage from '../CopySteamAppImage/CopySteamAppImage';
 import { GameTag } from '../GameTag/GameTag';
 import Input from '../Input/Input';
@@ -19,6 +27,10 @@ enum TAG_ACTION {
   remove
 }
 
+interface IProps {
+  isEditing?: boolean;
+  onSubmit: (arg: IGameCreateDto | IGameUpdateDto) => void;
+}
 interface formValues {
   name: string;
   steamId: number;
@@ -36,8 +48,9 @@ interface ImagesDto {
   screenshot4: string;
 }
 
-export default function GameForm() {
+export default function GameForm({ isEditing, onSubmit }: IProps) {
   const [tags, setTags] = useState<ITag[]>([]);
+  const [jsonKeys, SetJsonKeys] = useState<IKeyDto[]>([]);
   const [optionTags, setOptionTags] = useState<ITag[]>([]);
   const [gameImages, setGameImages] = useState<ImagesDto>({
     gameLogo: '',
@@ -46,7 +59,7 @@ export default function GameForm() {
     screenshot3: '',
     screenshot4: ''
   });
-  const { values, handleChange } = useFormValidator<formValues>({
+  const { values, handleChange, mutateValue } = useFormValidator<formValues>({
     name: '',
     steamId: 0,
     description: '',
@@ -57,6 +70,7 @@ export default function GameForm() {
   const [isGameActive, setIsGameActive] = useState<boolean>(true);
   const { handleError } = useErrorHandler();
   const dispatch = useAppDispatch();
+  const { id } = useParams();
 
   function handleTagAdd(e: SyntheticEvent<Element, Event>, newValue: ITag) {
     const newTag = { name: newValue.name };
@@ -110,9 +124,53 @@ export default function GameForm() {
     setIsGameActive(e.target.checked);
   }
 
+  useEffect(() => {
+    async function getData() {
+      try {
+        const game: IGame = await getGameById(Number(id));
+        const keys: IKeyDto[] = await getKeysBySteamId(game.steamId);
+
+        SetJsonKeys(keys);
+        setTags(game.tags); // установим теги
+
+        // установим скрины
+        setGameImages((prev) => ({ ...prev, gameLogo: game.logo }));
+        game.screenshots.forEach((screen, index) =>
+          setGameImages((prev) => ({ ...prev, [`screenshot${index + 1}`]: screen }))
+        );
+        setIsGameActive(game.enabled);
+
+        //установка данных в инпуты
+        mutateValue({ valueName: 'name', value: game.name });
+        mutateValue({ valueName: 'steamId', value: game.steamId });
+        mutateValue({ valueName: 'description', value: game.description });
+        mutateValue({ valueName: 'price', value: game.price });
+        mutateValue({ valueName: 'discount', value: game.discount });
+
+        //установка ключей в инпут
+        mutateValue({
+          valueName: 'keys',
+          value: keys
+            .map(({ key }, index) => (index === keys.length - 1 ? key : key + '\n'))
+            .join('')
+        });
+      } catch (err) {
+        handleError(err as IRequestError);
+      }
+    }
+    if (isEditing) {
+      getData();
+    }
+  }, []);
+
   function handleFormSubmit(e: FormEvent) {
     e.preventDefault();
+    const existingKeys: string[] = jsonKeys.map((obj) => obj.key);
+    const inputKeys: string[] = values.keys.split('\n');
+    const newKeys = inputKeys.filter((key) => !existingKeys.includes(key));
+    const keysToRemove = existingKeys.filter((key) => !inputKeys.includes(key));
     const gameDto = {
+      id,
       name: values.name,
       steamId: Number(values.steamId),
       description: values.description,
@@ -126,15 +184,11 @@ export default function GameForm() {
       ],
       discount: Number(values.discount),
       enabled: isGameActive,
-      keys: values.keys.split('\n'),
+      newKeys,
+      keysToRemove,
       tags
     };
-
-    postGame(gameDto)
-      .then(() => {
-        dispatch(openSnackBar({ message: 'Игра успешно добавлена' }));
-      })
-      .catch(handleError);
+    onSubmit(gameDto);
   }
 
   return (
@@ -148,7 +202,6 @@ export default function GameForm() {
             accept="image/*"
             className="GameForm__file"
             onChange={handleFileInputChange}
-            required
           />
           {gameImages.gameLogo && (
             <img className="GameForm__img" src={`${apiUrl}/${gameImages.gameLogo}`} />
@@ -184,7 +237,6 @@ export default function GameForm() {
                   accept="image/*"
                   className="GameForm__file"
                   onChange={handleFileInputChange}
-                  required
                 />
                 {gameImages[`screenshot${index}` as keyof ImagesDto] && (
                   <img

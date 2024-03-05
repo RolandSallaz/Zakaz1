@@ -10,6 +10,12 @@ export enum ROLES {
   ADMIN = 'admin'
 }
 
+export interface IKeyDto {
+  id: number;
+  key: string;
+  steamId: number;
+}
+
 export interface IAuthFormDto {
   email: string;
   authCode: number;
@@ -49,10 +55,6 @@ export interface IFIle {
   size: number;
 }
 
-export interface createGameDto extends Omit<IGame, 'id'> {
-  keys: string[];
-}
-
 export interface IGame {
   id: number;
   steamId: number;
@@ -64,4 +66,13 @@ export interface IGame {
   discount: number;
   enabled: boolean;
   tags: ITag[];
+}
+
+export interface IGameCreateDto extends Omit<IGame, 'id'> {
+  newKeys: string[];
+  keysToRemove: string[];
+}
+
+export interface IGameUpdateDto extends IGameCreateDto {
+  id: number;
 }

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
-import { checkAuth, getAllGames } from '../../services/api';
+import { checkAuth, getAllGames, getGameWithKeys } from '../../services/api';
 import { closeSnackBar, login } from '../../services/slices/appSlice';
 import Admin from '../Admin/Admin';
 import Auth from '../Auth/Auth';
@@ -20,20 +20,12 @@ function App() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { handleError } = useErrorHandler();
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      checkAuth()
-        .then((res) => {
-          dispatch(login(res));
-        })
-        .catch(console.log);
-    }
 
+  useEffect(() => {
     getAllGames()
       .then((res) => dispatch(loadGames(res)))
       .catch(handleError);
-  }, [navigate]);
+  }, []);
 
   return (
     <>
@@ -57,6 +49,7 @@ function App() {
           }></Route>
 
         <Route path="/auth" element={<Auth />} />
+        <Route path="*" element={<p>404 страница не найдена</p>}></Route>
       </Routes>
       <Footer />
       <Snackbar

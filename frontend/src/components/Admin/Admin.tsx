@@ -1,30 +1,45 @@
-import { useEffect, useState } from 'react';
 import { NavLink, Route, Routes, useNavigate } from 'react-router-dom';
-import { checkAdminAuth } from '../../services/api';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import useErrorHandler from '../../hooks/useErrorHandler';
+import { postGame, updateGame } from '../../services/api';
+import { openSnackBar } from '../../services/slices/appSlice';
+import { loadGames } from '../../services/slices/gameSlice';
+import { IGameCreateDto, IGameUpdateDto } from '../../utils/types';
+import { GameCard } from '../GameCard/GameCard';
+import GameForm from '../GameForm/GameForm';
 import { Lk } from '../Lk/Lk';
+import SectionWithSearch from '../SectionWithSearch/SectionWithSearch';
 import { SidePanel } from '../SidePanel/SidePanel';
 import './Admin.scss';
-import GameForm from '../GameForm/GameForm';
-import SectionWithSearch from '../SectionWithSearch/SectionWithSearch';
-import { useAppSelector } from '../../hooks/redux';
-import { GameCard } from '../GameCard/GameCard';
-
-enum ADMIN_TABS {
-  games,
-  tags,
-  statistic
-}
-
-enum ADMIN_SUBTABS {
-  add,
-  editOrDelete
-}
 
 export default function Admin() {
-  const [adminSubTab, setAdminSubTab] = useState<ADMIN_SUBTABS>(ADMIN_SUBTABS.editOrDelete);
   const navigate = useNavigate();
   const { games } = useAppSelector((state) => state.games);
+  const dispatch = useAppDispatch();
+  const { handleError } = useErrorHandler();
+
+  function handleAddGame(gameDto: IGameCreateDto) {
+    postGame(gameDto)
+      .then((game) => {
+        dispatch(loadGames([...games, game]));
+        dispatch(openSnackBar({ message: 'Игра успешно добавлена' }));
+      })
+      .catch(handleError);
+  }
+
+  function handleChangeGame(gameDto: IGameUpdateDto) {
+    updateGame(gameDto)
+      .then((game) => {
+        dispatch(loadGames([...games, game]));
+        dispatch(openSnackBar({ message: 'Игра успешно обновлена' }));
+      })
+      .catch(handleError);
+  }
+
+  function handleClickOnGame(id: number) {
+    navigate(`games/edit/${id}`);
+  }
 
   return (
     <Lk additionalClass="admin">
@@ -51,17 +66,21 @@ export default function Admin() {
                   </NavLink>
                 </div>
                 <Routes>
-                  <Route path="add" element={<GameForm />}></Route>
+                  <Route path="add" element={<GameForm onSubmit={handleAddGame} />}></Route>
                   <Route
                     path="edit"
                     element={
                       <SectionWithSearch
                         children={games.map((item) => (
-                          <GameCard game={item} key={item.id} />
+                          <GameCard game={item} key={item.id} onCardClick={handleClickOnGame} />
                         ))}
                         options={games.map((item) => item.name)}
                       />
                     }></Route>
+                  <Route
+                    path="edit/:id"
+                    element={<GameForm onSubmit={handleChangeGame} isEditing />}
+                  />
                 </Routes>
               </div>
             }

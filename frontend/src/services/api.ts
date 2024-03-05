@@ -3,16 +3,19 @@ import {
   IAuthFormDto,
   IFIle,
   IGame,
+  IGameCreateDto,
+  IGameUpdateDto,
+  IGameWithKeys,
+  IKeyDto,
   ILogin,
   IRequest,
   ITag,
-  IUser,
-  createGameDto
+  IUser
 } from '../utils/types';
 
 interface IFetch {
   url: string;
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: HeadersInit;
   body?: BodyInit | Record<string, unknown>;
 }
@@ -86,10 +89,22 @@ export function postImage(file: FormData): Promise<IFIle> {
   return _fetch({ url: 'files', method: 'POST', body: file });
 }
 
-export function postGame(createGameDto: createGameDto) {
+export function postGame(createGameDto: IGameCreateDto): Promise<IGame> {
   return _fetch({ url: 'games', method: 'POST', body: { ...createGameDto } });
 }
 
 export function getAllGames(): Promise<IGame[]> {
   return _fetch({ url: 'games' });
+}
+
+export function getGameById(gameId: number): Promise<IGame> {
+  return _fetch({ url: `games/${gameId}` });
+}
+
+export function updateGame(game: IGameUpdateDto): Promise<IGame> {
+  return _fetch({ url: `games/${game.id}`, method: 'PATCH', body: { ...game } });
+}
+
+export function getKeysBySteamId(steamId: number): Promise<IKeyDto[]> {
+  return _fetch({ url: `keys/${steamId}` });
 }
