@@ -27,7 +27,10 @@ export class Game {
   price: number;
 
   @Column({ default: 0 })
-  discount: number;
+  steamPrice: number;
+
+  @Column()
+  buyLink: string;
 
   @Column()
   logo: string;

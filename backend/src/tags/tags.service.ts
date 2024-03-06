@@ -4,6 +4,8 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from './entities/tag.entity';
 import { Repository } from 'typeorm';
+import { FindByNameTagDto } from './dto/findByName-tag.dto';
+import { FindByNameOrCreateTagDto } from './dto/findByNameOrCreate-tag.dto';
 
 @Injectable()
 export class TagsService {
@@ -20,8 +22,19 @@ export class TagsService {
     return this.tagsRepository.find();
   }
 
-  async findOneByName(name: string): Promise<Tag> {
+  async findOneByName({ name }: FindByNameTagDto): Promise<Tag> {
     return await this.tagsRepository.findOne({ where: { name } });
+  }
+
+  async findOrCreateByName(
+    findByNameOrCreateTagDto: FindByNameOrCreateTagDto,
+  ): Promise<Tag> {
+    const tag = await this.findOneByName(findByNameOrCreateTagDto);
+    if (tag) {
+      return tag;
+    } else {
+      return await this.create(findByNameOrCreateTagDto);
+    }
   }
 
   update(id: number, updateTagDto: UpdateTagDto) {

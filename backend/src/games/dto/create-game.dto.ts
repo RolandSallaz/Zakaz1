@@ -30,11 +30,14 @@ export class CreateGameDto {
   price: number;
 
   @IsNumber()
-  discount: number;
+  steamPrice: number;
 
   @IsBoolean()
   enabled?: boolean;
 
-  @IsArray()
-  newKeys?: string[];
+  @IsString()
+  buyLink: string;
+
+  // @IsArray()
+  // newKeys?: string[];
 }

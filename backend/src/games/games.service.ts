@@ -30,7 +30,7 @@ export class GamesService {
       // Находим или создаем теги по их именам
       const foundOrCreatedTags = await Promise.all(
         createGameDto.tags.map(
-          async (tagName) => await this.tagsService.findOneByName(tagName.name),
+          async (tag) => await this.tagsService.findOneByName(tag),
         ),
       );
 
@@ -38,16 +38,16 @@ export class GamesService {
       game.tags = foundOrCreatedTags;
     }
     await this.gameRepository.save(game);
-    if (createGameDto.newKeys.length) {
-      const createdKeys = await Promise.all(
-        createGameDto.newKeys.map(async (key) => {
-          this.keysService.createOrUpdateSteamId({
-            key,
-            steamId: game.steamId,
-          });
-        }),
-      );
-    }
+    // if (createGameDto.newKeys.length) {
+    //   const createdKeys = await Promise.all(
+    //     createGameDto.newKeys.map(async (key) => {
+    //       return this.keysService.createOrUpdateSteamId({
+    //         key,
+    //         steamId: game.steamId,
+    //       });
+    //     }),
+    //   );
+    // }
     return game;
   }
 
@@ -65,42 +65,38 @@ export class GamesService {
   async updateGame(id: number, updateGameDto: UpdateGameDto) {
     const game = await this.gameRepository.findOneOrFail({ where: { id: id } });
 
-    const foundOrCreatedTags = await Promise.all(
-      updateGameDto.tags.map(
-        async (tagName) => await this.tagsService.findOneByName(tagName.name),
-      ),
-    );
-
-    game.tags = foundOrCreatedTags;
-
-    const { newKeys, keysToRemove, ...dataToUpdate } = updateGameDto;
     const newGame = await this.gameRepository.save({
       ...game,
-      ...dataToUpdate,
+      ...updateGameDto,
+      tags: await Promise.all(
+        updateGameDto.tags.map(
+          async (tag) => await this.tagsService.findOneByName(tag),
+        ),
+      ),
     });
 
-    //сохраним новые ключи
-    if (updateGameDto.newKeys.length) {
-      const createdKeys = await Promise.all(
-        updateGameDto.newKeys.map(async (key) => {
-          this.keysService.createOrUpdateSteamId({
-            key,
-            steamId: game.steamId,
-          });
-        }),
-      );
-    }
+    // //сохраним новые ключи
+    // if (updateGameDto.newKeys.length) {
+    //   const createdKeys = await Promise.all(
+    //     await updateGameDto.newKeys.map(async (key) => {
+    //       this.keysService.createOrUpdateSteamId({
+    //         key,
+    //         steamId: game.steamId,
+    //       });
+    //     }),
+    //   );
+    // }
 
-    //удалим удаленные и старые ключи
-    if (updateGameDto.keysToRemove.length) {
-      const deleteKeys = await Promise.all(
-        updateGameDto.keysToRemove.map(async (key) => {
-          this.keysService.deleteKey({
-            key,
-          });
-        }),
-      );
-    }
+    // //удалим удаленные и старые ключи
+    // if (updateGameDto.keysToRemove.length) {
+    //   const deleteKeys = await Promise.all(
+    //     updateGameDto.keysToRemove.map(async (key) => {
+    //       await this.keysService.deleteKey({
+    //         key,
+    //       });
+    //     }),
+    //   );
+    // }
 
     return newGame;
   }
