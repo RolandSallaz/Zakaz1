@@ -22,7 +22,7 @@ export default function Admin() {
   function handleAddGame(gameDto: IGameCreateDto) {
     postGame(gameDto)
       .then((game) => {
-        addOrUpdateGame(game);
+        dispatch(loadGames([...games, game]));
         dispatch(openSnackBar({ message: 'Игра успешно добавлена' }));
       })
       .catch(handleError);
@@ -31,7 +31,8 @@ export default function Admin() {
   function handleChangeGame(gameDto: IGameUpdateDto) {
     updateGame(gameDto)
       .then((game) => {
-        addOrUpdateGame(game);
+        const updatedArray = games.map((oldGame) => (game.id == oldGame.id ? game : oldGame));
+        dispatch(loadGames(updatedArray));
         dispatch(openSnackBar({ message: 'Игра успешно обновлена' }));
       })
       .catch(handleError);
@@ -39,11 +40,6 @@ export default function Admin() {
 
   function handleClickOnGame(id: number) {
     navigate(`games/edit/${id}`);
-  }
-
-  function addOrUpdateGame(game: IGame) {
-    const updatedArray = games.map((oldGame) => (game.id == oldGame.id ? game : oldGame));
-    dispatch(loadGames(updatedArray));
   }
 
   return (

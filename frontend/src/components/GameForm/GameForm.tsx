@@ -19,6 +19,7 @@ import CopySteamAppImage from '../CopySteamAppImage/CopySteamAppImage';
 import { GameTag } from '../GameTag/GameTag';
 import Input from '../Input/Input';
 import './GameForm.scss';
+import GameLogo from '../GameLogo/GameLogo';
 const filter = createFilterOptions<{ name: string }>();
 const addTagText = 'Добавить тег ';
 
@@ -36,8 +37,9 @@ interface formValues {
   steamId: number;
   description: string;
   price: number;
+  steamPrice: number;
   discount: number;
-  keys: string;
+  buyLink: string;
 }
 
 interface ImagesDto {
@@ -50,7 +52,7 @@ interface ImagesDto {
 
 export default function GameForm({ isEditing, onSubmit }: IProps) {
   const [tags, setTags] = useState<ITag[]>([]);
-  const [jsonKeys, SetJsonKeys] = useState<IKeyDto[]>([]);
+  // const [jsonKeys, SetJsonKeys] = useState<IKeyDto[]>([]);
   const [optionTags, setOptionTags] = useState<ITag[]>([]);
   const [gameImages, setGameImages] = useState<ImagesDto>({
     gameLogo: '',
@@ -65,7 +67,8 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
     description: '',
     price: 0,
     discount: 0,
-    keys: ''
+    buyLink: '',
+    steamPrice: 0
   });
   const [isGameActive, setIsGameActive] = useState<boolean>(true);
   const { handleError } = useErrorHandler();
@@ -131,9 +134,9 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
     async function getData() {
       try {
         const game: IGame = await getGameById(Number(id));
-        const keys: IKeyDto[] = await getKeysBySteamId(game.steamId);
+        // const keys: IKeyDto[] = await getKeysBySteamId(game.steamId);
 
-        SetJsonKeys(keys);
+        // SetJsonKeys(keys);
         setTags(game.tags); // установим теги
 
         // установим скрины
@@ -149,14 +152,15 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
         mutateValue({ valueName: 'description', value: game.description });
         mutateValue({ valueName: 'price', value: game.price });
         mutateValue({ valueName: 'discount', value: game.discount });
-
+        mutateValue({ valueName: 'steamPrice', value: game.steamPrice });
+        mutateValue({ valueName: 'buyLink', value: game.buyLink });
         //установка ключей в инпут
-        mutateValue({
-          valueName: 'keys',
-          value: keys
-            .map(({ key }, index) => (index === keys.length - 1 ? key : key + '\n'))
-            .join('')
-        });
+        // mutateValue({
+        //   valueName: 'keys',
+        //   value: keys
+        //     .map(({ key }, index) => (index === keys.length - 1 ? key : key + '\n'))
+        //     .join('')
+        // });
       } catch (err) {
         handleError(err as IRequestError);
       }
@@ -168,16 +172,18 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
 
   function handleFormSubmit(e: FormEvent) {
     e.preventDefault();
-    const existingKeys: string[] = jsonKeys.map((obj) => obj.key);
-    const inputKeys: string[] = values.keys.split('\n');
-    const newKeys = inputKeys.filter((key) => !existingKeys.includes(key));
-    const keysToRemove = existingKeys.filter((key) => !inputKeys.includes(key));
+    // const existingKeys: string[] = jsonKeys.map((obj) => obj.key);
+    // const inputKeys: string[] = values.keys.split('\n');
+    // const newKeys = inputKeys.filter((key) => !existingKeys.includes(key));
+    // const keysToRemove = existingKeys.filter((key) => !inputKeys.includes(key));
     const gameDto = {
       id,
       name: values.name,
       steamId: Number(values.steamId),
       description: values.description,
       price: Number(values.price),
+      steamPrice: Number(values.steamPrice),
+      buyLink: values.buyLink,
       logo: gameImages.gameLogo,
       screenshots: [
         gameImages.screenshot1,
@@ -187,8 +193,8 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
       ],
       discount: Number(values.discount),
       enabled: isGameActive,
-      newKeys,
-      keysToRemove,
+      // newKeys,
+      // keysToRemove,
       tags
     };
     onSubmit(gameDto);
@@ -207,7 +213,7 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
             onChange={handleFileInputChange}
           />
           {gameImages.gameLogo && (
-            <img className="GameForm__img" src={`${apiUrl}/${gameImages.gameLogo}`} />
+            <GameLogo src={`${apiUrl}/${gameImages.gameLogo}`} additionClass="GameForm__img" />
           )}
         </label>
 
@@ -222,6 +228,7 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
               label="steamId"
             />
           </CopySteamAppImage>
+
           <Input
             name="name"
             additionalClass="GameForm__input GameForm__input_name"
@@ -253,7 +260,12 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
             ))}
           </div>
         </div>
+        <label className={'GameForm__switch'}>
+          Доступно для продажи
+          <Switch name="gameEnabled" defaultChecked={true} onChange={handleSwitchChange} />
+        </label>
       </section>
+
       <section className="GameForm__info GameForm__info_addition">
         <div className="GameForm__tags">
           <Autocomplete
@@ -287,16 +299,7 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
             ))}
           </div>
         </div>
-        <div>
-          <Input
-            name="description"
-            additionalClass="GameForm__input"
-            onChange={handleChange}
-            required
-            value={values.description}
-            label="Описание"
-            isTextArea
-          />
+        <div className="GameForm__input-container">
           <Input
             name="price"
             additionalClass="GameForm__input"
@@ -304,6 +307,15 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
             required
             value={values.price}
             label="Цена"
+            type="number"
+          />
+          <Input
+            name="steamPrice"
+            additionalClass="GameForm__input"
+            onChange={handleChange}
+            required
+            value={values.steamPrice}
+            label="Цена в steam"
             type="number"
           />
           <Input
@@ -315,11 +327,15 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
             label="Скидка %"
             type="number"
           />
-          <label className={'GameForm__switch'}>
-            Доступно для продажи
-            <Switch name="gameEnabled" defaultChecked={true} onChange={handleSwitchChange} />
-          </label>
           <Input
+            name="buyLink"
+            additionalClass="GameForm__input"
+            onChange={handleChange}
+            required
+            value={values.buyLink}
+            label="Ссылка на покупку"
+          />
+          {/* <Input
             name="keys"
             additionalClass="GameForm__input"
             onChange={handleChange}
@@ -328,6 +344,15 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
             label="Ключи: 1 строка - 1 ключ"
             isTextArea
             countRow
+          /> */}
+          <Input
+            name="description"
+            additionalClass="GameForm__input GameForm__input_textArea"
+            onChange={handleChange}
+            required
+            value={values.description}
+            label="Описание"
+            isTextArea
           />
         </div>
       </section>

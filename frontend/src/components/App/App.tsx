@@ -14,6 +14,8 @@ import { Main } from '../Main/Main';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import './App.scss';
 import { loadGames } from '../../services/slices/gameSlice';
+import GamePage from '../GamePage/GamePage';
+import NotFound from '../NotFound/NotFound';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
@@ -49,7 +51,8 @@ function App() {
           }></Route>
 
         <Route path="/auth" element={<Auth />} />
-        <Route path="*" element={<p>404 страница не найдена</p>}></Route>
+        <Route path="/games/:id" element={<GamePage />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
       <Footer />
       <Snackbar

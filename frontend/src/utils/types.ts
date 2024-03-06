@@ -66,12 +66,11 @@ export interface IGame {
   discount: number;
   enabled: boolean;
   tags: ITag[];
+  steamPrice: number;
+  buyLink: string;
 }
 
-export interface IGameCreateDto extends Omit<IGame, 'id'> {
-  newKeys: string[];
-  keysToRemove: string[];
-}
+export interface IGameCreateDto extends Omit<IGame, 'id'> {}
 
 export interface IGameUpdateDto extends IGameCreateDto {
   id: number;

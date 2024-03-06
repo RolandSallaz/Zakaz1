@@ -2,22 +2,15 @@ import './Price.scss';
 
 type Props = {
   price: number;
-  discount: number;
-  isSlick?: boolean;
+  steamPrice: number;
+  type?: 'default' | 'slick' | 'order';
 };
 
-export function Price({ price, discount, isSlick }: Props) {
+export function Price({ price, steamPrice, type = 'default' }: Props) {
   return (
-    <div className={`price ${isSlick && 'price_slick'}`}>
-      {discount > 0 && (
-        <>
-          <p className={'price__discount'}>{`-${discount}%`}</p>
-          <p className={'price__cost price__cost_old'}>{discount > 0 && price}</p>
-        </>
-      )}
-      <p className={`price__cost ${!discount && 'price__cost_no-discount'}`}>
-        {discount > 0 ? price - price * (discount / 100) : price}
-      </p>
+    <div className={`price price_${type}`}>
+      <p className={`price__cost`}>{price}</p>
+      <p className={'price__cost price__cost_old'}>{steamPrice}</p>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { SyntheticEvent, useState } from 'react';
 import { GameTag } from '../GameTag/GameTag';
 import { Price } from '../Price/Price';
 import './SlickCard.scss';
+import GameLogo from '../GameLogo/GameLogo';
 
 type Props = {
   price: number;
@@ -22,7 +23,7 @@ export function SlickCard({ price }: Props) {
   return (
     <div className={'SlickCard'}>
       <div className={'SlickCard__image-container'}>
-        <img className={'SlickCard__image'} src={image} alt={'Игровая обложка'} />
+        <GameLogo src={image} />
         <div className={'SlickCard__tag-container'}>
           <GameTag tag={{ name: 'Test' }} />
           <GameTag tag={{ name: 'Test' }} />

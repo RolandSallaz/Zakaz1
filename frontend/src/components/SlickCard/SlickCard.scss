@@ -5,6 +5,8 @@
   height: 319px;
   display: flex;
   color: $mainTextColor;
+  border-radius: $averageBorderRadius;
+  overflow: hidden;
 
   &__image-container {
     width: 100%;
@@ -24,14 +26,6 @@
     }
   }
 
-  &__image {
-    border-radius: $averageBorderRadius 0 0 $averageBorderRadius;
-    width: 100%;
-    flex-grow: 1;
-    object-position: center;
-    object-fit: contain;
-  }
-
   &__name {
     font-size: 30px;
     margin-top: 20px;
@@ -41,7 +35,6 @@
     width: 100%;
     height: 100%;
     position: relative;
-    border-radius: 0 $averageBorderRadius $averageBorderRadius 0;
     background-color: $backgroundColor;
     display: flex;
     flex-direction: column;

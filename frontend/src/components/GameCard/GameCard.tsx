@@ -4,6 +4,7 @@ import { IGame } from '../../utils/types';
 import { Price } from '../Price/Price';
 import './GameCard.scss';
 import { apiUrl } from '../../utils/config';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   game: IGame;
@@ -12,7 +13,7 @@ type Props = {
 
 export function GameCard({ game, onCardClick }: Props) {
   const [isHovered, setIsHovered] = useState<boolean>(false); //Состояние карточки, наведен ли на неё курсор
-
+  const navigate = useNavigate();
   function handleHover(e: SyntheticEvent) {
     //Функция, которая срабатывает при наведении и убирание мышки с карточки
     e.type == 'mouseenter' ? setIsHovered(true) : setIsHovered(false);
@@ -20,6 +21,8 @@ export function GameCard({ game, onCardClick }: Props) {
   function handleClick() {
     if (onCardClick) {
       onCardClick(game.id);
+    } else {
+      navigate(`/games/${game.id}`);
     }
   }
   return (

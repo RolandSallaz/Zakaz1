@@ -1,7 +1,10 @@
 @import '../../variables';
 
 .Lk {
+  display: flex;
+  flex-direction: column;
   &__link {
+    align-self: flex-start;
     margin: 10px 0;
   }
 }
