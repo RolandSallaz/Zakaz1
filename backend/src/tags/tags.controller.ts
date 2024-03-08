@@ -17,24 +17,25 @@ import { AdminRoleAuthGuard } from '@/auth/AdminRole-auth.guard';
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
+  @Get()
+  findAll() {
+    return this.tagsService.findAll();
+  }
+
   @Post()
   @UseGuards(AdminRoleAuthGuard)
   create(@Body() createTagDto: CreateTagDto) {
     return this.tagsService.create(createTagDto);
   }
 
-  @Get()
-  @UseGuards(AdminRoleAuthGuard)
-  findAll() {
-    return this.tagsService.findAll();
-  }
-
   @Patch(':id')
+  @UseGuards(AdminRoleAuthGuard)
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    return this.tagsService.update(+id, updateTagDto);
+    return this.tagsService.update(id, updateTagDto);
   }
 
   @Delete(':id')
+  @UseGuards(AdminRoleAuthGuard)
   remove(@Param('id') id: string) {
     return this.tagsService.remove(+id);
   }

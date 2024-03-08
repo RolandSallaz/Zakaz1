@@ -37,11 +37,20 @@ export class TagsService {
     }
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+  async update(id: string, { name }: UpdateTagDto): Promise<Tag> {
+    const tag = await this.tagsRepository.findOne({
+      where: { id: Number(id) },
+    });
+
+    return await this.tagsRepository.save({ ...tag, name: name });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
+  async remove(id: number): Promise<Tag> {
+    const tag = await this.tagsRepository.findOne({
+      where: {
+        id: Number(id),
+      },
+    });
+    return await this.tagsRepository.remove(tag);
   }
 }
