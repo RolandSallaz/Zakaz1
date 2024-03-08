@@ -4,22 +4,15 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import useFormValidator from '../../hooks/useFormValidator';
-import { addTag, getAllTags, getGameById, getKeysBySteamId, postImage } from '../../services/api';
+import { addTag, getAllTags, getGameById, postImage } from '../../services/api';
 import { openSnackBar } from '../../services/slices/appSlice';
 import { apiUrl } from '../../utils/config';
-import {
-  IGame,
-  IGameCreateDto,
-  IGameUpdateDto,
-  IKeyDto,
-  IRequestError,
-  ITag
-} from '../../utils/types';
+import { IGame, IRequestError, ITag } from '../../utils/types';
 import CopySteamAppImage from '../CopySteamAppImage/CopySteamAppImage';
+import GameLogo from '../GameLogo/GameLogo';
 import { GameTag } from '../GameTag/GameTag';
 import Input from '../Input/Input';
 import './GameForm.scss';
-import GameLogo from '../GameLogo/GameLogo';
 const filter = createFilterOptions<{ name: string }>();
 const addTagText = 'Добавить тег ';
 
@@ -30,7 +23,7 @@ enum TAG_ACTION {
 
 interface IProps {
   isEditing?: boolean;
-  onSubmit: (arg: IGameCreateDto | IGameUpdateDto) => void;
+  onSubmit: (arg: any) => void;
 }
 interface formValues {
   name: string;
@@ -75,7 +68,7 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
   const dispatch = useAppDispatch();
   const { id } = useParams();
 
-  function handleTagAdd(e: SyntheticEvent<Element, Event>, newValue: ITag) {
+  function handleTagAdd(_e: SyntheticEvent<Element, Event>, newValue: ITag) {
     if (newValue == null) {
       return;
     }

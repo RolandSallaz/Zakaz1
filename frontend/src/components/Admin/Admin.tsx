@@ -5,12 +5,13 @@ import useErrorHandler from '../../hooks/useErrorHandler';
 import { postGame, updateGame } from '../../services/api';
 import { openSnackBar } from '../../services/slices/appSlice';
 import { loadGames } from '../../services/slices/gameSlice';
-import { IGame, IGameCreateDto, IGameUpdateDto } from '../../utils/types';
+import { IGameCreateDto, IGameUpdateDto } from '../../utils/types';
 import { GameCard } from '../GameCard/GameCard';
 import GameForm from '../GameForm/GameForm';
 import { Lk } from '../Lk/Lk';
 import SectionWithSearch from '../SectionWithSearch/SectionWithSearch';
 import { SidePanel } from '../SidePanel/SidePanel';
+import TagManager from '../TagManager/TagManager';
 import './Admin.scss';
 
 export default function Admin() {
@@ -42,6 +43,11 @@ export default function Admin() {
     navigate(`games/edit/${id}`);
   }
 
+  function handleSelectEditGame(name: string) {
+    const game = games.find((item) => item.name == name);
+    navigate(`games/edit/${game?.id}`);
+  }
+
   return (
     <Lk additionalClass="admin">
       <SidePanel>
@@ -50,6 +56,12 @@ export default function Admin() {
         </NavLink>
         <NavLink className="link admin__link" to="./tags">
           Теги
+        </NavLink>
+        <NavLink className="link admin__link" to="./slider">
+          Слайдер
+        </NavLink>
+        <NavLink className="link admin__link" to="./game-selection">
+          Подборки игр
         </NavLink>
       </SidePanel>
       <div className="admin__container">
@@ -72,6 +84,7 @@ export default function Admin() {
                     path="edit"
                     element={
                       <SectionWithSearch
+                        onSelectSearch={handleSelectEditGame}
                         children={games.map((item) => (
                           <GameCard game={item} key={item.id} onCardClick={handleClickOnGame} />
                         ))}
@@ -86,7 +99,7 @@ export default function Admin() {
               </div>
             }
           />
-          <Route path="tags" element={<p>2</p>} />
+          <Route path="tags" element={<TagManager />} />
         </Routes>
       </div>
     </Lk>

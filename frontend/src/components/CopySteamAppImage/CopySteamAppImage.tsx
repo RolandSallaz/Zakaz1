@@ -1,5 +1,4 @@
-import { ChangeEvent, ReactNode, useState } from 'react';
-import Input from '../Input/Input';
+import { ReactNode } from 'react';
 import './CopySteamAppImage.scss';
 
 interface props {

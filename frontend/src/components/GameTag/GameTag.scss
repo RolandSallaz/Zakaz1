@@ -3,7 +3,8 @@
 .GameTag {
   color: $mainColor;
   padding: 5px 10px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: $semi-transparent-background;
   border-radius: $averageBorderRadius;
   height: 28px;
+  text-wrap: nowrap;
 }

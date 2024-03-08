@@ -115,14 +115,16 @@ export default function Auth() {
               <button
                 className="auth-form__button auth-form__button_small-text"
                 onClick={handleEditEmail}
-                type="button">
+                type="button"
+              >
                 Изменить емейл
               </button>
               <button
                 className="auth-form__button auth-form__button_small-text"
                 disabled={isSendAgainButtonDisabled}
                 onClick={() => sendCodeToEmail()}
-                type="button">
+                type="button"
+              >
                 Отправить код повторно
               </button>
             </div>

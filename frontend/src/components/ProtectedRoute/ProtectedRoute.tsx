@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/redux';
 import { checkAuth } from '../../services/api';
 import { login } from '../../services/slices/appSlice';
 import { ROLES } from '../../utils/types';
@@ -11,7 +11,6 @@ interface IProtectedRoute {
 }
 
 export function ProtectedRoute({ children, adminRequire }: IProtectedRoute) {
-  const { loggedIn, user } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

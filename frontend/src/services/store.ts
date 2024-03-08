@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import appReducer from './slices/appSlice';
 import gameSlice from './slices/gameSlice';
+import tagSlice from './slices/tagSlice';
 
 export const rootReducer = combineReducers({
   app: appReducer,
-  games: gameSlice
+  games: gameSlice,
+  tags: tagSlice
 });
 
 const store = configureStore({

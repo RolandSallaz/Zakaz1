@@ -8,6 +8,7 @@
   position: relative;
   cursor: pointer;
   overflow: hidden;
+  text-decoration: none;
   &:hover {
     color: $mainColor;
   }

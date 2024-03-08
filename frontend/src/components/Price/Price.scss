@@ -4,27 +4,22 @@ $borderRadiusSize: 10px;
 
 .price {
   z-index: 3;
-  display: grid;
-  flex-direction: column;
+  display: flex;
   right: 0;
   bottom: 0;
-  width: 160px;
   height: 50px;
   position: absolute;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto; /* Одна явная строка */
-  grid-auto-flow: dense; /* Схлопывание пустых ячеек */
-  background-color: $transparent-background;
+  background-color: $semi-transparent-background;
   border-radius: $averageBorderRadius 0 0 0;
-  justify-items: center; /* Горизонтальное центрирование */
-  align-items: center; /* Вертикальное центрирование */
   &_slick {
     border-radius: 0 0 $averageBorderRadius 0;
   }
   &_order {
     position: static;
-    margin: auto 0;
+    margin-top: 20px;
+
     border-radius: $borderRadiusSize;
+    background-color: $transparent-background;
   }
   &__discount {
     $discountWidth: 80px;

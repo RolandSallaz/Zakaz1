@@ -1,7 +1,6 @@
 // @flow
-import * as React from 'react';
-import './GameTag.scss';
 import { ITag } from '../../utils/types';
+import './GameTag.scss';
 
 type Props = {
   tag: ITag;

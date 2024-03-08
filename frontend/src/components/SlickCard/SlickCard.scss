@@ -7,7 +7,6 @@
   color: $mainTextColor;
   border-radius: $averageBorderRadius;
   overflow: hidden;
-
   &__image-container {
     width: 100%;
     position: relative;
@@ -20,7 +19,7 @@
     z-index: 2;
     max-width: 209px;
     object-fit: cover;
-
+    border-radius: $averageBorderRadius;
     &:hover {
       scale: 1.05;
     }
@@ -29,6 +28,7 @@
   &__name {
     font-size: 30px;
     margin-top: 20px;
+    text-decoration: none;
   }
 
   &__container {

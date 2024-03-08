@@ -7,6 +7,7 @@ import GameLogo from '../GameLogo/GameLogo';
 import { GameTag } from '../GameTag/GameTag';
 import { Price } from '../Price/Price';
 import './GamePage.scss';
+import { getGameById } from '../../services/api';
 
 export default function GamePage() {
   const [game, setGame] = useState<IGame>();
@@ -23,10 +24,15 @@ export default function GamePage() {
   useEffect(() => {
     const findGame = games.find((item) => item.id == Number(id));
     if (findGame) {
-      setGame(findGame);
-      setImage(`${apiUrl}/${game?.logo}`);
+      setGameAndImage(findGame);
     } else {
-      navigate('/notFound');
+      getGameById(Number(id))
+        .then(setGameAndImage)
+        .catch(() => navigate('/notFound'));
+    }
+    function setGameAndImage(game: IGame) {
+      setGame(game);
+      setImage(`${apiUrl}/${game.logo}`);
     }
   }, []);
 
@@ -49,8 +55,8 @@ export default function GamePage() {
                 onMouseEnter={handleHover}
               />
             </div>
-            {game?.screenshots.map((screen) => (
-              <div className="screenshots__container">
+            {game?.screenshots.map((screen, i) => (
+              <div className="screenshots__container" key={i}>
                 <img
                   className="screenshots__element"
                   src={`${apiUrl}/${screen}`}
@@ -71,7 +77,11 @@ export default function GamePage() {
             <p className="gamePage__description">{game?.description}</p>
           </div>
           <div className="order-info">
-            <Price price={game?.price} steamPrice={game?.steamPrice} type="order" />
+            <Price price={game?.price || 0} steamPrice={game?.steamPrice || 0} type="order" />
+            <ul className="order-info__list">
+              <li className="order-info__list-item">Мгновенная доставка ✔</li>
+              <li className="order-info__list-item">Товар в наличии ✔</li>
+            </ul>
             <button className="order-info__buy-button" onClick={handlleBuyClick}>
               Купить
             </button>

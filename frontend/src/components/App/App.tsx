@@ -1,31 +1,34 @@
 import { Snackbar } from '@mui/material';
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
-import { checkAuth, getAllGames, getGameWithKeys } from '../../services/api';
-import { closeSnackBar, login } from '../../services/slices/appSlice';
+import { getAllGames, getAllTags } from '../../services/api';
+import { closeSnackBar } from '../../services/slices/appSlice';
+import { loadGames } from '../../services/slices/gameSlice';
+import { loadTags } from '../../services/slices/tagSlice';
 import Admin from '../Admin/Admin';
 import Auth from '../Auth/Auth';
 import { Footer } from '../Footer/Footer';
+import GamePage from '../GamePage/GamePage';
 import { Header } from '../Headers/Header';
 import { Lk } from '../Lk/Lk';
 import { Main } from '../Main/Main';
+import NotFound from '../NotFound/NotFound';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import './App.scss';
-import { loadGames } from '../../services/slices/gameSlice';
-import GamePage from '../GamePage/GamePage';
-import NotFound from '../NotFound/NotFound';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { handleError } = useErrorHandler();
 
   useEffect(() => {
     getAllGames()
       .then((res) => dispatch(loadGames(res)))
+      .catch(handleError);
+    getAllTags()
+      .then((tags) => dispatch(loadTags(tags)))
       .catch(handleError);
   }, []);
 

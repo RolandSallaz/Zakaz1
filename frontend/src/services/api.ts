@@ -5,8 +5,6 @@ import {
   IGame,
   IGameCreateDto,
   IGameUpdateDto,
-  IGameWithKeys,
-  IKeyDto,
   ILogin,
   IRequest,
   ITag,
@@ -77,18 +75,15 @@ export function checkAuth(): Promise<IUser> {
   return _fetch({ url: 'auth' });
 }
 
-export function addTag(tag: ITag): Promise<ITag> {
-  return _fetch({ url: 'tags', method: 'POST', body: { ...tag } });
-}
-
-export function getAllTags(): Promise<ITag[]> {
-  return _fetch({ url: 'tags' });
-}
-
 export function postImage(file: FormData): Promise<IFIle> {
   return _fetch({ url: 'files', method: 'POST', body: file });
 }
 
+// export function getKeysBySteamId(steamId: number): Promise<IKeyDto[]> {
+//   return _fetch({ url: `keys/${steamId}` });
+// }
+
+//games
 export function postGame(createGameDto: IGameCreateDto): Promise<IGame> {
   return _fetch({ url: 'games', method: 'POST', body: { ...createGameDto } });
 }
@@ -105,6 +100,28 @@ export function updateGame(game: IGameUpdateDto): Promise<IGame> {
   return _fetch({ url: `games/${game.id}`, method: 'PATCH', body: { ...game } });
 }
 
-export function getKeysBySteamId(steamId: number): Promise<IKeyDto[]> {
-  return _fetch({ url: `keys/${steamId}` });
+//tags
+export function addTag(tag: ITag): Promise<ITag> {
+  return _fetch({ url: 'tags', method: 'POST', body: { ...tag } });
+}
+
+export function getAllTags(): Promise<ITag[]> {
+  return _fetch({ url: 'tags' });
+}
+
+export function updateTag(id: number, name: string): Promise<ITag> {
+  return _fetch({
+    url: `tags/${id}`,
+    method: 'PATCH',
+    body: {
+      name
+    }
+  });
+}
+
+export function deleteTag(id: number): Promise<ITag> {
+  return _fetch({
+    url: `tags/${id}`,
+    method: 'DELETE'
+  });
 }

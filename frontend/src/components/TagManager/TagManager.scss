@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+
+.TagManager {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  &__form {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    height: 58px;
+  }
+  &__input {
+    height: 100%;
+    border: 1px solid $mainColor;
+  }
+  &__button {
+    border-radius: $averageBorderRadius;
+    border: 1px solid $mainColor;
+  }
+}
+
+.input-box__label {
+  top: -17px;
+}

@@ -1,11 +1,11 @@
-import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
+import { HTMLInputTypeAttribute } from 'react';
 import './Input.scss';
 
 interface props {
   name: string;
   type?: HTMLInputTypeAttribute;
   value: string | number;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: any) => void;
   label?: string;
   required?: boolean;
   additionalClass?: string;
