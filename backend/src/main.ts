@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { TypeOrmErrorMapperInterceptor } from './common/filters/typeormerrormapper.interceptor';
-import * as bodyParser from 'body-parser';
 
 require('dotenv').config();
 
