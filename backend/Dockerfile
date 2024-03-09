@@ -5,9 +5,6 @@ RUN npm i
 COPY . .
 RUN npm run build
 
-RUN npm run migrate:generate src/database/migrations/initMigration
-RUN npm run migrate:up
-
 FROM node:21-alpine As production
 WORKDIR /app
 
