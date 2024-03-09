@@ -7,7 +7,7 @@ export default function useErrorHandler() {
   const dispatch = useDispatch();
 
   const handleError = useCallback(
-    ({ message, statusCode }: IRequestError) => {
+    ({ message, statusCode = 502 }: IRequestError) => {
       dispatch(openSnackBar({ message: `${statusCode} ${message}`, isError: true }));
     },
     [dispatch]

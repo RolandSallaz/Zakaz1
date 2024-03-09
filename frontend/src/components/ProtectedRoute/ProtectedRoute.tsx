@@ -22,7 +22,10 @@ export function ProtectedRoute({ children, adminRequire }: IProtectedRoute) {
           return navigate('/auth');
         } else {
           setIsLoading(false);
-          return dispatch(login(userData));
+          dispatch(login(userData));
+          if (userData.role === ROLES.ADMIN) {
+            localStorage.setItem('admin', 'true');
+          }
         }
       })
       .catch(() => {

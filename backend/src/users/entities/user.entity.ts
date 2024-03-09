@@ -13,9 +13,6 @@ export class User {
   @Column({ default: 'user' })
   role: string;
 
-  @Column({ type: 'jsonb', array: true, default: [] })
-  orders: any[];
-
   @Column({ nullable: true })
   authCode: number;
 }

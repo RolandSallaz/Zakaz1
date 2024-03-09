@@ -17,6 +17,7 @@ import { Main } from '../Main/Main';
 import NotFound from '../NotFound/NotFound';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import './App.scss';
+import AdminLink from '../AdminLink/AdminLink';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
@@ -65,6 +66,7 @@ function App() {
         onClose={() => dispatch(closeSnackBar())}
         message={snackBar.message}
       />
+      {localStorage.getItem('admin') && <AdminLink />}
     </>
   );
 }

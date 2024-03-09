@@ -13,6 +13,7 @@ import SectionWithSearch from '../SectionWithSearch/SectionWithSearch';
 import { SidePanel } from '../SidePanel/SidePanel';
 import TagManager from '../TagManager/TagManager';
 import './Admin.scss';
+import SliderManager from '../SliderManager/SliderManager';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -100,6 +101,7 @@ export default function Admin() {
             }
           />
           <Route path="tags" element={<TagManager />} />
+          <Route path="slider" element={<SliderManager />} />
         </Routes>
       </div>
     </Lk>

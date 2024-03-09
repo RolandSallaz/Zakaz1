@@ -11,6 +11,7 @@ import { GamesModule } from './games/games.module';
 import { KeysModule } from './keys/keys.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
+import { SliderModule } from './slider/slider.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { UsersModule } from './users/users.module';
       password: process.env.POSTGRES_PASSWORD || 'postgres',
       database: process.env.POSTGRES_DATABASE || 'postgres',
       entities: [__dirname + '/**/*.entity{.js, .ts}'],
-      synchronize: true,
+      synchronize: false,
       // ssl: true,
     }),
 
@@ -36,6 +37,7 @@ import { UsersModule } from './users/users.module';
     EmailModule,
     AuthModule,
     KeysModule,
+    SliderModule,
   ],
   controllers: [AppController, FilesController],
 })
