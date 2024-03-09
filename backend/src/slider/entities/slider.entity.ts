@@ -1,6 +1,7 @@
 import { Game } from '@/games/entities/game.entity';
 import {
   Entity,
+  JoinColumn,
   JoinTable,
   OneToMany,
   OneToOne,
@@ -12,7 +13,7 @@ export class Slider {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Game, (game) => game.id)
-  @JoinTable()
+  @OneToOne(() => Game)
+  @JoinColumn()
   game: Game;
 }

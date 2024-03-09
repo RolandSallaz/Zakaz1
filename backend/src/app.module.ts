@@ -27,7 +27,7 @@ import { SliderModule } from './slider/slider.module';
       password: process.env.POSTGRES_PASSWORD || 'postgres',
       database: process.env.POSTGRES_DATABASE || 'postgres',
       entities: [__dirname + '/**/*.entity{.js, .ts}'],
-      synchronize: false,
+      synchronize: true,
       // ssl: true,
     }),
 

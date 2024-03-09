@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { SliderService } from './slider.service';
 import { CreateSliderDto } from './dto/create-slider.dto';
@@ -28,13 +29,7 @@ export class SliderController {
     return this.sliderService.findAll();
   }
 
-  @Get(':id')
-  @UseGuards(AdminRoleAuthGuard)
-  findOne(@Param('id') id: string) {
-    return this.sliderService.findOne(+id);
-  }
-
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(AdminRoleAuthGuard)
   update(@Param('id') id: string, @Body() updateSliderDto: UpdateSliderDto) {
     return this.sliderService.update(+id, updateSliderDto);
