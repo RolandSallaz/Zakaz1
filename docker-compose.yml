@@ -2,7 +2,7 @@ version: "3"
 
 services:
   api:
-    container_name: "zakaz"
+    container_name: "backend"
     build:
       context: backend
       dockerfile: Dockerfile
@@ -22,7 +22,7 @@ services:
       - "5432:5432"
 
   frontend-nginx:
-    container_name: "frontend-nginx"
+    container_name: "frontend"
     env_file: .env
     build:
       context: frontend
