@@ -23,7 +23,8 @@ export function GameCard({ game, customLink }: Props) {
       to={customLink || `/games/${game.id}`}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
-      className={'gameCard'}>
+      className={'gameCard'}
+    >
       <div className={'gameCard__image-container'}>
         <img
           className={`gameCard__image ${isHovered && 'gameCard__image_hovered'}`}

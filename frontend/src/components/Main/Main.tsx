@@ -11,7 +11,7 @@ export function Main() {
   const [selectedTag, setSelectedTag] = useState<string | null>('');
   const { games } = useAppSelector((state) => state.games);
   const { tags } = useAppSelector((state) => state.tags);
-
+  const { sliders } = useAppSelector((state) => state.sliders);
   const usedTags = tags.filter((tag) =>
     games.some((game) => game.tags.some((gameTag) => gameTag.name === tag.name))
   );
@@ -36,10 +36,10 @@ export function Main() {
     <main className={'main'}>
       <section>
         <section className="slick">
-          {games && (
+          {sliders.length >= 2 && (
             <Slider {...settings}>
-              {games.map((game) => (
-                <SlickCard key={game.id} game={game} />
+              {sliders.map((item) => (
+                <SlickCard key={item.id} game={item.game} />
               ))}
             </Slider>
           )}

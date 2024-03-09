@@ -91,7 +91,8 @@ export default function Admin() {
                         ))}
                         options={games.map((item) => item.name)}
                       />
-                    }></Route>
+                    }
+                  ></Route>
                   <Route
                     path="edit/:id"
                     element={<GameForm onSubmit={handleChangeGame} isEditing />}

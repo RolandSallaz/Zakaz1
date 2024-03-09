@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
-import { getAllGames, getAllTags } from '../../services/api';
+import { getAllGames, getAllSliders, getAllTags } from '../../services/api';
 import { closeSnackBar } from '../../services/slices/appSlice';
 import { loadGames } from '../../services/slices/gameSlice';
 import { loadTags } from '../../services/slices/tagSlice';
@@ -18,6 +18,7 @@ import NotFound from '../NotFound/NotFound';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import './App.scss';
 import AdminLink from '../AdminLink/AdminLink';
+import { loadSliders } from '../../services/slices/sliderSlice';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
@@ -30,6 +31,9 @@ function App() {
       .catch(handleError);
     getAllTags()
       .then((tags) => dispatch(loadTags(tags)))
+      .catch(handleError);
+    getAllSliders()
+      .then((res) => dispatch(loadSliders(res)))
       .catch(handleError);
   }, []);
 

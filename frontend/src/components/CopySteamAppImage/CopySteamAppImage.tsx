@@ -20,7 +20,8 @@ export default function CopySteamAppImage({ appId, children }: props) {
         type="button"
         className="CopySteamAppImage__button"
         onClick={onButtonClick}
-        disabled={!appId}>
+        disabled={!appId}
+      >
         Открыть изображение со стима в новой вкладке
       </button>
     </div>

@@ -7,7 +7,9 @@ import {
   IGameUpdateDto,
   ILogin,
   IRequest,
+  ISlider,
   ITag,
+  IUpdateSliderDto,
   IUser
 } from '../utils/types';
 
@@ -124,4 +126,22 @@ export function deleteTag(id: number): Promise<ITag> {
     url: `tags/${id}`,
     method: 'DELETE'
   });
+}
+
+//slider
+
+export function getAllSliders(): Promise<ISlider[]> {
+  return _fetch({ url: 'slider' });
+}
+
+export function addSlider(gameId: number): Promise<ISlider> {
+  return _fetch({ url: 'slider', method: 'POST', body: { gameId } });
+}
+
+export function updateSlider({ gameId, sliderId }: IUpdateSliderDto): Promise<ISlider> {
+  return _fetch({ url: `slider/${sliderId}`, method: 'PUT', body: { gameId } });
+}
+
+export function deleteSlider(sliderId: number): Promise<ISlider> {
+  return _fetch({ url: `slider/${sliderId}`, method: 'DELETE' });
 }

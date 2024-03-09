@@ -75,3 +75,13 @@ export interface IGameCreateDto extends Omit<IGame, 'id'> {}
 export interface IGameUpdateDto extends IGameCreateDto {
   id: number;
 }
+
+export interface ISlider {
+  id: number;
+  game: IGame;
+}
+
+export interface IUpdateSliderDto {
+  gameId: number;
+  sliderId: number;
+}
