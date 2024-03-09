@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import { checkAuth } from '../../services/api';
@@ -11,6 +11,7 @@ interface IProtectedRoute {
 }
 
 export function ProtectedRoute({ children, adminRequire }: IProtectedRoute) {
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -20,6 +21,7 @@ export function ProtectedRoute({ children, adminRequire }: IProtectedRoute) {
         if (adminRequire && userData.role !== ROLES.ADMIN) {
           return navigate('/auth');
         } else {
+          setIsLoading(false);
           return dispatch(login(userData));
         }
       })
@@ -28,5 +30,5 @@ export function ProtectedRoute({ children, adminRequire }: IProtectedRoute) {
       });
   }, []);
 
-  return <>{children}</>;
+  return <>{isLoading ? <></> : children}</>;
 }

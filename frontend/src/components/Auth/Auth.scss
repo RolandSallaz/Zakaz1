@@ -1,8 +1,11 @@
-@import "../../variables.scss";
+@import '../../variables.scss';
 .auth {
   margin-top: 100px;
   align-items: center;
   color: $mainColor;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   &-form {
     width: 350px;
     display: flex;

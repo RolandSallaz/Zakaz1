@@ -39,10 +39,6 @@ export default function Admin() {
       .catch(handleError);
   }
 
-  function handleClickOnGame(id: number) {
-    navigate(`games/edit/${id}`);
-  }
-
   function handleSelectEditGame(name: string) {
     const game = games.find((item) => item.name == name);
     navigate(`games/edit/${game?.id}`);
@@ -86,7 +82,11 @@ export default function Admin() {
                       <SectionWithSearch
                         onSelectSearch={handleSelectEditGame}
                         children={games.map((item) => (
-                          <GameCard game={item} key={item.id} onCardClick={handleClickOnGame} />
+                          <GameCard
+                            game={item}
+                            key={item.id}
+                            customLink={`/admin/games/edit/${item.id}`}
+                          />
                         ))}
                         options={games.map((item) => item.name)}
                       />

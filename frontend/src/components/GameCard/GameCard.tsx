@@ -8,27 +8,22 @@ import './GameCard.scss';
 
 type Props = {
   game: IGame;
-  onCardClick?: (id: number) => void;
+  customLink?: string;
 };
 
-export function GameCard({ game, onCardClick }: Props) {
+export function GameCard({ game, customLink }: Props) {
   const [isHovered, setIsHovered] = useState<boolean>(false); //Состояние карточки, наведен ли на неё курсор
   function handleHover(e: SyntheticEvent) {
     //Функция, которая срабатывает при наведении и убирание мышки с карточки
     e.type == 'mouseenter' ? setIsHovered(true) : setIsHovered(false);
   }
-  function handleClick() {
-    if (onCardClick) {
-      onCardClick(game.id);
-    }
-  }
+
   return (
     <Link
-      to={`/games/${game.id}`}
+      to={customLink || `/games/${game.id}`}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
-      className={'gameCard'}
-      onClick={handleClick}>
+      className={'gameCard'}>
       <div className={'gameCard__image-container'}>
         <img
           className={`gameCard__image ${isHovered && 'gameCard__image_hovered'}`}
