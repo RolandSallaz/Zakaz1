@@ -12,6 +12,7 @@ import { KeysModule } from './keys/keys.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 import { SliderModule } from './slider/slider.module';
+import { GameselectionModule } from './gameselection/gameselection.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { SliderModule } from './slider/slider.module';
     AuthModule,
     KeysModule,
     SliderModule,
+    GameselectionModule,
   ],
   controllers: [AppController, FilesController],
 })
