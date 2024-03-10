@@ -3,12 +3,14 @@ import appSlice from './slices/appSlice';
 import gameSlice from './slices/gameSlice';
 import tagSlice from './slices/tagSlice';
 import sliderSlice from './slices/sliderSlice';
+import gameSelectionSlice from './slices/gameSelectionSlice';
 
 export const rootReducer = combineReducers({
   app: appSlice,
   games: gameSlice,
   tags: tagSlice,
-  sliders: sliderSlice
+  sliders: sliderSlice,
+  gameSelections: gameSelectionSlice
 });
 
 const store = configureStore({

@@ -12,10 +12,10 @@ export function Main() {
   const { games } = useAppSelector((state) => state.games);
   const { tags } = useAppSelector((state) => state.tags);
   const { sliders } = useAppSelector((state) => state.sliders);
+  const { gameSelections } = useAppSelector((state) => state.gameSelections);
   const usedTags = tags.filter((tag) =>
     games.some((game) => game.tags.some((gameTag) => gameTag.name === tag.name))
   );
-
   const options = usedTags.map((tag) => tag.name);
   const settings = {
     dots: true,
@@ -24,7 +24,7 @@ export function Main() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000
+    autoplaySpeed: 5000
   };
 
   const filteredGamesWithTag = games.filter((game) =>
@@ -65,6 +65,21 @@ export function Main() {
           </label> */}
         </SidePanel>
       </div>
+      {gameSelections.length > 0 && (
+        <div>
+          <h2 className="main__heading">Наши подборки:</h2>
+          {gameSelections.map((item) => (
+            <div key={item.id}>
+              <h3 className="main__heading main__heading_subheading">{item.name}</h3>
+              <section className={'cards'}>
+                {item.games.map((game) => (
+                  <GameCard game={game} key={game.id} />
+                ))}
+              </section>
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }

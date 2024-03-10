@@ -10,7 +10,7 @@
     border: 1px solid $mainColor;
   }
   &__warning {
-    color: red;
+    color: $mainColor;
     margin: 20px 0;
   }
   &__list {
@@ -19,9 +19,13 @@
     display: flex;
     gap: 10px;
     flex-direction: column;
+    &-item {
+      display: flex;
+      gap: 20px;
+    }
   }
   &__form {
     display: flex;
-    gap: 10px;
+    gap: 20px;
   }
 }

@@ -4,6 +4,9 @@ import {
   IFIle,
   IGame,
   IGameCreateDto,
+  IGameSelection,
+  IGameSelectionDto,
+  IGameSelectionUpdateDto,
   IGameUpdateDto,
   ILogin,
   IRequest,
@@ -144,4 +147,26 @@ export function updateSlider({ gameId, sliderId }: IUpdateSliderDto): Promise<IS
 
 export function deleteSlider(sliderId: number): Promise<ISlider> {
   return _fetch({ url: `slider/${sliderId}`, method: 'DELETE' });
+}
+
+//game selection
+
+export function getAllGameSelections(): Promise<IGameSelection[]> {
+  return _fetch({ url: 'gameselections' });
+}
+
+export function addGameSelection({ name, games }: IGameSelectionDto): Promise<IGameSelection> {
+  return _fetch({ url: 'gameselections', method: 'POST', body: { name, games } });
+}
+
+export function deleteGameSelection(id: number): Promise<IGameSelection> {
+  return _fetch({ url: `gameselections/${id}`, method: 'DELETE' });
+}
+
+export function updateGameSelection({
+  id,
+  name,
+  games
+}: IGameSelectionUpdateDto): Promise<IGameSelection> {
+  return _fetch({ url: `gameselections/${id}`, method: 'PATCH', body: { name, games } });
 }

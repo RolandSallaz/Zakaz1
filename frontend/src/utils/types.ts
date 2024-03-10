@@ -85,3 +85,18 @@ export interface IUpdateSliderDto {
   gameId: number;
   sliderId: number;
 }
+
+export interface IGameSelectionDto {
+  name: string;
+  games: number[];
+}
+
+export interface IGameSelectionUpdateDto extends IGameSelectionDto {
+  id: number;
+}
+
+export interface IGameSelection {
+  id: number;
+  name: string;
+  games: IGame[];
+}

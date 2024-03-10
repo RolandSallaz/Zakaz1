@@ -7,6 +7,15 @@
     gap: 10px;
     flex-grow: 1;
   }
+  &__heading {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+    color: $mainColor;
+    &_subheading {
+      font-size: 25px;
+    }
+  }
 }
 
 .cards {

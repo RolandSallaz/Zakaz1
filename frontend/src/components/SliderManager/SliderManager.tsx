@@ -70,18 +70,20 @@ export default function SliderManager() {
             </button>
           </li>
         ))}
+        <li className="SliderManager__list-item">
+          <form className="SliderManager__form" onSubmit={handleAddSliderSubmit}>
+            <select name="newSlider" onChange={handleChangeSelect} required value={newSliderGameId}>
+              <option value="">Выберите игру</option>
+              {games.map((game) => (
+                <option key={game.id} value={game.id}>
+                  {game.name}
+                </option>
+              ))}
+            </select>
+            <button className="SliderManager__button">Добавить слайдер</button>
+          </form>
+        </li>
       </ul>
-      <form className="" onSubmit={handleAddSliderSubmit}>
-        <select name="newSlider" onChange={handleChangeSelect} required value={newSliderGameId}>
-          <option value="">Выберите игру</option>
-          {games.map((game) => (
-            <option key={game.id} value={game.id}>
-              {game.name}
-            </option>
-          ))}
-        </select>
-        <button className="SliderManager__button">Добавить слайдер</button>
-      </form>
     </section>
   );
 }
