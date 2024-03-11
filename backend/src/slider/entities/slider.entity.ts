@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -13,7 +14,7 @@ export class Slider {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Game)
-  @JoinColumn()
+  @ManyToMany(() => Game, (game) => game.id)
+  @JoinTable()
   game: Game;
 }

@@ -27,7 +27,6 @@ export class GameselectionService {
       name: createGameselectionDto.name,
       games,
     });
-
     await this.gameselectionRepository.save(gameSelection);
 
     return gameSelection;

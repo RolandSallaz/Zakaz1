@@ -11,33 +11,9 @@ export class CreateGameDto {
   @IsNumber()
   steamId: number;
 
-  @IsString()
-  name: string;
-
-  @IsString()
-  description: string;
-
-  @IsString()
-  logo: string;
-
-  @IsArray()
-  screenshots: string[];
-
   @IsArray()
   tags: [{ name: string }];
 
   @IsNumber()
-  price: number;
-
-  @IsNumber()
-  steamPrice: number;
-
-  @IsBoolean()
-  enabled?: boolean;
-
-  @IsString()
-  buyLink: string;
-
-  // @IsArray()
-  // newKeys?: string[];
+  digiId: number;
 }

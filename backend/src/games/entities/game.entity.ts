@@ -26,11 +26,11 @@ export class Game {
   @Column()
   price: number;
 
-  @Column({ default: 0 })
-  steamPrice: number;
+  @Column({ default: '' })
+  steamPrice: string;
 
   @Column()
-  buyLink: string;
+  digiId: number;
 
   @Column()
   logo: string;
