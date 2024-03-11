@@ -76,7 +76,7 @@ export default function GamePage() {
             <ul className="order-info__list">
               <li className="order-info__list-item">Мгновенная доставка ✔</li>
               <li className="order-info__list-item">Товар в наличии ✔</li>
-              {game?.steamPrice.includes('RUB') ? (
+              {game?.steamPrice.includes('pуб.') ? (
                 <li className="order-info__list-item">Игра доступна в РФ и РБ ✔</li>
               ) : (
                 <li className="order-info__list-item">Игра недоступна в РФ и РБ ❌</li>

@@ -38,7 +38,7 @@ export function Main() {
         <section className="slick">
           {sliders.length >= 2 && (
             <Slider {...settings}>
-              {sliders.map((item) => item.game && <SlickCard key={item.id} game={item.game} />)}
+              {sliders.map((item) => item.game.id && <SlickCard key={item.id} game={item.game} />)}
             </Slider>
           )}
         </section>
