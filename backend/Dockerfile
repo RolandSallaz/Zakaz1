@@ -4,6 +4,9 @@ COPY package*.json ./
 RUN npm i
 COPY . .
 RUN npm run build
+CMD npm run migration:generate -n initMigration
+CMD npm run migration:run
+
 
 FROM node:21-alpine As production
 WORKDIR /app
