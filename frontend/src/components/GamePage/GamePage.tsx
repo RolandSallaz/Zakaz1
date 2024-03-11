@@ -1,13 +1,12 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
-import { apiUrl } from '../../utils/config';
+import { getGameById } from '../../services/api';
 import { IGame } from '../../utils/types';
 import GameLogo from '../GameLogo/GameLogo';
 import { GameTag } from '../GameTag/GameTag';
 import { Price } from '../Price/Price';
 import './GamePage.scss';
-import { getGameById } from '../../services/api';
 
 export default function GamePage() {
   const [game, setGame] = useState<IGame>();
@@ -32,13 +31,9 @@ export default function GamePage() {
     }
     function setGameAndImage(game: IGame) {
       setGame(game);
-      setImage(`${apiUrl}/${game.logo}`);
+      setImage(game.logo);
     }
   }, []);
-
-  function handlleBuyClick() {
-    window.open(game?.buyLink)?.focus();
-  }
 
   return (
     <main className="main gamePage">
@@ -49,17 +44,13 @@ export default function GamePage() {
         <div className="gamePage__container">
           <div className="screenshots">
             <div className="screenshots__container">
-              <img
-                className="screenshots__element"
-                src={`${apiUrl}/${game?.logo}`}
-                onMouseEnter={handleHover}
-              />
+              <img className="screenshots__element" src={game?.logo} onMouseEnter={handleHover} />
             </div>
-            {game?.screenshots.map((screen, i) => (
+            {game?.screenshots?.map((screen, i) => (
               <div className="screenshots__container" key={i}>
                 <img
                   className="screenshots__element"
-                  src={`${apiUrl}/${screen}`}
+                  src={screen}
                   key={screen}
                   onMouseEnter={handleHover}
                 />
@@ -74,17 +65,31 @@ export default function GamePage() {
           </div>
           <div className="gamePage__info">
             <h2 className="gamePage__game-name">{game?.name}</h2>
-            <p className="gamePage__description">{game?.description}</p>
+            <p
+              className="gamePage__description"
+              dangerouslySetInnerHTML={{
+                __html: game?.description ? game.description.split('</delivery>')[0] : ''
+              }}></p>
           </div>
           <div className="order-info">
-            <Price price={game?.price || 0} steamPrice={game?.steamPrice || 0} type="order" />
+            <Price price={game?.price || 0} steamPrice={game?.steamPrice || ''} type="order" />
             <ul className="order-info__list">
               <li className="order-info__list-item">Мгновенная доставка ✔</li>
               <li className="order-info__list-item">Товар в наличии ✔</li>
+              {game?.steamPrice.includes('RUB') ? (
+                <li className="order-info__list-item">Игра доступна в РФ и РБ ✔</li>
+              ) : (
+                <li className="order-info__list-item">Игра недоступна в РФ и РБ ❌</li>
+              )}
             </ul>
-            <button className="order-info__buy-button" onClick={handlleBuyClick}>
-              Купить
-            </button>
+            <form id="digiselller_form" action="https://oplata.info/asp2/pay.asp" method="post">
+              <input type="hidden" name="id_d" value={game?.digiId} />
+              <input type="hidden" name="lang" value="ru-RU" />
+              <input type="hidden" name="failpage" value={window.location.href} />
+              <button type="submit" className="order-info__buy-button">
+                Купить
+              </button>
+            </form>
           </div>
         </div>
       </section>

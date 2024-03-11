@@ -2,7 +2,7 @@ import './Price.scss';
 
 type Props = {
   price: number;
-  steamPrice: number;
+  steamPrice: string;
   type?: 'default' | 'slick' | 'order';
 };
 

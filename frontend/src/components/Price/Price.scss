@@ -57,6 +57,10 @@ $borderRadiusSize: 10px;
       color: $mainColor;
       font-size: 20px;
       text-decoration: line-through;
+      text-wrap: nowrap;
+      &::after {
+        content: '';
+      }
     }
   }
 }

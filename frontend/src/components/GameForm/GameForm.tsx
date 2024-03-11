@@ -4,12 +4,9 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import useFormValidator from '../../hooks/useFormValidator';
-import { addTag, getAllTags, getGameById, postImage } from '../../services/api';
+import { addTag, getAllTags, getGameById } from '../../services/api';
 import { openSnackBar } from '../../services/slices/appSlice';
-import { apiUrl } from '../../utils/config';
 import { IGame, IRequestError, ITag } from '../../utils/types';
-import CopySteamAppImage from '../CopySteamAppImage/CopySteamAppImage';
-import GameLogo from '../GameLogo/GameLogo';
 import { GameTag } from '../GameTag/GameTag';
 import Input from '../Input/Input';
 import './GameForm.scss';
@@ -26,42 +23,18 @@ interface IProps {
   onSubmit: (arg: any) => void;
 }
 interface formValues {
-  name: string;
   steamId: number;
-  description: string;
-  price: number;
-  steamPrice: number;
-  discount: number;
-  buyLink: string;
-}
-
-interface ImagesDto {
-  gameLogo: string;
-  screenshot1: string;
-  screenshot2: string;
-  screenshot3: string;
-  screenshot4: string;
+  digiId: number;
 }
 
 export default function GameForm({ isEditing, onSubmit }: IProps) {
   const [tags, setTags] = useState<ITag[]>([]);
   // const [jsonKeys, SetJsonKeys] = useState<IKeyDto[]>([]);
   const [optionTags, setOptionTags] = useState<ITag[]>([]);
-  const [gameImages, setGameImages] = useState<ImagesDto>({
-    gameLogo: '',
-    screenshot1: '',
-    screenshot2: '',
-    screenshot3: '',
-    screenshot4: ''
-  });
+
   const { values, handleChange, mutateValue } = useFormValidator<formValues>({
-    name: '',
     steamId: 0,
-    description: '',
-    price: 0,
-    discount: 0,
-    buyLink: '',
-    steamPrice: 0
+    digiId: 0
   });
   const [isGameActive, setIsGameActive] = useState<boolean>(true);
   const { handleError } = useErrorHandler();
@@ -108,16 +81,16 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
     tagManager(tag, TAG_ACTION.remove);
   }
 
-  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const formData = new FormData();
+  // const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const formData = new FormData();
 
-    formData.append('file', e.target.files![0]);
-    postImage(formData)
-      .then((image) => {
-        setGameImages({ ...gameImages, [e.target.name]: image.path });
-      })
-      .catch(handleError);
-  };
+  //   formData.append('file', e.target.files![0]);
+  //   postImage(formData)
+  //     .then((image) => {
+  //       setGameImages({ ...gameImages, [e.target.name]: image.path });
+  //     })
+  //     .catch(handleError);
+  // };
 
   function handleSwitchChange(e: ChangeEvent<HTMLInputElement>) {
     setIsGameActive(e.target.checked);
@@ -133,20 +106,17 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
         setTags(game.tags); // установим теги
 
         // установим скрины
-        setGameImages((prev) => ({ ...prev, gameLogo: game.logo }));
-        game.screenshots.forEach((screen, index) =>
-          setGameImages((prev) => ({ ...prev, [`screenshot${index + 1}`]: screen }))
-        );
+        // setGameImages((prev) => ({ ...prev, gameLogo: game.logo }));
+        // game.screenshots.forEach((screen, index) =>
+        //   setGameImages((prev) => ({ ...prev, [`screenshot${index + 1}`]: screen }))
+        // );
         setIsGameActive(game.enabled);
 
         //установка данных в инпуты
-        mutateValue({ valueName: 'name', value: game.name });
+        // mutateValue({ valueName: 'name', value: game.name });
+        // mutateValue({ valueName: 'steamId', value: game.steamId });
         mutateValue({ valueName: 'steamId', value: game.steamId });
-        mutateValue({ valueName: 'description', value: game.description });
-        mutateValue({ valueName: 'price', value: game.price });
-        mutateValue({ valueName: 'discount', value: game.discount });
-        mutateValue({ valueName: 'steamPrice', value: game.steamPrice });
-        mutateValue({ valueName: 'buyLink', value: game.buyLink });
+        mutateValue({ valueName: 'digiId', value: game.digiId });
         //установка ключей в инпут
         // mutateValue({
         //   valueName: 'keys',
@@ -171,20 +141,16 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
     // const keysToRemove = existingKeys.filter((key) => !inputKeys.includes(key));
     const gameDto = {
       id,
-      name: values.name,
+      // name: values.name,
       steamId: Number(values.steamId),
-      description: values.description,
-      price: Number(values.price),
-      steamPrice: Number(values.steamPrice),
-      buyLink: values.buyLink,
-      logo: gameImages.gameLogo,
-      screenshots: [
-        gameImages.screenshot1,
-        gameImages.screenshot2,
-        gameImages.screenshot3,
-        gameImages.screenshot4
-      ],
-      discount: Number(values.discount),
+      digiId: Number(values.digiId),
+      // logo: gameImages.gameLogo,
+      // screenshots: [
+      //   gameImages.screenshot1,
+      //   gameImages.screenshot2,
+      //   gameImages.screenshot3,
+      //   gameImages.screenshot4
+      // ],
       enabled: isGameActive,
       // newKeys,
       // keysToRemove,
@@ -197,66 +163,31 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
     <form className="GameForm" onSubmit={handleFormSubmit}>
       <h2 className="GameForm__heading">Основное лого игры</h2>
       <section className="GameForm__info GameForm__info_main">
-        <label className="GameForm__image-file GameForm__image-file_logo">
-          <input
-            name="gameLogo"
-            type="file"
-            accept="image/*"
-            className="GameForm__file"
-            onChange={handleFileInputChange}
-          />
-          {gameImages.gameLogo && (
-            <GameLogo src={`${apiUrl}/${gameImages.gameLogo}`} additionClass="GameForm__img" />
-          )}
-        </label>
-
         <div className="GameForm__container">
-          <CopySteamAppImage appId={values.steamId}>
-            <Input
-              name="steamId"
-              additionalClass="GameForm__input"
-              onChange={handleChange}
-              required
-              value={values.steamId}
-              label="steamId"
-            />
-          </CopySteamAppImage>
+          <label className={'GameForm__switch'}>
+            Доступно для продажи
+            <Switch name="gameEnabled" defaultChecked={true} onChange={handleSwitchChange} />
+          </label>
 
           <Input
-            name="name"
-            additionalClass="GameForm__input GameForm__input_name"
+            name="steamId"
+            additionalClass="GameForm__input"
             onChange={handleChange}
             required
-            value={values.name}
-            label="Имя"
+            value={values.steamId}
+            label="steamId"
           />
 
-          <h2 className="GameForm__heading">Скриншоты</h2>
-          <div className="GameForm__screenshots-container">
-            {[1, 2, 3, 4].map((index) => (
-              <label key={index} className="GameForm__image-file">
-                <input
-                  name={`screenshot${index}`}
-                  type="file"
-                  accept="image/*"
-                  className="GameForm__file"
-                  onChange={handleFileInputChange}
-                />
-                {gameImages[`screenshot${index}` as keyof ImagesDto] && (
-                  <img
-                    className="GameForm__img"
-                    src={`${apiUrl}/${gameImages[`screenshot${index}` as keyof ImagesDto]}`}
-                    alt={`Screenshot ${index}`}
-                  />
-                )}
-              </label>
-            ))}
-          </div>
+          <Input
+            name="digiId"
+            additionalClass="GameForm__input"
+            onChange={handleChange}
+            required
+            value={values.digiId}
+            label="Id товара на digiseller"
+            type="number"
+          />
         </div>
-        <label className={'GameForm__switch'}>
-          Доступно для продажи
-          <Switch name="gameEnabled" defaultChecked={true} onChange={handleSwitchChange} />
-        </label>
       </section>
 
       <section className="GameForm__info GameForm__info_addition">
@@ -293,41 +224,6 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
           </div>
         </div>
         <div className="GameForm__input-container">
-          <Input
-            name="price"
-            additionalClass="GameForm__input"
-            onChange={handleChange}
-            required
-            value={values.price}
-            label="Цена"
-            type="number"
-          />
-          <Input
-            name="steamPrice"
-            additionalClass="GameForm__input"
-            onChange={handleChange}
-            required
-            value={values.steamPrice}
-            label="Цена в steam"
-            type="number"
-          />
-          <Input
-            name="discount"
-            additionalClass="GameForm__input"
-            onChange={handleChange}
-            required
-            value={values.discount}
-            label="Скидка %"
-            type="number"
-          />
-          <Input
-            name="buyLink"
-            additionalClass="GameForm__input"
-            onChange={handleChange}
-            required
-            value={values.buyLink}
-            label="Ссылка на покупку"
-          />
           {/* <Input
             name="keys"
             additionalClass="GameForm__input"
@@ -338,15 +234,6 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
             isTextArea
             countRow
           /> */}
-          <Input
-            name="description"
-            additionalClass="GameForm__input GameForm__input_textArea"
-            onChange={handleChange}
-            required
-            value={values.description}
-            label="Описание"
-            isTextArea
-          />
         </div>
       </section>
       <button className="GameForm__submit" type="submit">

@@ -1,7 +1,6 @@
 // @flow
 import { SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { apiUrl } from '../../utils/config';
 import { IGame } from '../../utils/types';
 import { Price } from '../Price/Price';
 import './GameCard.scss';
@@ -23,12 +22,11 @@ export function GameCard({ game, customLink }: Props) {
       to={customLink || `/games/${game.id}`}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
-      className={'gameCard'}
-    >
+      className={'gameCard'}>
       <div className={'gameCard__image-container'}>
         <img
           className={`gameCard__image ${isHovered && 'gameCard__image_hovered'}`}
-          src={`${apiUrl}/${game.logo}`}
+          src={game.logo}
           alt={'Изображение игры'}
         />
         <Price price={game.price} steamPrice={game.steamPrice} />

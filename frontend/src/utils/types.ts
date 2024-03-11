@@ -57,17 +57,16 @@ export interface IFIle {
 
 export interface IGame {
   id: number;
+  digiId: number;
   steamId: number;
   name: string;
   description: string;
   logo: string;
   screenshots: string[];
   price: number;
-  discount: number;
   enabled: boolean;
   tags: ITag[];
-  steamPrice: number;
-  buyLink: string;
+  steamPrice: string;
 }
 
 export interface IGameCreateDto extends Omit<IGame, 'id'> {}
