@@ -32,7 +32,7 @@ export function Header() {
     <header className={'header'}>
       <div className="header__container">
         <Link className="link header__link header__link_logo" to="/">
-          STEAMLAND
+          {import.meta.env.VITE_SHOP_NAME || 'названием магазина'}
         </Link>
         <input className={'search-input'} placeholder={`Найти среди ${games.length} игр`} />
         {/* <IconButton
@@ -46,8 +46,7 @@ export function Header() {
         <a
           className="link header__link"
           href="https://digiseller.market/info/?lang=ru-RU"
-          target="_blank"
-        >
+          target="_blank">
           Мои покупки
         </a>
         {/* <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>

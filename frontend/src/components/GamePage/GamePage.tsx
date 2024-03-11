@@ -35,6 +35,10 @@ export default function GamePage() {
     }
   }, []);
 
+  function rofl() {
+    window.location.href = `https://oplata.info/asp2/pay_options.asp?id_d=${id}&id_po=${import.meta.env.VITE_ID_PO}&ai=&ain=&air=&curr=API_13603_RUB&_subcurr=&lang=ru-RU&_ow=0&_ids_shop=${import.meta.env.VITE_DIGI_SHOP}&xml=&failpage=http%3A%2F%2F193%2E124%2E113%2E104%2Fgames%2F3949531`;
+  }
+
   return (
     <main className="main gamePage">
       <Link className="link" to={'/'}>
@@ -82,14 +86,9 @@ export default function GamePage() {
                 <li className="order-info__list-item">Игра недоступна в РФ и РБ ❌</li>
               )}
             </ul>
-            <form id="digiselller_form" action="https://oplata.info/asp2/pay.asp" method="post">
-              <input type="hidden" name="id_d" value={game?.digiId} />
-              <input type="hidden" name="lang" value="ru-RU" />
-              <input type="hidden" name="failpage" value={window.location.href} />
-              <button type="submit" className="order-info__buy-button">
-                Купить
-              </button>
-            </form>
+            <button type="button" className="order-info__buy-button" onClick={rofl}>
+              Купить
+            </button>
           </div>
         </div>
       </section>
