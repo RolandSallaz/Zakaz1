@@ -21,7 +21,7 @@ export default function GamePage() {
     setImage(src);
   }
   useEffect(() => {
-    const findGame = games.find((item) => item.id == Number(id));
+    const findGame = games.find((item) => item.digiId == Number(id));
     if (findGame) {
       setGameAndImage(findGame);
     } else {

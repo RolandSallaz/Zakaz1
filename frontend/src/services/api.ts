@@ -97,8 +97,8 @@ export function getAllGames(): Promise<IGame[]> {
   return _fetch({ url: 'games' });
 }
 
-export function getGameById(gameId: number): Promise<IGame> {
-  return _fetch({ url: `games/${gameId}` });
+export function getGameById(digiId: number): Promise<IGame> {
+  return _fetch({ url: `games/${digiId}` });
 }
 
 export function updateGame(game: IGameUpdateDto): Promise<IGame> {

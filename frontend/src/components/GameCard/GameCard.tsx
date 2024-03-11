@@ -19,7 +19,7 @@ export function GameCard({ game, customLink }: Props) {
 
   return (
     <Link
-      to={customLink || `/games/${game.id}`}
+      to={customLink || `/games/${game.digiId}`}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
       className={'gameCard'}>
