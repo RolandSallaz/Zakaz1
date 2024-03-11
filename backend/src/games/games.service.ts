@@ -85,7 +85,7 @@ export class GamesService {
 
   async getGame(id: number): Promise<Game> {
     return await this.gameRepository.findOneOrFail({
-      where: { id: id },
+      where: { digiId: id },
       relations: ['tags'],
     });
   }
