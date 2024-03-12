@@ -13,6 +13,7 @@ import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 import { SliderModule } from './slider/slider.module';
 import { GameselectionModule } from './gameselection/gameselection.module';
+import { DigiModule } from './digi/digi.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { GameselectionModule } from './gameselection/gameselection.module';
     KeysModule,
     SliderModule,
     GameselectionModule,
+    DigiModule,
   ],
   controllers: [AppController, FilesController],
 })

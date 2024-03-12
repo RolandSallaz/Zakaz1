@@ -90,42 +90,52 @@ export class GamesService {
     });
   }
 
+  async getLastBuyedGames(productIds: number[]): Promise<Game[]> {
+    return await this.gameRepository
+      .createQueryBuilder('game')
+      .where('game.digiId IN (:...productIds)', { productIds })
+      .take(10)
+      .getMany();
+  }
+
   async updateGame(id: number, updateGameDto: UpdateGameDto) {
     const game = await this.gameRepository.findOneOrFail({ where: { id: id } });
 
-    const newGame = await this.gameRepository.save({
-      ...game,
-      ...updateGameDto,
-      tags: await Promise.all(
-        updateGameDto.tags.map(
-          async (tag) => await this.tagsService.findOneByName(tag),
-        ),
+    game.tags = await Promise.all(
+      updateGameDto.tags.map(
+        async (tag) => await this.tagsService.findOneByName(tag),
       ),
-    });
+    );
 
-    // //сохраним новые ключи
-    // if (updateGameDto.newKeys.length) {
-    //   const createdKeys = await Promise.all(
-    //     await updateGameDto.newKeys.map(async (key) => {
-    //       this.keysService.createOrUpdateSteamId({
-    //         key,
-    //         steamId: game.steamId,
-    //       });
-    //     }),
-    //   );
-    // }
+    let steamGame;
+    steamGame = await steamGameFetch(updateGameDto.steamId, 'ru');
+    if (steamGame.success == false) {
+      steamGame = await steamGameFetch(updateGameDto.steamId, 'en');
+    }
+    if (steamGame.success == false) {
+      throw new HttpException('Передан некорректный steamId', 400);
+    }
+    game.name = steamGame.data.name;
+    game.logo = steamGame.data.header_image;
+    const screenshots = steamGame.data.screenshots
+      .slice(0, 4) // Выбираем только первые четыре скриншота
+      .map(
+        (sreenShot: {
+          id: number;
+          path_thumbnail: string;
+          path_full: string;
+        }) => sreenShot.path_thumbnail,
+      );
+    game.steamPrice = steamGame.data.price_overview.final_formatted;
+    const digiItem = await fetchDigisellerItem(updateGameDto.digiId);
 
-    // //удалим удаленные и старые ключи
-    // if (updateGameDto.keysToRemove.length) {
-    //   const deleteKeys = await Promise.all(
-    //     updateGameDto.keysToRemove.map(async (key) => {
-    //       await this.keysService.deleteKey({
-    //         key,
-    //       });
-    //     }),
-    //   );
-    // }
-
-    return newGame;
+    if (digiItem.retval == 2) {
+      throw new HttpException('Передан некорректный digiId', 400);
+    }
+    game.price = digiItem.product.prices.initial.RUB;
+    game.description = digiItem.product.info;
+    game.screenshots = screenshots;
+    game.digiId = updateGameDto.digiId;
+    return await this.gameRepository.save(game);
   }
 }
