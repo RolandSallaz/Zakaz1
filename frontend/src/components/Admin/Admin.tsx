@@ -136,7 +136,8 @@ export default function Admin() {
                         ))}
                         options={games.map((item) => item.name)}
                       />
-                    }></Route>
+                    }
+                  ></Route>
                   <Route
                     path="edit/:id"
                     element={<GameForm onSubmit={handleChangeGame} isEditing />}
@@ -175,7 +176,8 @@ export default function Admin() {
                             </Link>
                             <button
                               className="gameSelection__button"
-                              onClick={() => handleDeleteGameSelection(item.id)}>
+                              onClick={() => handleDeleteGameSelection(item.id)}
+                            >
                               Удалить
                             </button>
                           </div>

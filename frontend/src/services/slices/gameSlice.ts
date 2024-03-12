@@ -1,12 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IGame } from '../../utils/types';
+import { IGame, IGameSale } from '../../utils/types';
 
 interface IGameSlice {
   games: IGame[];
+  saledGames: IGameSale[];
 }
 
 const initialState: IGameSlice = {
-  games: []
+  games: [],
+  saledGames: []
 };
 
 export const gameSlice = createSlice({
@@ -15,10 +17,13 @@ export const gameSlice = createSlice({
   reducers: {
     loadGames(state, action: PayloadAction<IGame[]>) {
       state.games = action.payload;
+    },
+    loadSaledGames(state, action: PayloadAction<IGameSale[]>) {
+      state.saledGames = action.payload;
     }
   }
 });
 
-export const { loadGames } = gameSlice.actions;
+export const { loadGames, loadSaledGames } = gameSlice.actions;
 
 export default gameSlice.reducer;

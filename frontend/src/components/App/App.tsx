@@ -3,9 +3,15 @@ import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
-import { getAllGameSelections, getAllGames, getAllSliders, getAllTags } from '../../services/api';
+import {
+  getAllGameSelections,
+  getAllGames,
+  getAllSliders,
+  getAllTags,
+  getLastSales
+} from '../../services/api';
 import { closeSnackBar } from '../../services/slices/appSlice';
-import { loadGames } from '../../services/slices/gameSlice';
+import { loadGames, loadSaledGames } from '../../services/slices/gameSlice';
 import { loadTags } from '../../services/slices/tagSlice';
 import Admin from '../Admin/Admin';
 import Auth from '../Auth/Auth';
@@ -39,6 +45,9 @@ function App() {
     getAllGameSelections()
       .then((res) => dispatch(loadGameSelections(res)))
       .catch(handleError);
+    getLastSales()
+      .then((res) => dispatch(loadSaledGames(res)))
+      .catch(handleError);
   }, []);
 
   return (
@@ -60,7 +69,8 @@ function App() {
             <ProtectedRoute adminRequire>
               <Admin />
             </ProtectedRoute>
-          }></Route>
+          }
+        ></Route>
 
         <Route path="/auth" element={<Auth />} />
         <Route path="/games/:id" element={<GamePage />}></Route>

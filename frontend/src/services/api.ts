@@ -4,6 +4,7 @@ import {
   IFIle,
   IGame,
   IGameCreateDto,
+  IGameSale,
   IGameSelection,
   IGameSelectionDto,
   IGameSelectionUpdateDto,
@@ -169,4 +170,8 @@ export function updateGameSelection({
   games
 }: IGameSelectionUpdateDto): Promise<IGameSelection> {
   return _fetch({ url: `gameselections/${id}`, method: 'PATCH', body: { name, games } });
+}
+
+export async function getLastSales(): Promise<IGameSale[]> {
+  return _fetch({ url: `digi/lastSales` });
 }

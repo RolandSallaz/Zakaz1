@@ -99,3 +99,7 @@ export interface IGameSelection {
   name: string;
   games: IGame[];
 }
+
+export interface IGameSale extends IGame {
+  date: Date;
+}

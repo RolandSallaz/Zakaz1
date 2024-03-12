@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
 import './Header.scss';
+import LastSales from '../LastSales/LastSales';
 
 export function Header() {
   // const { loggedIn, user } = useAppSelector((state) => state.app);
@@ -46,7 +47,8 @@ export function Header() {
         <a
           className="link header__link"
           href="https://digiseller.market/info/?lang=ru-RU"
-          target="_blank">
+          target="_blank"
+        >
           Мои покупки
         </a>
         {/* <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -82,7 +84,8 @@ export function Header() {
         
       </Menu> */}
       </div>
-      <h1 className={'header__heading'}>Купить ключи STEAM.</h1>
+      {/* <h1 className={'header__heading'}>Купить ключи STEAM.</h1> */}
+      <LastSales />
     </header>
   );
 }
