@@ -36,7 +36,7 @@ export default function GamePage() {
   }, []);
 
   function rofl() {
-    window.location.href = `https://oplata.info/asp2/pay_options.asp?id_d=${id}&id_po=${import.meta.env.VITE_ID_PO}&ai=&ain=&air=&curr=API_13603_RUB&_subcurr=&lang=ru-RU&_ow=0&_ids_shop=${import.meta.env.VITE_DIGI_SHOP}&xml=&failpage=http%3A%2F%2F193%2E124%2E113%2E104%2Fgames%2F3949531`;
+    window.location.href = `https://oplata.info/asp2/pay_options.asp?id_d=${id}&ai=&ain=&air=&curr=API_13603_RUB&_subcurr=&lang=ru-RU&_ow=0&_ids_shop=${import.meta.env.VITE_DIGI_SHOP}&xml=&failpage=${import.meta.env.VITE_FAIL_PAGE}`;
   }
 
   return (
