@@ -1,7 +1,6 @@
 @import '../../variables.scss';
 
 .LastSales {
-  background-color: $backgroundColor;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,6 +11,8 @@
     color: $mainColor;
   }
   &__container {
+    margin-top: 20px;
+    background-color: $backgroundColor;
     padding: 10px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);

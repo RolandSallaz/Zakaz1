@@ -113,4 +113,20 @@ button {
 
 .MuiAutocomplete-root .MuiFormControl-root .MuiInputBase-root {
   color: $mainColor;
+  top: 10px;
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border: none;
+  outline: none;
+}
+
+.MuiAutocomplete-root .MuiFormControl-root .MuiInputLabel-root {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.MuiAutocomplete-popper .MuiAutocomplete-option {
+  background-color: $transparent-background;
 }

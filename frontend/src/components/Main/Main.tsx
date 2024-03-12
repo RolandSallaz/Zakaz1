@@ -55,6 +55,10 @@ export function Main() {
             disablePortal
             options={options}
             sx={{ width: 300 }}
+            componentsProps={{
+              paper: { sx: { bgcolor: 'rgba(0,0,0,0.7)', color: 'red !important' } } // or static color like "#293346"
+            }}
+            noOptionsText=""
             renderInput={(params) => <TextField {...params} label="Жанр" />}
           />
           {/* <label className={'SidePanel__price-filter'}>
