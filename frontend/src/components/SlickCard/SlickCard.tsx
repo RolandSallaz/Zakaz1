@@ -1,11 +1,10 @@
 import { SyntheticEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { IGame } from '../../utils/types';
+import GameLogo from '../GameLogo/GameLogo';
 import { GameTag } from '../GameTag/GameTag';
 import { Price } from '../Price/Price';
 import './SlickCard.scss';
-import GameLogo from '../GameLogo/GameLogo';
-import { IGame } from '../../utils/types';
-import { apiUrl } from '../../utils/config';
-import { Link } from 'react-router-dom';
 
 type Props = {
   game: IGame;
