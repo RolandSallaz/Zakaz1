@@ -14,7 +14,7 @@ export default function GamePage() {
   const { games } = useAppSelector((state) => state.games);
   const navigate = useNavigate();
   const [image, setImage] = useState<string>('');
-
+  const regex = /https:\/\/store\.steampowered\.com\/app\/\d+\/\w+\//;
   function handleHover(e: SyntheticEvent<HTMLImageElement>) {
     const targetImage = e.target as HTMLImageElement;
     const src = targetImage.src;
@@ -72,7 +72,7 @@ export default function GamePage() {
             <p
               className="gamePage__description"
               dangerouslySetInnerHTML={{
-                __html: game?.description ? game.description.split('</delivery>')[0] : ''
+                __html: game?.description ? game?.description.replace(regex, '') : ''
               }}></p>
           </div>
           <div className="order-info">

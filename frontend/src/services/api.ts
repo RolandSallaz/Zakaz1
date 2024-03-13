@@ -106,6 +106,10 @@ export function updateGame(game: IGameUpdateDto): Promise<IGame> {
   return _fetch({ url: `games/${game.id}`, method: 'PATCH', body: { ...game } });
 }
 
+export function loadGamesFromDigi(): Promise<IGame[]> {
+  return _fetch({ url: `games/digi` });
+}
+
 //tags
 export function addTag(tag: ITag): Promise<ITag> {
   return _fetch({ url: 'tags', method: 'POST', body: { ...tag } });

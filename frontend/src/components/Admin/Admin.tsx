@@ -5,6 +5,7 @@ import useErrorHandler from '../../hooks/useErrorHandler';
 import {
   addGameSelection,
   deleteGameSelection,
+  loadGamesFromDigi,
   postGame,
   updateGame,
   updateGameSelection
@@ -90,6 +91,15 @@ export default function Admin() {
       .catch(handleError);
   }
 
+  function handleLoadGamesFromDigi() {
+    loadGamesFromDigi()
+      .then((res) => {
+        dispatch(openSnackBar({ message: `Добавлено ${res.length} новых игр` }));
+        dispatch(loadGames([...games, ...res]));
+      })
+      .catch(handleError);
+  }
+
   return (
     <Lk additionalClass="admin">
       <SidePanel>
@@ -119,6 +129,9 @@ export default function Admin() {
                   <NavLink className={'link admin__link'} to="./edit">
                     Редактировать или удалить
                   </NavLink>
+                  <NavLink className={'link admin__link'} to="./digiload">
+                    Подгрузить с Digiseller
+                  </NavLink>
                 </div>
                 <Routes>
                   <Route path="add" element={<GameForm onSubmit={handleAddGame} />}></Route>
@@ -141,6 +154,18 @@ export default function Admin() {
                     path="edit/:id"
                     element={<GameForm onSubmit={handleChangeGame} isEditing />}
                   />
+                  <Route
+                    path="digiload"
+                    element={
+                      <div className="digiload">
+                        <h2 className="digiload__heading">
+                          Подгрузить все игры, у которых в описании присутствует ссылка на steam
+                        </h2>
+                        <button onClick={handleLoadGamesFromDigi} className="digiload__button">
+                          Подгрузить
+                        </button>
+                      </div>
+                    }></Route>
                 </Routes>
               </div>
             }

@@ -1,6 +1,7 @@
 @import '../../variables';
 
 .main {
+  margin-top: 20px;
   flex-grow: 1;
   &__container {
     display: flex;

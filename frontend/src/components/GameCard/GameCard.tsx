@@ -1,10 +1,10 @@
 // @flow
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { IGame } from '../../utils/types';
 import { Price } from '../Price/Price';
 import './GameCard.scss';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, formatRelative } from 'date-fns';
 import { ru } from 'date-fns/locale/ru';
 
 type Props = {
@@ -14,22 +14,24 @@ type Props = {
   hoverDate?: Date;
 };
 
-export function GameCard({ game, customLink, lastSales, hoverDate }: Props) {
-  const [isHovered, setIsHovered] = useState<boolean>(false); //Состояние карточки, наведен ли на неё курсор
+export const GameCard = memo(({ game, customLink, lastSales, hoverDate }: Props) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   function handleHover(e: SyntheticEvent) {
-    //Функция, которая срабатывает при наведении и убирание мышки с карточки
-    e.type == 'mouseenter' ? setIsHovered(true) : setIsHovered(false);
+    e.type === 'mouseenter' ? setIsHovered(true) : setIsHovered(false);
   }
+
   return (
     <Link
       to={customLink || `/games/${game.digiId}`}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
-      className={`gameCard`}
-    >
+      className={`gameCard`}>
       <div className={'gameCard__image-container'}>
         {hoverDate && isHovered && (
-          <p className="gameCard__date">{formatDistanceToNow(hoverDate, { locale: ru })} назад</p>
+          <p className="gameCard__date">
+            Последняя покупка {formatRelative(hoverDate, new Date(), { locale: ru })}
+          </p>
         )}
         <img
           className={`gameCard__image ${isHovered && 'gameCard__image_hovered'}`}
@@ -41,4 +43,4 @@ export function GameCard({ game, customLink, lastSales, hoverDate }: Props) {
       <h3 className={'gameCard__name'}>{game.name}</h3>
     </Link>
   );
-}
+});
