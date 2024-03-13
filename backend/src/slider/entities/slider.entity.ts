@@ -14,7 +14,7 @@ export class Slider {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => Game, (game) => game.id)
-  @JoinTable()
+  @OneToOne(() => Game)
+  @JoinColumn()
   game: Game;
 }

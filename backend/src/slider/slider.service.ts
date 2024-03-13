@@ -42,9 +42,11 @@ export class SliderService {
       relations: ['game', 'game.tags'],
     });
 
-    slider.game = await this.gamesService.getGame(updateSliderDto.gameId);
-
-    const updatedSlider = await this.slidersRepository.save(slider);
+    const game = await this.gamesService.getGame(updateSliderDto.gameId);
+    const updatedSlider = await this.slidersRepository.save({
+      ...slider,
+      game,
+    });
 
     return updatedSlider;
   }
