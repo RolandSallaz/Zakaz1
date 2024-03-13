@@ -1,22 +1,12 @@
-import {
-  HttpException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { CreateGameDto } from './dto/create-game.dto';
-import { Game } from './entities/game.entity';
+import { steamGameFetch } from '@/common/filters/helpers/fetchApi';
+import { DigiService } from '@/digi/digi.service';
+import { TagsService } from '@/tags/tags.service';
+import { HttpException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Key } from '@/keys/entities/key.entity';
-import { KeysService } from '@/keys/keys.service';
-import { TagsService } from '@/tags/tags.service';
-import { FindByIdGameDto } from './dto/findById-game.dto';
+import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
-import {
-  fetchDigisellerItem,
-  steamGameFetch,
-} from '@/common/filters/helpers/fetchApi';
+import { Game } from './entities/game.entity';
 
 @Injectable()
 export class GamesService {
@@ -25,8 +15,8 @@ export class GamesService {
     private gameRepository: Repository<Game>,
     @Inject(TagsService)
     private tagsService: TagsService,
-    @Inject(KeysService)
-    private keysService: KeysService,
+    @Inject(DigiService)
+    private digiService: DigiService,
   ) {}
   async addTagToGame() {}
 
@@ -48,10 +38,10 @@ export class GamesService {
     }
     let steamGame;
     steamGame = await steamGameFetch(createGameDto.steamId, 'ru');
-    if (steamGame.success == false) {
+    if (!steamGame || !steamGame.success) {
       steamGame = await steamGameFetch(createGameDto.steamId, 'en');
     }
-    if (steamGame.success == false) {
+    if (!steamGame || !steamGame.success) {
       throw new HttpException('Передан некорректный steamId', 400);
     }
     game.name = steamGame.data.name;
@@ -66,7 +56,9 @@ export class GamesService {
         }) => sreenShot.path_thumbnail,
       );
     game.steamPrice = steamGame.data.price_overview.final_formatted;
-    const digiItem = await fetchDigisellerItem(createGameDto.digiId);
+    const digiItem = await this.digiService.fetchDigisellerItem(
+      createGameDto.digiId,
+    );
 
     if (digiItem.retval == 2) {
       throw new HttpException('Передан некорректный digiId', 400);
@@ -127,7 +119,9 @@ export class GamesService {
         }) => sreenShot.path_thumbnail,
       );
     game.steamPrice = steamGame.data.price_overview.final_formatted;
-    const digiItem = await fetchDigisellerItem(updateGameDto.digiId);
+    const digiItem = await this.digiService.fetchDigisellerItem(
+      updateGameDto.digiId,
+    );
 
     if (digiItem.retval == 2) {
       throw new HttpException('Передан некорректный digiId', 400);
@@ -137,5 +131,46 @@ export class GamesService {
     game.screenshots = screenshots;
     game.digiId = updateGameDto.digiId;
     return await this.gameRepository.save(game);
+  }
+
+  async loadGamesFromDigi(): Promise<Game[]> {
+    const regex = /https?:\/\/store\.steampowered\.com\/app\/\d+/;
+    const data = await this.digiService.loadUnloadedGames();
+    if (data.retval != 0) {
+      throw new HttpException('Ошибка получения игр с digiseller', 500);
+    }
+    const filteredData = data.product.filter((item) =>
+      item.info.includes('https://store.steampowered'),
+    );
+
+    const games = await this.getAllGames();
+
+    const gamesToAdd: { id: number; info: string }[] = filteredData.filter(
+      (newGame) =>
+        !games.some((existingGame) =>
+          Boolean(
+            existingGame.digiId === newGame.id ||
+              existingGame.steamId ===
+                Number(
+                  newGame.info
+                    .match(regex)[0]
+                    .replace('https://store.steampowered.com/app/', ''),
+                ),
+          ),
+        ),
+    );
+    const addedGamesPromises: Promise<Game>[] = gamesToAdd.map(async (item) => {
+      return this.create({
+        digiId: item.id,
+        steamId: Number(
+          item.info
+            .match(regex)[0]
+            .replace('https://store.steampowered.com/app/', ''),
+        ),
+        tags: [],
+      });
+    });
+
+    return await Promise.all(addedGamesPromises);
   }
 }

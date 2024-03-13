@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { GamesService } from './games.service';
 import { GamesController } from './games.controller';
 import { JwtModule } from '@nestjs/jwt';
@@ -8,6 +8,7 @@ import { KeysService } from '@/keys/keys.service';
 import { KeysModule } from '@/keys/keys.module';
 import { TagsModule } from '@/tags/tags.module';
 import { UsersModule } from '@/users/users.module';
+import { DigiModule } from '@/digi/digi.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from '@/users/users.module';
     KeysModule,
     TagsModule,
     UsersModule,
+    forwardRef(() => DigiModule),
   ],
   providers: [GamesService],
   controllers: [GamesController],

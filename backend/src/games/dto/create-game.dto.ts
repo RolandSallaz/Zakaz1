@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 
@@ -11,8 +12,9 @@ export class CreateGameDto {
   @IsNumber()
   steamId: number;
 
+  @IsOptional()
   @IsArray()
-  tags: [{ name: string }];
+  tags: { name: string }[];
 
   @IsNumber()
   digiId: number;

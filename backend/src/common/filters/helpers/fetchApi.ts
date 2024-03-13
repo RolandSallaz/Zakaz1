@@ -9,9 +9,3 @@ export async function steamGameFetch(steamId: number, lang: 'ru' | 'en') {
       }
     });
 }
-
-export async function fetchDigisellerItem(productId: number) {
-  return await fetch(
-    `https://api.digiseller.ru/api/products/${productId}/data?currency=RUB&transp=cors&format=json`,
-  ).then((res) => res.json());
-}

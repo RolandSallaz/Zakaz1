@@ -28,6 +28,12 @@ export class GamesController {
     return this.gamesService.create(createGameDto);
   }
 
+  @Get('digi')
+  @UseGuards(AdminRoleAuthGuard)
+  loadFromDigi() {
+    return this.gamesService.loadGamesFromDigi();
+  }
+
   @Get(':id')
   @UseGuards(AdminRoleAuthGuard)
   getGame(@Param('id') id: number) {

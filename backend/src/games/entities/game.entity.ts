@@ -29,7 +29,7 @@ export class Game {
   @Column({ default: '' })
   steamPrice: string;
 
-  @Column()
+  @Column({ unique: true })
   digiId: number;
 
   @Column()
