@@ -12,19 +12,17 @@ type Props = {
 };
 
 export function SlickCard({ game }: Props) {
-  const [image, setImage] = useState<string>(convertImage(game.logo));
+  const [image, setImage] = useState<string>(game.logo);
 
   function handleHover(e: SyntheticEvent<HTMLImageElement>) {
     const targetImage = e.target as HTMLImageElement;
     const src = targetImage.src;
-    e.type == 'mouseenter' ? setImage(src) : setImage(convertImage(game.logo));
+    e.type == 'mouseenter' ? setImage(src) : setImage(game.logo);
   }
-  function convertImage(link: string) {
-    return `${apiUrl}/${link}`;
-  }
+
   return (
     <div className={'SlickCard'}>
-      <Link className={'SlickCard__image-container'} to={`/games/${game.id}`}>
+      <Link className={'SlickCard__image-container'} to={`/games/${game.digiId}`} target="_blank">
         <GameLogo src={image} />
         <div className={'SlickCard__tag-container'}>
           {game.tags.map((tag) => (
@@ -33,7 +31,7 @@ export function SlickCard({ game }: Props) {
         </div>
       </Link>
       <div className={'SlickCard__container'}>
-        <Link className={'SlickCard__name'} to={`/games/${game.id}`}>
+        <Link className={'SlickCard__name'} to={`/games/${game.digiId}`}>
           {game.name}
         </Link>
         <div className={'SlickCard__screenshot-container'}>
@@ -43,7 +41,7 @@ export function SlickCard({ game }: Props) {
               className={'SlickCard__screenshot'}
               onMouseEnter={handleHover}
               onMouseLeave={handleHover}
-              src={convertImage(screenshot)}
+              src={screenshot}
             />
           ))}
         </div>

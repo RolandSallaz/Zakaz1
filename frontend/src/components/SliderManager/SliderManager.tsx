@@ -54,11 +54,10 @@ export default function SliderManager() {
               name="slider"
               onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                 handleUpdateSlider({ sliderId: slider.id, gameId: Number(e.target.value) })
-              }
-            >
+              }>
               <option value={''}>{slider.game.name}</option>
               {games?.map((game) => (
-                <option key={game.id} value={game.id}>
+                <option key={game.digiId} value={game.digiId}>
                   {game.name}
                 </option>
               ))}
@@ -66,8 +65,7 @@ export default function SliderManager() {
             <button
               type="button"
               className="SliderManager__button"
-              onClick={() => handleDeleteSlider(slider.id)}
-            >
+              onClick={() => handleDeleteSlider(slider.id)}>
               Удалить слайдер
             </button>
           </li>
@@ -77,7 +75,7 @@ export default function SliderManager() {
             <select name="newSlider" onChange={handleChangeSelect} required value={newSliderGameId}>
               <option value="">Выберите игру</option>
               {games.map((game) => (
-                <option key={game.id} value={game.id}>
+                <option key={game.digiId} value={game.digiId}>
                   {game.name}
                 </option>
               ))}
