@@ -43,6 +43,9 @@
     text-align: center;
     text-wrap: nowrap;
     z-index: 2;
+    white-space: nowrap; /* Предотвращает перенос текста */
+    overflow: hidden; /* Скрывает текст, который не помещается */
+    text-overflow: ellipsis; /* Отображает многоточие для скрытого текста */
   }
 
   &:after {
@@ -58,6 +61,14 @@
       border-radius: 10px;
       position: absolute;
       background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .gameCard {
+    &__name {
+      font-size: 10px;
     }
   }
 }

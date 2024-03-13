@@ -124,3 +124,9 @@ button {
 .MuiAutocomplete-popper .MuiAutocomplete-option {
   background-color: $transparent-background;
 }
+
+@media screen and (max-width: 1279px) {
+  #root {
+    padding: 0.3em 0.3em 0;
+  }
+}

@@ -23,7 +23,7 @@ export function Main() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 5000
   };
 
@@ -53,8 +53,8 @@ export function Main() {
               setSelectedTag(newValue);
             }}
             disablePortal
+            className="autoComplete"
             options={options}
-            sx={{ width: 300 }}
             componentsProps={{
               paper: { sx: { bgcolor: 'rgba(0,0,0,0.7)', color: 'red !important' } } // or static color like "#293346"
             }}

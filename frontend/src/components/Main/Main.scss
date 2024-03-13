@@ -32,3 +32,18 @@
   gap: 10px; /* промежуток между элементами */
   align-items: start; /* выравнивание по верхнему краю */
 }
+
+.autoComplete {
+  width: 300;
+}
+
+@media screen and (max-width: 1279px) {
+  .main {
+    &__container {
+      flex-direction: column-reverse;
+    }
+  }
+  .autoComplete {
+    width: 100%;
+  }
+}

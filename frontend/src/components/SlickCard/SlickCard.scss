@@ -98,3 +98,29 @@
 .slick-dots li.slick-active button:before {
   color: $mainColor;
 }
+
+@media screen and (max-width: 1279px) {
+  .SlickCard {
+    height: 137px;
+    position: relative;
+    &__name {
+      font-size: 20px;
+      margin-top: 5px;
+      z-index: 10;
+      color: $second-color;
+    }
+    &__container {
+      position: absolute;
+    }
+    &__screenshot-container {
+      visibility: hidden;
+      display: none;
+    }
+    &__image-container {
+      justify-content: center;
+    }
+  }
+  .slick-dots > li > button:before {
+    font-size: 20px;
+  }
+}

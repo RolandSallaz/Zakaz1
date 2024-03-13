@@ -121,3 +121,24 @@
     color: black;
   }
 }
+
+@media screen and (max-width: 1279px) {
+  .header {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      height: 100%;
+    }
+    &__link {
+      align-self: flex-end;
+      display: flex;
+      justify-content: center;
+      &_logo {
+        width: 100%;
+        font-size: 30px;
+      }
+    }
+  }
+}
