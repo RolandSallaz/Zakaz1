@@ -33,11 +33,33 @@ function App() {
   const { handleError } = useErrorHandler();
 
   useEffect(() => {
+    //cache
+    const cacheSaledGames = localStorage.getItem('saledGames');
+    const cacheGames = localStorage.getItem('games');
+    const cacheTags = localStorage.getItem('tags');
+    if (cacheSaledGames) {
+      dispatch(loadSaledGames(JSON.parse(cacheSaledGames)));
+    }
+
+    if (cacheGames) {
+      dispatch(loadGames(JSON.parse(cacheGames)));
+    }
+
+    if (cacheTags) {
+      dispatch(loadTags(JSON.parse(cacheTags)));
+    }
+    //api
     getAllGames()
-      .then((res) => dispatch(loadGames(res)))
+      .then((res) => {
+        localStorage.setItem('games', JSON.stringify(res));
+        dispatch(loadGames(res));
+      })
       .catch(handleError);
     getAllTags()
-      .then((tags) => dispatch(loadTags(tags)))
+      .then((tags) => {
+        localStorage.setItem('tags', JSON.stringify(tags));
+        dispatch(loadTags(tags));
+      })
       .catch(handleError);
     getAllSliders()
       .then((res) => dispatch(loadSliders(res)))
@@ -46,7 +68,10 @@ function App() {
       .then((res) => dispatch(loadGameSelections(res)))
       .catch(handleError);
     getLastSales()
-      .then((res) => dispatch(loadSaledGames(res)))
+      .then((res) => {
+        localStorage.setItem('saledGames', JSON.stringify(res));
+        dispatch(loadSaledGames(res));
+      })
       .catch(handleError);
   }, []);
 
@@ -69,8 +94,7 @@ function App() {
             <ProtectedRoute adminRequire>
               <Admin />
             </ProtectedRoute>
-          }
-        ></Route>
+          }></Route>
 
         <Route path="/auth" element={<Auth />} />
         <Route path="/games/:id" element={<GamePage />}></Route>
