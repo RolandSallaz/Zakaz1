@@ -1,11 +1,11 @@
 // @flow
-import { SyntheticEvent, useState, memo } from 'react';
+import { formatRelative } from 'date-fns';
+import { ru } from 'date-fns/locale/ru';
+import { SyntheticEvent, memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IGame } from '../../utils/types';
 import { Price } from '../Price/Price';
 import './GameCard.scss';
-import { formatDistanceToNow, formatRelative } from 'date-fns';
-import { ru } from 'date-fns/locale/ru';
 
 type Props = {
   game: IGame;
