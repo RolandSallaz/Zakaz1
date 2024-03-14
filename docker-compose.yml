@@ -9,12 +9,11 @@ services:
     env_file: .env
     restart: always
     ports:
-      - 3000:3000
+      - "3000:3000"
     depends_on:
       - postgres
     volumes:
       - ./backend/public/uploads:/app/public/uploads
-
 
   postgres:
     container_name: "database"
@@ -26,16 +25,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  frontend-nginx:
+  frontend:
     container_name: "frontend"
     env_file: .env
     build:
       context: frontend
       dockerfile: Dockerfile
-      args:
-        - VITE_AP_URL=${VITE_API_URL}
     ports:
-      - 80:80
+      - "80:80"
 
 volumes:
   postgres_data:
