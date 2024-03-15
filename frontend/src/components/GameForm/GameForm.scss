@@ -21,6 +21,10 @@
   &__submit {
     font-size: 20px;
     border: 1px solid $mainColor;
+    &_delete {
+      margin: 20px;
+      color: red;
+    }
   }
   &__input {
     border: 1px solid $transparent-background;

@@ -21,13 +21,14 @@ enum TAG_ACTION {
 interface IProps {
   isEditing?: boolean;
   onSubmit: (arg: any) => void;
+  onDelete?: (arg: number) => void;
 }
 interface formValues {
   steamId: number;
   digiId: number;
 }
 
-export default function GameForm({ isEditing, onSubmit }: IProps) {
+export default function GameForm({ isEditing, onSubmit, onDelete }: IProps) {
   const [tags, setTags] = useState<ITag[]>([]);
   // const [jsonKeys, SetJsonKeys] = useState<IKeyDto[]>([]);
   const [optionTags, setOptionTags] = useState<ITag[]>([]);
@@ -159,6 +160,12 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
     onSubmit(gameDto);
   }
 
+  function handleDelete() {
+    if (onDelete && window.confirm(`Подвердить удаление товара ${id}`)) {
+      onDelete(Number(id));
+    }
+  }
+
   return (
     <form className="GameForm" onSubmit={handleFormSubmit}>
       <h2 className="GameForm__heading">Основное лого игры</h2>
@@ -239,6 +246,14 @@ export default function GameForm({ isEditing, onSubmit }: IProps) {
       <button className="GameForm__submit" type="submit">
         Отправить
       </button>
+      {isEditing && (
+        <button
+          type="button"
+          className="GameForm__submit GameForm__submit_delete"
+          onClick={handleDelete}>
+          Удалить игру
+        </button>
+      )}
     </form>
   );
 }

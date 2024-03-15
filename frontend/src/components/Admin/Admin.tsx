@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import {
   addGameSelection,
+  deleteGame,
   deleteGameSelection,
   loadGamesFromDigi,
   postGame,
@@ -100,6 +101,15 @@ export default function Admin() {
       .catch(handleError);
   }
 
+  function handleDeleteGame(digiId: number) {
+    deleteGame(digiId)
+      .then(() => {
+        dispatch(openSnackBar({ message: `Игра успешно удалена` }));
+        dispatch(loadGames(games.filter((item) => item.digiId !== digiId)));
+      })
+      .catch(handleError);
+  }
+
   return (
     <Lk additionalClass="admin">
       <SidePanel>
@@ -149,11 +159,12 @@ export default function Admin() {
                         ))}
                         options={games.map((item) => item.name)}
                       />
-                    }
-                  ></Route>
+                    }></Route>
                   <Route
                     path="edit/:id"
-                    element={<GameForm onSubmit={handleChangeGame} isEditing />}
+                    element={
+                      <GameForm onSubmit={handleChangeGame} isEditing onDelete={handleDeleteGame} />
+                    }
                   />
                   <Route
                     path="digiload"
@@ -166,8 +177,7 @@ export default function Admin() {
                           Подгрузить
                         </button>
                       </div>
-                    }
-                  ></Route>
+                    }></Route>
                 </Routes>
               </div>
             }
@@ -202,8 +212,7 @@ export default function Admin() {
                             </Link>
                             <button
                               className="gameSelection__button"
-                              onClick={() => handleDeleteGameSelection(item.id)}
-                            >
+                              onClick={() => handleDeleteGameSelection(item.id)}>
                               Удалить
                             </button>
                           </div>

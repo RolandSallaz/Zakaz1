@@ -110,6 +110,10 @@ export function loadGamesFromDigi(): Promise<IGame[]> {
   return _fetch({ url: `games/digi` });
 }
 
+export function deleteGame(digiId: number): Promise<{ message: string }> {
+  return _fetch({ url: `games/${digiId}`, method: 'DELETE' });
+}
+
 //tags
 export function addTag(tag: ITag): Promise<ITag> {
   return _fetch({ url: 'tags', method: 'POST', body: { ...tag } });
