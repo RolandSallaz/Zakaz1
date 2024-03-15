@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  api:
+  backend:
     container_name: "backend"
     build:
       context: backend
@@ -10,6 +10,8 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    networks:
+      - net
     depends_on:
       - postgres
     volumes:
@@ -24,6 +26,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - net
 
   frontend:
     container_name: "frontend"
@@ -33,6 +37,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
 
 volumes:
   postgres_data:
