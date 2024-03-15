@@ -37,10 +37,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+      - "443:443"
     networks:
       - net
     depends_on:
       - backend
+    volumes:
+      - ./ssl:/etc/ssl
 
 networks:
   net:
