@@ -1,17 +1,17 @@
+import { AdminRoleAuthGuard } from '@/auth/AdminRole-auth.guard';
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  Post,
-  UseGuards,
   Param,
   Patch,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
-import { GamesService } from './games.service';
 import { CreateGameDto } from './dto/create-game.dto';
-import { AdminRoleAuthGuard } from '@/auth/AdminRole-auth.guard';
-import { FindByIdGameDto } from './dto/findById-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
+import { GamesService } from './games.service';
 
 @Controller('games')
 export class GamesController {
@@ -37,6 +37,12 @@ export class GamesController {
   @Get(':id')
   getGame(@Param('id') id: number) {
     return this.gamesService.getGame(id);
+  }
+
+  @Delete(':id')
+  @UseGuards(AdminRoleAuthGuard)
+  deleteGame(@Param('id') id: number) {
+    return this.gamesService.deleteGame(id);
   }
 
   @Patch(':id')

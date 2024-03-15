@@ -1,12 +1,11 @@
 import { UsersService } from '@/users/users.service';
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
+  Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
 require('dotenv').config();
 const { JWT_SECRET = 'jwt_secret' } = process.env;
 

@@ -1,22 +1,29 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
+import { DigiModule } from './digi/digi.module';
 import { EmailModule } from './email/email.module';
 import { FilesController } from './files/files.controller';
 import { GamesModule } from './games/games.module';
+import { GameselectionModule } from './gameselection/gameselection.module';
 import { KeysModule } from './keys/keys.module';
+import { SliderModule } from './slider/slider.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
-import { SliderModule } from './slider/slider.module';
-import { GameselectionModule } from './gameselection/gameselection.module';
-import { DigiModule } from './digi/digi.module';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..'),
     }),

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGameselectionDto } from './dto/create-gameselection.dto';
 import { UpdateGameselectionDto } from './dto/update-gameselection.dto';
 import { Gameselection } from './entities/gameselection.entity';
@@ -14,6 +14,7 @@ export class GameselectionService {
     @Inject(GamesService)
     private gameService: GamesService,
   ) {}
+
   async create(
     createGameselectionDto: CreateGameselectionDto,
   ): Promise<Gameselection> {
@@ -42,10 +43,12 @@ export class GameselectionService {
     id: number,
     { name, games }: UpdateGameselectionDto,
   ): Promise<Gameselection> {
-    const gameSelection = await this.gameselectionRepository.findOneOrFail({
+    const gameSelection = await this.gameselectionRepository.findOne({
       where: { id },
     });
-
+    if (!gameSelection) {
+      throw new NotFoundException('Ресурс не найден');
+    }
     const newGames = await Promise.all(
       games.map(async (gameId) => {
         return await this.gameService.getGame(gameId);
@@ -59,10 +62,12 @@ export class GameselectionService {
   }
 
   async remove(id: number) {
-    const gameSelection = await this.gameselectionRepository.findOneOrFail({
+    const gameSelection = await this.gameselectionRepository.findOne({
       where: { id },
     });
-
+    if (!gameSelection) {
+      throw new NotFoundException('Ресурс не найден');
+    }
     const removedGameSelection = { ...gameSelection };
 
     await this.gameselectionRepository.remove(gameSelection);

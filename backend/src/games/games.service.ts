@@ -1,7 +1,13 @@
 import { steamGameFetch } from '@/common/filters/helpers/fetchApi';
 import { DigiService } from '@/digi/digi.service';
 import { TagsService } from '@/tags/tags.service';
-import { HttpException, Inject, Injectable, forwardRef } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
@@ -15,10 +21,9 @@ export class GamesService {
     private gameRepository: Repository<Game>,
     @Inject(TagsService)
     private tagsService: TagsService,
-    @Inject(DigiService)
+    @Inject(forwardRef(() => DigiService))
     private digiService: DigiService,
   ) {}
-  async addTagToGame() {}
 
   async create(createGameDto: CreateGameDto) {
     const game = new Game();
@@ -55,7 +60,9 @@ export class GamesService {
           path_full: string;
         }) => sreenShot.path_thumbnail,
       );
-    game.steamPrice = steamGame.data.price_overview.final_formatted;
+    game.steamPrice =
+      steamGame.data.price_overview.initial_formatted ||
+      steamGame.data.price_overview.final_formatted;
     const digiItem = await this.digiService.fetchDigisellerItem(
       createGameDto.digiId,
     );
@@ -76,10 +83,24 @@ export class GamesService {
   }
 
   async getGame(id: number): Promise<Game> {
-    return await this.gameRepository.findOneOrFail({
+    const game = await this.gameRepository.findOne({
       where: { digiId: id },
       relations: ['tags'],
     });
+    if (!game) {
+      throw new NotFoundException('Игра не найдена');
+    }
+    return game;
+  }
+
+  async deleteGame(digiId: number): Promise<{ message: string }> {
+    const game = await this.getGame(digiId);
+    if (!game) {
+      throw new NotFoundException('Игра не найдена');
+    }
+
+    await this.gameRepository.remove(game);
+    return { message: 'Игра удалена' };
   }
 
   async getLastBuyedGames(productIds: number[]): Promise<Game[]> {
@@ -91,7 +112,9 @@ export class GamesService {
   }
 
   async updateGame(id: number, updateGameDto: UpdateGameDto) {
-    const game = await this.gameRepository.findOneOrFail({ where: { id: id } });
+    const game = await this.gameRepository.findOneOrFail({
+      where: { digiId: id },
+    });
 
     game.tags = await Promise.all(
       updateGameDto.tags.map(
@@ -104,6 +127,7 @@ export class GamesService {
     if (steamGame.success == false) {
       steamGame = await steamGameFetch(updateGameDto.steamId, 'en');
     }
+    console.log(steamGame);
     if (steamGame.success == false) {
       throw new HttpException('Передан некорректный steamId', 400);
     }
@@ -118,7 +142,9 @@ export class GamesService {
           path_full: string;
         }) => sreenShot.path_thumbnail,
       );
-    game.steamPrice = steamGame.data.price_overview.final_formatted;
+    game.steamPrice =
+      steamGame.data.price_overview.initial_formatted ||
+      steamGame.data.price_overview.final_formatted;
     const digiItem = await this.digiService.fetchDigisellerItem(
       updateGameDto.digiId,
     );

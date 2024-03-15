@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,7 +23,11 @@ export class TagsService {
   }
 
   async findOneByName({ name }: FindByNameTagDto): Promise<Tag> {
-    return await this.tagsRepository.findOne({ where: { name } });
+    const tag = await this.tagsRepository.findOne({ where: { name } });
+    if (!tag) {
+      throw new NotFoundException('Тег не найден');
+    }
+    return tag;
   }
 
   async findOrCreateByName(
@@ -41,7 +45,9 @@ export class TagsService {
     const tag = await this.tagsRepository.findOne({
       where: { id: Number(id) },
     });
-
+    if (!tag) {
+      throw new NotFoundException('Тег не найден');
+    }
     return await this.tagsRepository.save({ ...tag, name: name });
   }
 
@@ -51,6 +57,10 @@ export class TagsService {
         id: Number(id),
       },
     });
+    if (!tag) {
+      throw new NotFoundException('Тег не найден');
+    }
+
     return await this.tagsRepository.remove(tag);
   }
 }

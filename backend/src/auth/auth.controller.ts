@@ -1,3 +1,4 @@
+import { CreateOrFindUserDto } from '@/users/dto/createOrFind-user.dto';
 import {
   Body,
   Controller,
@@ -6,11 +7,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { AuthUserDto } from 'src/users/dto/auth-user.dto';
-import { CreateOrFindUserDto } from '@/users/dto/createOrFind-user.dto';
+import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { AdminRoleAuthGuard } from './AdminRole-auth.guard';
 
 @Controller('auth')
 export class AuthController {

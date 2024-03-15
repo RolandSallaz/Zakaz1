@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSliderDto } from './dto/create-slider.dto';
 import { UpdateSliderDto } from './dto/update-slider.dto';
 import { Slider } from './entities/slider.entity';
@@ -37,11 +37,13 @@ export class SliderService {
   }
 
   async update(id: number, updateSliderDto: UpdateSliderDto): Promise<Slider> {
-    const slider = await this.slidersRepository.findOneOrFail({
+    const slider = await this.slidersRepository.findOne({
       where: { id },
       relations: ['game', 'game.tags'],
     });
-
+    if (!slider) {
+      throw new NotFoundException('Слайдер не найден');
+    }
     const game = await this.gamesService.getGame(updateSliderDto.gameId);
     const updatedSlider = await this.slidersRepository.save({
       ...slider,
@@ -52,10 +54,12 @@ export class SliderService {
   }
 
   async remove(id: number): Promise<Slider> {
-    const slider = await this.slidersRepository.findOneOrFail({
+    const slider = await this.slidersRepository.findOne({
       where: { id },
     });
-
+    if (!slider) {
+      throw new NotFoundException('Слайдер не найден');
+    }
     const removedSlider = { ...slider };
 
     await this.slidersRepository.remove(slider);
