@@ -61,6 +61,10 @@ export function Header() {
 
   return (
     <header className={'header'}>
+      <h1 className="header__heading">
+        магазин ключей Steam, купить ключи игр, дешевые ключи Steam, акционные предложения игр,
+        онлайн магазин игровых ключей, купить игры по скидке
+      </h1>
       <div className="header__container">
         <Link className="link header__link header__link_logo" to="/">
           {import.meta.env.VITE_SHOP_NAME || 'названием магазина'}
@@ -96,8 +100,7 @@ export function Header() {
         <a
           className="link header__link"
           href="https://digiseller.market/info/?lang=ru-RU"
-          target="_blank"
-        >
+          target="_blank">
           Мои покупки
         </a>
         {/* <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
