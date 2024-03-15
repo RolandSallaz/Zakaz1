@@ -90,7 +90,8 @@ export default function GameSelectionForm({ onSubmitForm, isEditing }: props) {
             onChange={(e: ChangeEvent<HTMLSelectElement>) =>
               handleChangeGameInArray({ index: item.index, gameId: Number(e.target.value) })
             }
-            required>
+            required
+          >
             <option value={''}>Выбрать игру</option>
             {games?.map((game) => (
               <option key={game.id} value={game.digiId}>
@@ -101,7 +102,8 @@ export default function GameSelectionForm({ onSubmitForm, isEditing }: props) {
           <button
             type="button"
             className="button GameSelectionForm__button"
-            onClick={() => handleDeleteGameFromArray(item.index)}>
+            onClick={() => handleDeleteGameFromArray(item.index)}
+          >
             Удалить
           </button>
         </div>

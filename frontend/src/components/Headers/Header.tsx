@@ -96,7 +96,8 @@ export function Header() {
         <a
           className="link header__link"
           href="https://digiseller.market/info/?lang=ru-RU"
-          target="_blank">
+          target="_blank"
+        >
           Мои покупки
         </a>
         {/* <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>

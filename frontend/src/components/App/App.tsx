@@ -94,7 +94,8 @@ function App() {
             <ProtectedRoute adminRequire>
               <Admin />
             </ProtectedRoute>
-          }></Route>
+          }
+        ></Route>
 
         <Route path="/auth" element={<Auth />} />
         <Route path="/games/:id" element={<GamePage />}></Route>

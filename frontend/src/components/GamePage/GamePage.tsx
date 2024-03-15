@@ -73,7 +73,8 @@ export default function GamePage() {
               className="gamePage__description"
               dangerouslySetInnerHTML={{
                 __html: game?.description ? game?.description.replace(regex, '') : ''
-              }}></p>
+              }}
+            ></p>
           </div>
           <div className="order-info">
             <Price price={game?.price || 0} steamPrice={game?.steamPrice || ''} type="order" />
