@@ -35,7 +35,6 @@ export class GamesController {
   }
 
   @Get(':id')
-  @UseGuards(AdminRoleAuthGuard)
   getGame(@Param('id') id: number) {
     return this.gamesService.getGame(id);
   }
