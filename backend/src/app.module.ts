@@ -15,6 +15,7 @@ import { KeysModule } from './keys/keys.module';
 import { SliderModule } from './slider/slider.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
+import { InfoChaptersModule } from './info-chapters/info-chapters.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { UsersModule } from './users/users.module';
     SliderModule,
     GameselectionModule,
     DigiModule,
+    InfoChaptersModule,
   ],
   controllers: [AppController, FilesController],
 })
