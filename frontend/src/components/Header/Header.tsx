@@ -1,11 +1,11 @@
 // @flowimport { Avatar, IconButton, Menu, MenuItem } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { loadFilteredGames } from '../../services/slices/gameSlice';
 import { IGame } from '../../utils/types';
-import LastSales from '../LastSales/LastSales';
 import './Header.scss';
-import { Autocomplete, TextField } from '@mui/material';
 
 export function Header() {
   // const { loggedIn, user } = useAppSelector((state) => state.app);
@@ -16,6 +16,7 @@ export function Header() {
   const [filteredGames, setFilteredGames] = useState<IGame[]>([]);
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   // const navigate = useNavigate();
   // const open = Boolean(anchorEl!);
@@ -58,7 +59,9 @@ export function Header() {
 
   useEffect(() => {
     setFilteredGames(
-      games.filter((game) => game.name.toLowerCase().startsWith(search.toLowerCase())).slice(0, 5)
+      games
+        .filter((game) => game.enabled && game.name.toLowerCase().startsWith(search.toLowerCase()))
+        .slice(0, 5)
     );
   }, [search, searchFocused]);
 
@@ -67,9 +70,19 @@ export function Header() {
   );
   const options = usedTags.map((tag) => tag.name);
 
-  const filteredGamesWithTag = games.filter((game) =>
-    game.tags.some((tag) => tag.name == selectedTag)
-  );
+  useEffect(() => {
+    if (games) {
+      const filteredGamesWithTag = games.filter(
+        (game) => game.tags.some((tag) => tag.name == selectedTag) && game.enabled
+      );
+      console.log(filteredGamesWithTag.length);
+      dispatch(
+        loadFilteredGames(
+          filteredGamesWithTag.length ? filteredGamesWithTag : games.filter((game) => game.enabled)
+        )
+      );
+    }
+  }, [selectedTag, games]);
 
   return (
     <header className={'header'}>
@@ -180,7 +193,6 @@ export function Header() {
       </div>
 
       {/* <h1 className={'header__heading'}>Купить ключи STEAM.</h1> */}
-      <LastSales />
     </header>
   );
 }

@@ -4,11 +4,13 @@ import { IGame, IGameSale } from '../../utils/types';
 interface IGameSlice {
   games: IGame[];
   saledGames: IGameSale[];
+  filteredGames: IGame[];
 }
 
 const initialState: IGameSlice = {
   games: [],
-  saledGames: []
+  saledGames: [],
+  filteredGames: []
 };
 
 export const gameSlice = createSlice({
@@ -20,10 +22,13 @@ export const gameSlice = createSlice({
     },
     loadSaledGames(state, action: PayloadAction<IGameSale[]>) {
       state.saledGames = action.payload;
+    },
+    loadFilteredGames(state, action: PayloadAction<IGame[]>) {
+      state.filteredGames = action.payload;
     }
   }
 });
 
-export const { loadGames, loadSaledGames } = gameSlice.actions;
+export const { loadGames, loadSaledGames, loadFilteredGames } = gameSlice.actions;
 
 export default gameSlice.reducer;

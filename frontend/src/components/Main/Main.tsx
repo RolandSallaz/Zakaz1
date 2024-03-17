@@ -1,21 +1,15 @@
-import { Autocomplete, TextField } from '@mui/material';
-import { useState } from 'react';
 import Slider from 'react-slick';
 import { useAppSelector } from '../../hooks/redux';
 import { GameCard } from '../GameCard/GameCard';
-import { SidePanel } from '../SidePanel/SidePanel';
 import { SlickCard } from '../SlickCard/SlickCard';
 import './Main.scss';
+import LastSales from '../LastSales/LastSales';
 
 export function Main() {
-  const { games } = useAppSelector((state) => state.games);
+  const { filteredGames } = useAppSelector((state) => state.games);
 
   const { sliders } = useAppSelector((state) => state.sliders);
   const { gameSelections } = useAppSelector((state) => state.gameSelections);
-
-  // const filteredGames = filteredGamesWithTag.length ? filteredGamesWithTag : games;
-
-  const filteredGames = games;
 
   const settings = {
     dots: true,
@@ -43,6 +37,7 @@ export function Main() {
           {filteredGames?.map((game) => <GameCard game={game} key={game.id} />)}
         </section>
       </div>
+      <LastSales />
       {gameSelections.length > 0 && (
         <div>
           <h2 className="main__heading">Наши подборки:</h2>
