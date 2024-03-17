@@ -29,6 +29,8 @@ import SliderManager from '../SliderManager/SliderManager';
 import TagManager from '../TagManager/TagManager';
 import './Admin.scss';
 import { loadGameSelections } from '../../services/slices/gameSelectionSlice';
+import { INFOCHAPTER } from '../../utils/config';
+import FooterChapterForm from '../FooterChapterForm/FooterChapterForm';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -125,6 +127,9 @@ export default function Admin() {
         <NavLink className="link admin__link" to="./game-selection/add">
           Подборки игр
         </NavLink>
+        <NavLink className="link admin__link" to="./info-chapter">
+          Разделы с информацией
+        </NavLink>
       </SidePanel>
       <div className="admin__container">
         <Routes>
@@ -159,7 +164,8 @@ export default function Admin() {
                         ))}
                         options={games.map((item) => item.name)}
                       />
-                    }></Route>
+                    }
+                  ></Route>
                   <Route
                     path="edit/:id"
                     element={
@@ -177,7 +183,8 @@ export default function Admin() {
                           Подгрузить
                         </button>
                       </div>
-                    }></Route>
+                    }
+                  ></Route>
                 </Routes>
               </div>
             }
@@ -212,7 +219,8 @@ export default function Admin() {
                             </Link>
                             <button
                               className="gameSelection__button"
-                              onClick={() => handleDeleteGameSelection(item.id)}>
+                              onClick={() => handleDeleteGameSelection(item.id)}
+                            >
                               Удалить
                             </button>
                           </div>
@@ -228,6 +236,22 @@ export default function Admin() {
                   />
                 </Routes>
               </div>
+            }
+          />
+          <Route
+            path="info-chapter/*"
+            element={
+              <Routes>
+                <Route
+                  path="/"
+                  element={INFOCHAPTER.map((item, index) => (
+                    <Link className="link" key={index} to={`edit/${item.link}`}>
+                      {item.name}
+                    </Link>
+                  ))}
+                />
+                <Route path="edit/:link" element={<FooterChapterForm />} />
+              </Routes>
             }
           />
         </Routes>

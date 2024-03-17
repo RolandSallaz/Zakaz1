@@ -103,3 +103,9 @@ export interface IGameSelection {
 export interface IGameSale extends IGame {
   date: Date;
 }
+
+export interface IInfoChapter {
+  heading: string;
+  link: string;
+  text: string;
+}

@@ -5,10 +5,13 @@ import { useAppSelector } from '../../hooks/redux';
 import { IGame } from '../../utils/types';
 import LastSales from '../LastSales/LastSales';
 import './Header.scss';
+import { Autocomplete, TextField } from '@mui/material';
 
 export function Header() {
   // const { loggedIn, user } = useAppSelector((state) => state.app);
+  const [selectedTag, setSelectedTag] = useState<string | null>('');
   const { games } = useAppSelector((state) => state.games);
+  const { tags } = useAppSelector((state) => state.tags);
   const [search, setSearch] = useState<string>('');
   const [filteredGames, setFilteredGames] = useState<IGame[]>([]);
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
@@ -59,6 +62,15 @@ export function Header() {
     );
   }, [search, searchFocused]);
 
+  const usedTags = tags.filter((tag) =>
+    games.some((game) => game.tags.some((gameTag) => gameTag.name === tag.name))
+  );
+  const options = usedTags.map((tag) => tag.name);
+
+  const filteredGamesWithTag = games.filter((game) =>
+    game.tags.some((tag) => tag.name == selectedTag)
+  );
+
   return (
     <header className={'header'}>
       <h1 className="header__heading">
@@ -66,29 +78,18 @@ export function Header() {
         онлайн магазин игровых ключей, купить игры по скидке
       </h1>
       <div className="header__container">
-        <Link className="link header__link header__link_logo" to="/">
-          {import.meta.env.VITE_SHOP_NAME || 'названием магазина'}
-        </Link>
-        <label className="search">
-          <>
-            <input
-              onChange={handleChangeSearch}
-              value={search}
-              className={'search__input'}
-              placeholder={`Найти среди ${games.length} игр`}
-              ref={searchRef}
-            />
-            {filteredGames.length > 0 && searchFocused && (
-              <div className="search__container">
-                {filteredGames.map((game) => (
-                  <Link key={game.digiId} className="search__link" to={`/games/${game.digiId}`}>
-                    {game.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </>
-        </label>
+        <div className="header__sub-container">
+          <Link className="link header__link header__link_logo" to="/">
+            {import.meta.env.VITE_SHOP_NAME || 'названием магазина'}
+          </Link>
+          <Link className="link header__link" to={'/guarantees'}>
+            Гарантии
+          </Link>
+          <Link className="link header__link" to={'/guarantees'}>
+            Отзывы
+          </Link>
+        </div>
+
         {/* <IconButton
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
@@ -97,12 +98,18 @@ export function Header() {
         onClick={handleClick}>
         <Avatar sx={{ width: '60px', height: '60px' }}></Avatar>
       </IconButton> */}
-        <a
-          className="link header__link"
-          href="https://digiseller.market/info/?lang=ru-RU"
-          target="_blank">
-          Мои покупки
-        </a>
+        <div className="header__sub-container">
+          <Link className="link header__link" to={'/guarantees'}>
+            Поддержка
+          </Link>
+          <a
+            className="link header__link"
+            href="https://digiseller.market/info/?lang=ru-RU"
+            target="_blank">
+            Мои покупки
+          </a>
+        </div>
+
         {/* <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {loggedIn && (
           <div>
@@ -136,6 +143,42 @@ export function Header() {
         
       </Menu> */}
       </div>
+      <div className="header__search-container">
+        <Autocomplete
+          onChange={(_event: any, newValue: string | null) => {
+            setSelectedTag(newValue);
+          }}
+          disablePortal
+          className="autoComplete_header"
+          options={options}
+          componentsProps={{
+            paper: { sx: { bgcolor: 'rgba(0,0,0,0.7)', color: 'red !important' } } // or static color like "#293346"
+          }}
+          noOptionsText=""
+          renderInput={(params) => <TextField {...params} label="Жанр" />}
+        />
+        <label className="search">
+          <>
+            <input
+              onChange={handleChangeSearch}
+              value={search}
+              className={'search__input'}
+              placeholder={`Найти среди ${games.length} игр`}
+              ref={searchRef}
+            />
+            {filteredGames.length > 0 && searchFocused && (
+              <div className="search__container">
+                {filteredGames.map((game) => (
+                  <Link key={game.digiId} className="search__link" to={`/games/${game.digiId}`}>
+                    {game.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </>
+        </label>
+      </div>
+
       {/* <h1 className={'header__heading'}>Купить ключи STEAM.</h1> */}
       <LastSales />
     </header>

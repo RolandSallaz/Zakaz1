@@ -17,7 +17,7 @@ import Admin from '../Admin/Admin';
 import Auth from '../Auth/Auth';
 import { Footer } from '../Footer/Footer';
 import GamePage from '../GamePage/GamePage';
-import { Header } from '../Headers/Header';
+import { Header } from '../Header/Header';
 import { Lk } from '../Lk/Lk';
 import { Main } from '../Main/Main';
 import NotFound from '../NotFound/NotFound';
@@ -26,6 +26,8 @@ import './App.scss';
 import AdminLink from '../AdminLink/AdminLink';
 import { loadSliders } from '../../services/slices/sliderSlice';
 import { loadGameSelections } from '../../services/slices/gameSelectionSlice';
+import { INFOCHAPTER } from '../../utils/config';
+import InfoChapter from '../InfoChapter/InfoChapter';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
@@ -94,12 +96,18 @@ function App() {
             <ProtectedRoute adminRequire>
               <Admin />
             </ProtectedRoute>
-          }
-        ></Route>
+          }></Route>
 
         <Route path="/auth" element={<Auth />} />
-        <Route path="/games/:id" element={<GamePage />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
+        <Route path="/games/:id" element={<GamePage />} />
+        {INFOCHAPTER.map((item, index) => (
+          <Route
+            key={index}
+            path={`/${item.link}`}
+            element={<InfoChapter heading={item.name} link={item.link} />}
+          />
+        ))}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
       <Snackbar

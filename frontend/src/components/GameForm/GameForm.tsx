@@ -250,7 +250,8 @@ export default function GameForm({ isEditing, onSubmit, onDelete }: IProps) {
         <button
           type="button"
           className="GameForm__submit GameForm__submit_delete"
-          onClick={handleDelete}>
+          onClick={handleDelete}
+        >
           Удалить игру
         </button>
       )}

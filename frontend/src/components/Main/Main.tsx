@@ -8,15 +8,15 @@ import { SlickCard } from '../SlickCard/SlickCard';
 import './Main.scss';
 
 export function Main() {
-  const [selectedTag, setSelectedTag] = useState<string | null>('');
   const { games } = useAppSelector((state) => state.games);
-  const { tags } = useAppSelector((state) => state.tags);
+
   const { sliders } = useAppSelector((state) => state.sliders);
   const { gameSelections } = useAppSelector((state) => state.gameSelections);
-  const usedTags = tags.filter((tag) =>
-    games.some((game) => game.tags.some((gameTag) => gameTag.name === tag.name))
-  );
-  const options = usedTags.map((tag) => tag.name);
+
+  // const filteredGames = filteredGamesWithTag.length ? filteredGamesWithTag : games;
+
+  const filteredGames = games;
+
   const settings = {
     dots: true,
     infinite: true,
@@ -26,11 +26,6 @@ export function Main() {
     autoplay: true,
     autoplaySpeed: 5000
   };
-
-  const filteredGamesWithTag = games.filter((game) =>
-    game.tags.some((tag) => tag.name == selectedTag)
-  );
-  const filteredGames = filteredGamesWithTag.length ? filteredGamesWithTag : games;
 
   return (
     <main className={'main'}>
@@ -47,25 +42,6 @@ export function Main() {
         <section className={'cards'}>
           {filteredGames?.map((game) => <GameCard game={game} key={game.id} />)}
         </section>
-        <SidePanel>
-          <Autocomplete
-            onChange={(_event: any, newValue: string | null) => {
-              setSelectedTag(newValue);
-            }}
-            disablePortal
-            className="autoComplete"
-            options={options}
-            componentsProps={{
-              paper: { sx: { bgcolor: 'rgba(0,0,0,0.7)', color: 'red !important' } } // or static color like "#293346"
-            }}
-            noOptionsText=""
-            renderInput={(params) => <TextField {...params} label="Жанр" />}
-          />
-          {/* <label className={'SidePanel__price-filter'}>
-            Цена: от 10 до 50 rub
-            <Slider defaultValue={[20, 37]} min={0} max={100} />
-          </label> */}
-        </SidePanel>
       </div>
       {gameSelections.length > 0 && (
         <div>

@@ -11,6 +11,11 @@
     gap: 10px;
     height: 60px;
   }
+  &__sub-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
   &__avatar {
     width: '60px';
     height: '60px';
@@ -21,7 +26,8 @@
     align-items: center;
     font-size: 17px;
     width: 165px;
-
+    display: flex;
+    justify-content: center;
     &_logo {
       font-size: 40px;
       height: 100%;
@@ -38,6 +44,12 @@
     position: absolute;
     left: -9999px;
     top: -9999px;
+  }
+  &__search-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
   }
 }
 
@@ -99,6 +111,11 @@
 }
 
 //mui
+
+.autoComplete_header {
+  width: 350px;
+}
+
 .MuiButtonBase-root:hover {
   opacity: 0.8;
 }
@@ -125,6 +142,10 @@
   }
 }
 
+.MuiAutocomplete-root .MuiFormControl-root .MuiInputBase-root {
+  top: 0 !important;
+}
+
 @media screen and (max-width: 1279px) {
   .header {
     &__container {
@@ -143,5 +164,14 @@
         font-size: 30px;
       }
     }
+    &__search-container {
+      flex-direction: column;
+    }
+    &__sub-container {
+      justify-content: center;
+    }
+  }
+  .autoComplete_header {
+    width: 100%;
   }
 }

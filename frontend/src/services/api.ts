@@ -9,6 +9,7 @@ import {
   IGameSelectionDto,
   IGameSelectionUpdateDto,
   IGameUpdateDto,
+  IInfoChapter,
   ILogin,
   IRequest,
   ISlider,
@@ -182,4 +183,18 @@ export function updateGameSelection({
 
 export async function getLastSales(): Promise<IGameSale[]> {
   return _fetch({ url: `digi/lastSales` });
+}
+
+//infochapter
+
+export function updateChapterInfo({
+  text,
+  link,
+  heading
+}: IInfoChapter): Promise<{ message: string }> {
+  return _fetch({ url: `info-chapters/${link}`, method: 'PATCH', body: { text, heading } });
+}
+
+export function getChapterInfo(link: string): Promise<IInfoChapter> {
+  return _fetch({ url: `info-chapters/${link}` });
 }

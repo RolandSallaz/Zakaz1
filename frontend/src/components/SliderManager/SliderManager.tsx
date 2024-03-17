@@ -5,6 +5,7 @@ import { addSlider, deleteSlider, updateSlider } from '../../services/api';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import { IUpdateSliderDto } from '../../utils/types';
 import { loadSliders } from '../../services/slices/sliderSlice';
+import { openSnackBar } from '../../services/slices/appSlice';
 
 export default function SliderManager() {
   const { games } = useAppSelector((state) => state.games);
@@ -21,24 +22,29 @@ export default function SliderManager() {
     e.preventDefault();
     if (newSliderGameId) {
       addSlider(newSliderGameId)
-        .then((slider) => dispatch(loadSliders([...sliders, slider])))
+        .then((slider) => {
+          dispatch(openSnackBar({ message: 'Слайдер сохранен' }));
+          dispatch(loadSliders([...sliders, slider]));
+        })
         .catch(handleError);
     }
   }
 
   function handleUpdateSlider(data: IUpdateSliderDto) {
     updateSlider(data)
-      .then((slider) =>
+      .then((slider) => {
+        dispatch(openSnackBar({ message: 'Слайдер обновлен' }));
         dispatch(
           loadSliders(sliders.map((oldSlider) => (oldSlider.id == slider.id ? slider : oldSlider)))
-        )
-      )
+        );
+      })
       .catch(handleError);
   }
 
   function handleDeleteSlider(sliderId: number) {
     deleteSlider(sliderId)
       .then((deletedSlider) => {
+        dispatch(openSnackBar({ message: 'Игра удалена из слайдера' }));
         dispatch(loadSliders(sliders.filter((slider) => slider.id !== deletedSlider.id)));
       })
       .catch(handleError);

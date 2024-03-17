@@ -1,0 +1,28 @@
+@import '../../variables.scss';
+.InfoChapter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $backgroundColor;
+  color: $mainColor;
+  margin-top: 20px;
+  &__heading {
+    font-size: 30px;
+    margin-top: 40px;
+  }
+  &__paragraph {
+    width: 100%;
+    padding: 40px;
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .InfoChapter {
+    &__heading {
+      font-size: 25px;
+    }
+    &__paragraph {
+      font-size: 15px;
+    }
+  }
+}

@@ -18,6 +18,8 @@
     font-size: 1em;
     white-space: pre-wrap;
     margin-right: 20px;
+    display: flex;
+    flex-direction: column;
   }
   &__section {
     margin-top: 20px;
