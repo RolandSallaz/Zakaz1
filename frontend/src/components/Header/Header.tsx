@@ -95,7 +95,7 @@ export function Header() {
           <Link className="link header__link header__link_logo" to="/">
             {import.meta.env.VITE_SHOP_NAME || 'названием магазина'}
           </Link>
-          <Link className="link header__link" to={'/guarantees'}>
+          <Link className="link header__link" to={'/reviews'}>
             Гарантии
           </Link>
           <Link className="link header__link" to={'/guarantees'}>
@@ -112,7 +112,7 @@ export function Header() {
         <Avatar sx={{ width: '60px', height: '60px' }}></Avatar>
       </IconButton> */}
         <div className="header__sub-container">
-          <Link className="link header__link" to={'/guarantees'}>
+          <Link className="link header__link" to={'/support'}>
             Поддержка
           </Link>
           <a
