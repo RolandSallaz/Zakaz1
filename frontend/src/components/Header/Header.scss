@@ -56,6 +56,7 @@
 .search {
   width: 100%;
   flex-grow: 1;
+  position: relative;
   &__input {
     width: 100%;
     background-color: $backgroundColor;
@@ -78,6 +79,8 @@
     flex-direction: column;
     border-radius: $averageBorderRadius;
     z-index: 99;
+    position: absolute;
+    width: 100%;
   }
   &__link {
     background-color: $backgroundColor;
