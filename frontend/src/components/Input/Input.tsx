@@ -12,6 +12,7 @@ interface props {
   placeholder?: string;
   isTextArea?: boolean;
   countRow?: boolean;
+  width?: string;
 }
 
 export default function Input({
@@ -23,11 +24,12 @@ export default function Input({
   additionalClass,
   label,
   isTextArea,
-  countRow
+  countRow,
+  width
 }: props) {
   return (
-    <div className={`input-box `}>
-      <label className="input-box__label">{label || name}</label>
+    <div className={`input-box `} style={{ width }}>
+      <label className="input-box__label">{label ? `${label} ${required ? '*' : ''}` : name}</label>
       {isTextArea ? (
         <textarea
           name={name}

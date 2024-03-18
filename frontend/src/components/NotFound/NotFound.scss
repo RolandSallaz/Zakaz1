@@ -10,3 +10,11 @@
     font-size: 40px;
   }
 }
+
+@media screen and (max-width: 1279px) {
+  .notFound {
+    &__heading {
+      font-size: 20px;
+    }
+  }
+}

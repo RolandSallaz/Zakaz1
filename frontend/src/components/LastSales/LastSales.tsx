@@ -7,7 +7,7 @@ export default function LastSales() {
 
   return saledGames.length > 0 ? (
     <section className="LastSales">
-      <h2 className="LastSales__heading">Часто покупаемые товары</h2>
+      <h2 className="LastSales__heading">Последние продажи</h2>
       <div className="LastSales__container">
         {saledGames.map((item) => (
           <GameCard game={item} key={item.id} lastSales hoverDate={item.date} />

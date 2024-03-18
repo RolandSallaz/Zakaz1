@@ -109,3 +109,10 @@ export interface IInfoChapter {
   link: string;
   text: string;
 }
+
+export interface ISupportTickedDto {
+  shortDescription: string;
+  email: string;
+  imageLink: string;
+  trouble: string;
+}

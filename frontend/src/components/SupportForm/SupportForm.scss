@@ -1,0 +1,62 @@
+@import '../../variables.scss';
+.SupportForm {
+  margin: 20px auto 0;
+  width: 500px;
+  background-color: $backgroundColor;
+  color: $mainColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: $averageBorderRadius;
+  gap: 30px;
+  &__heading {
+    text-align: center;
+  }
+  &__input {
+    width: 100%;
+    border: 1px solid $mainColor;
+    &_textarea {
+      resize: vertical;
+      max-height: 100%;
+      min-height: 200px;
+    }
+  }
+  &__container {
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__image-file {
+    border-radius: $averageBorderRadius;
+    border: 1px solid $mainColor;
+    padding: 0 20px;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+  }
+  &__button {
+    border: 1px solid $mainColor;
+    padding: 10px 20px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .SupportForm {
+    width: auto;
+    &__heading {
+      font-size: 20px;
+    }
+    &__container {
+      flex-direction: column;
+    }
+    &__image-file {
+      font-size: 13px;
+      height: 37px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

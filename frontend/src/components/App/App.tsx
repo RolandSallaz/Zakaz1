@@ -28,6 +28,7 @@ import { loadSliders } from '../../services/slices/sliderSlice';
 import { loadGameSelections } from '../../services/slices/gameSelectionSlice';
 import { INFOCHAPTER } from '../../utils/config';
 import InfoChapter from '../InfoChapter/InfoChapter';
+import SupportForm from '../SupportForm/SupportForm';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
@@ -96,7 +97,8 @@ function App() {
             <ProtectedRoute adminRequire>
               <Admin />
             </ProtectedRoute>
-          }></Route>
+          }
+        ></Route>
 
         <Route path="/auth" element={<Auth />} />
         <Route path="/games/:id" element={<GamePage />} />
@@ -107,6 +109,7 @@ function App() {
             element={<InfoChapter heading={item.name} link={item.link} />}
           />
         ))}
+        <Route path="/support" element={<SupportForm />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

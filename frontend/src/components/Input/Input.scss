@@ -1,19 +1,16 @@
 @import '../../variables.scss';
 .input-box {
-  /* родительский блок относительно которого будем формировать положение
-    тега label */
   color: $mainColor;
   position: relative;
   &__input {
     padding: 10px;
-    /* закруглим края у поля ввода */
     border-radius: 11px;
-
     background: none;
     color: $mainColor;
   }
   &__label {
     position: absolute;
+    width: 100%;
     left: 10px;
     top: -10px;
     padding: 0 5px;

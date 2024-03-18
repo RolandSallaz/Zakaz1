@@ -1,20 +1,19 @@
-import './FooterChapterForm.scss';
-import Input from '../Input/Input';
-import useFormValidator from '../../hooks/useFormValidator';
-import { useParams } from 'react-router-dom';
-import { INFOCHAPTER } from '../../utils/config';
+import JoditEditor from 'jodit-react';
 import { FormEvent, useEffect } from 'react';
-import { getChapterInfo, updateChapterInfo } from '../../services/api';
-import useErrorHandler from '../../hooks/useErrorHandler';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
+import useErrorHandler from '../../hooks/useErrorHandler';
+import useFormValidator from '../../hooks/useFormValidator';
+import { getChapterInfo, updateChapterInfo } from '../../services/api';
 import { openSnackBar } from '../../services/slices/appSlice';
-
+import { INFOCHAPTER } from '../../utils/config';
+import './FooterChapterForm.scss';
 interface formValues {
   text: string;
 }
 
 export default function FooterChapterForm() {
-  const { values, handleChange, mutateValue } = useFormValidator<formValues>({
+  const { values, mutateValue } = useFormValidator<formValues>({
     text: ''
   });
   const { handleError } = useErrorHandler();
@@ -46,14 +45,15 @@ export default function FooterChapterForm() {
   return (
     <form className="footerChapterForm" onSubmit={handleFormSubmit}>
       <h2 className="footerChapterForm__heading">{chapterName}</h2>
-      <Input
-        name="text"
-        value={values.text}
-        onChange={handleChange}
-        isTextArea
-        label="Текст"
-        additionalClass="footerChapterForm__input footerChapterForm__input_textarea"
-      />
+      <div className="footerChapterForm__input">
+        <JoditEditor
+          value={values.text}
+          onChange={(newContent) => {
+            mutateValue({ valueName: 'text', value: newContent });
+          }}
+        />
+      </div>
+
       <button className="footerChapterForm__button" type="submit">
         Сохранить
       </button>

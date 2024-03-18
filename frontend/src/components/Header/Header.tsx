@@ -75,7 +75,6 @@ export function Header() {
       const filteredGamesWithTag = games.filter(
         (game) => game.tags.some((tag) => tag.name == selectedTag) && game.enabled
       );
-      console.log(filteredGamesWithTag.length);
       dispatch(
         loadFilteredGames(
           filteredGamesWithTag.length ? filteredGamesWithTag : games.filter((game) => game.enabled)
@@ -118,7 +117,8 @@ export function Header() {
           <a
             className="link header__link"
             href="https://digiseller.market/info/?lang=ru-RU"
-            target="_blank">
+            target="_blank"
+          >
             Мои покупки
           </a>
         </div>

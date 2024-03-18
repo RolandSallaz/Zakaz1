@@ -27,9 +27,15 @@ export default function InfoChapter({ heading, link }: props) {
       </Link>
       <section className="InfoChapter">
         <h2 className="InfoChapter__heading">{heading}</h2>
-        <p className="InfoChapter__paragraph" style={{ whiteSpace: 'pre-line' }}>
+        {/* <p className="InfoChapter__paragraph" style={{ whiteSpace: 'pre-line' }}>
           {paragraph}
-        </p>
+        </p> */}
+        <p
+          className="InfoChapter__paragraph"
+          dangerouslySetInnerHTML={{
+            __html: paragraph
+          }}
+        />
       </section>
     </main>
   );

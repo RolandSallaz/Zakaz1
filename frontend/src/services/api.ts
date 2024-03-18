@@ -13,6 +13,7 @@ import {
   ILogin,
   IRequest,
   ISlider,
+  ISupportTickedDto,
   ITag,
   IUpdateSliderDto,
   IUser
@@ -197,4 +198,10 @@ export function updateChapterInfo({
 
 export function getChapterInfo(link: string): Promise<IInfoChapter> {
   return _fetch({ url: `info-chapters/${link}` });
+}
+
+//support
+
+export function sendSupportTicked(dto: ISupportTickedDto): Promise<{ message: string }> {
+  return _fetch({ url: 'support', method: 'POST', body: { ...dto } });
 }

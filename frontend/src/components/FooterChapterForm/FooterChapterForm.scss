@@ -14,7 +14,7 @@
   }
   &__input {
     border: 1px solid $mainColor;
-    width: 100%;
+    max-width: 1008px;
     &_textarea {
       resize: vertical;
       max-height: 100%;
