@@ -32,7 +32,6 @@ export default function SupportForm() {
 
   function handleFormSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log(values);
     setIsLoading(true);
     sendSupportTicked(values)
       .then(({ message }) => {

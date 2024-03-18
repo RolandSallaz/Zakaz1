@@ -94,10 +94,10 @@ export function Header() {
           <Link className="link header__link header__link_logo" to="/">
             {import.meta.env.VITE_SHOP_NAME || 'названием магазина'}
           </Link>
-          <Link className="link header__link" to={'/reviews'}>
+          <Link className="link header__link" to={'/guarantees'}>
             Гарантии
           </Link>
-          <Link className="link header__link" to={'/guarantees'}>
+          <Link className="link header__link" to={'/reviews'}>
             Отзывы
           </Link>
         </div>
@@ -117,8 +117,7 @@ export function Header() {
           <a
             className="link header__link"
             href="https://digiseller.market/info/?lang=ru-RU"
-            target="_blank"
-          >
+            target="_blank">
             Мои покупки
           </a>
         </div>
