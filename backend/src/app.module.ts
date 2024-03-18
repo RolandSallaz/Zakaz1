@@ -17,6 +17,7 @@ import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 import { InfoChaptersModule } from './info-chapters/info-chapters.module';
 import { SupportModule } from './support/support.module';
+require('dotenv').config();
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { SupportModule } from './support/support.module';
     ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..'),
+      serveRoot: process.env.DEV ? '' : '/api',
     }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
