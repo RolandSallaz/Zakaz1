@@ -9,6 +9,7 @@ import { KeysModule } from '@/keys/keys.module';
 import { TagsModule } from '@/tags/tags.module';
 import { UsersModule } from '@/users/users.module';
 import { DigiModule } from '@/digi/digi.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [

@@ -18,7 +18,7 @@ export class GamesController {
   constructor(private readonly gamesService: GamesService) {}
 
   @Get()
-  getAllGame() {
+  getAllGames() {
     return this.gamesService.getAllGames();
   }
 
@@ -32,6 +32,12 @@ export class GamesController {
   @UseGuards(AdminRoleAuthGuard)
   loadFromDigi() {
     return this.gamesService.loadGamesFromDigi();
+  }
+
+  @Patch('digi')
+  @UseGuards(AdminRoleAuthGuard)
+  updateAllGames() {
+    return this.gamesService.updateAllGames();
   }
 
   @Get(':id')

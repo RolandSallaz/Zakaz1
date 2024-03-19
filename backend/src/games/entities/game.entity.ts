@@ -23,7 +23,7 @@ export class Game {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ default: 0 })
   price: number;
 
   @Column({ default: '' })
@@ -44,4 +44,16 @@ export class Game {
   @ManyToMany(() => Tag, (tag) => tag.id)
   @JoinTable()
   tags: Tag[];
+
+  @Column({ default: false })
+  coming_soon: boolean;
+
+  @Column({ default: '' })
+  release_date: string;
+
+  @Column({ default: '' })
+  minimal_requirements: string;
+
+  @Column({ default: '' })
+  recomended_requirements: string;
 }

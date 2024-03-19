@@ -24,9 +24,6 @@ export class TagsService {
 
   async findOneByName({ name }: FindByNameTagDto): Promise<Tag> {
     const tag = await this.tagsRepository.findOne({ where: { name } });
-    if (!tag) {
-      throw new NotFoundException('Тег не найден');
-    }
     return tag;
   }
 

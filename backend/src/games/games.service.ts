@@ -13,6 +13,8 @@ import { Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
+import { ISteamData, ISteamToGameEntity } from '@/types';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class GamesService {
@@ -25,44 +27,62 @@ export class GamesService {
     private digiService: DigiService,
   ) {}
 
-  async create(createGameDto: CreateGameDto) {
-    const game = new Game();
-    Object.assign(game, createGameDto);
-    // Проверяем, есть ли теги в запросе
-    // Проверяем, есть ли имена тегов в запросе
-    if (createGameDto.tags && createGameDto.tags.length > 0) {
-      // Находим или создаем теги по их именам
-      const foundOrCreatedTags = await Promise.all(
-        createGameDto.tags.map(
-          async (tag) => await this.tagsService.findOneByName(tag),
-        ),
-      );
-
-      // Привязываем найденные или созданные теги к игре
-      game.tags = foundOrCreatedTags;
-    }
-    let steamGame;
-    steamGame = await steamGameFetch(createGameDto.steamId, 'ru');
+  async getSteamGame(steamId: number): Promise<ISteamToGameEntity> {
+    let steamGame: ISteamData;
+    steamGame = await steamGameFetch(steamId, 'ru');
     if (!steamGame || !steamGame.success) {
-      steamGame = await steamGameFetch(createGameDto.steamId, 'en');
+      steamGame = await steamGameFetch(steamId, 'en');
     }
     if (!steamGame || !steamGame.success) {
       throw new HttpException('Передан некорректный steamId', 400);
     }
-    game.name = steamGame.data.name;
-    game.logo = steamGame.data.header_image;
-    const screenshots = steamGame.data.screenshots
-      .slice(0, 4) // Выбираем только первые четыре скриншота
-      .map(
-        (sreenShot: {
-          id: number;
-          path_thumbnail: string;
-          path_full: string;
-        }) => sreenShot.path_thumbnail,
+    return {
+      name: steamGame.data.name,
+      logo: steamGame.data.header_image,
+      screenshots: steamGame.data.screenshots
+        .slice(0, 4) // Выбираем только первые четыре скриншота
+        .map(
+          (sreenShot: {
+            id: number;
+            path_thumbnail: string;
+            path_full: string;
+          }) => sreenShot.path_thumbnail,
+        ),
+      coming_soon: steamGame.data.release_date.coming_soon,
+      release_date: steamGame.data.release_date.date,
+      minimal_requirements: steamGame.data.pc_requirements.minimum,
+      recomended_requirements: steamGame.data.pc_requirements.recommended,
+      description: steamGame.data.about_the_game,
+      tags: steamGame.data.categories.map((category) => category.description),
+      steamPrice: !steamGame.data.release_date.coming_soon
+        ? steamGame.data.price_overview.initial_formatted ||
+          steamGame.data.price_overview.final_formatted
+        : 'Предзаказ',
+    };
+  }
+
+  async create(createGameDto: CreateGameDto) {
+    const game = new Game();
+    Object.assign(game, createGameDto);
+
+    const steamGame = await this.getSteamGame(createGameDto.steamId);
+
+    let foundOrCreatedTags = [];
+    if (createGameDto.tags.length > 0) {
+      foundOrCreatedTags = await Promise.all(
+        createGameDto.tags.map(
+          async (tag) => await this.tagsService.findOrCreateByName(tag),
+        ),
       );
-    game.steamPrice =
-      steamGame.data.price_overview.initial_formatted ||
-      steamGame.data.price_overview.final_formatted;
+    }
+    const steamTags = await Promise.all(
+      steamGame.tags.map(
+        async (tag) => await this.tagsService.findOrCreateByName({ name: tag }),
+      ),
+    );
+
+    game.tags = [...foundOrCreatedTags, ...steamTags];
+
     const digiItem = await this.digiService.fetchDigisellerItem(
       createGameDto.digiId,
     );
@@ -71,11 +91,9 @@ export class GamesService {
       throw new HttpException('Передан некорректный digiId', 400);
     }
     game.price = digiItem.product.prices.initial.RUB;
-    game.description = digiItem.product.info;
-    game.screenshots = screenshots;
     game.digiId = createGameDto.digiId;
-    await this.gameRepository.save(game);
-    return game;
+    const { tags, ...formatedSteamGame } = steamGame;
+    return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }
 
   async getAllGames(): Promise<Game[]> {
@@ -116,35 +134,13 @@ export class GamesService {
       where: { digiId: id },
     });
 
+    const steamGame = await this.getSteamGame(updateGameDto.steamId);
+
     game.tags = await Promise.all(
       updateGameDto.tags.map(
         async (tag) => await this.tagsService.findOneByName(tag),
       ),
     );
-
-    let steamGame;
-    steamGame = await steamGameFetch(updateGameDto.steamId, 'ru');
-    if (steamGame.success == false) {
-      steamGame = await steamGameFetch(updateGameDto.steamId, 'en');
-    }
-    console.log(steamGame);
-    if (steamGame.success == false) {
-      throw new HttpException('Передан некорректный steamId', 400);
-    }
-    game.name = steamGame.data.name;
-    game.logo = steamGame.data.header_image;
-    const screenshots = steamGame.data.screenshots
-      .slice(0, 4) // Выбираем только первые четыре скриншота
-      .map(
-        (sreenShot: {
-          id: number;
-          path_thumbnail: string;
-          path_full: string;
-        }) => sreenShot.path_thumbnail,
-      );
-    game.steamPrice =
-      steamGame.data.price_overview.initial_formatted ||
-      steamGame.data.price_overview.final_formatted;
     const digiItem = await this.digiService.fetchDigisellerItem(
       updateGameDto.digiId,
     );
@@ -152,11 +148,11 @@ export class GamesService {
     if (digiItem.retval == 2) {
       throw new HttpException('Передан некорректный digiId', 400);
     }
+
+    const { tags, ...formatedSteamGame } = steamGame;
     game.price = digiItem.product.prices.initial.RUB;
-    game.description = digiItem.product.info;
-    game.screenshots = screenshots;
     game.digiId = updateGameDto.digiId;
-    return await this.gameRepository.save(game);
+    return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }
 
   async loadGamesFromDigi(): Promise<Game[]> {
@@ -168,7 +164,6 @@ export class GamesService {
     const filteredData = data.product.filter((item) =>
       item.info.includes('https://store.steampowered'),
     );
-
     const games = await this.getAllGames();
 
     const gamesToAdd: { id: number; info: string }[] = filteredData.filter(
@@ -185,6 +180,7 @@ export class GamesService {
           ),
         ),
     );
+
     const addedGamesPromises: Promise<Game>[] = gamesToAdd.map(async (item) => {
       return this.create({
         digiId: item.id,
@@ -196,7 +192,21 @@ export class GamesService {
         tags: [],
       });
     });
-
     return await Promise.all(addedGamesPromises);
+  }
+
+  @Cron('0 * * * *')
+  async updateAllGames(): Promise<Game[]> {
+    const games = await this.getAllGames();
+
+    const updatedGamesPromises = games.map(async (game) => {
+      return this.updateGame(game.digiId, {
+        steamId: game.steamId,
+        tags: [],
+        digiId: game.digiId,
+      });
+    });
+
+    return await Promise.all(updatedGamesPromises);
   }
 }

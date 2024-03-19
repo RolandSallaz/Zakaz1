@@ -17,6 +17,7 @@ import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 import { InfoChaptersModule } from './info-chapters/info-chapters.module';
 import { SupportModule } from './support/support.module';
+import { ScheduleModule } from '@nestjs/schedule';
 require('dotenv').config();
 
 @Module({
@@ -27,6 +28,7 @@ require('dotenv').config();
         limit: 100,
       },
     ]),
+    ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..'),
       serveRoot: process.env.DEV ? '' : '/api',

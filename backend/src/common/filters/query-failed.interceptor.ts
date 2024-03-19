@@ -5,7 +5,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { QueryFailedError } from 'typeorm';
 
@@ -19,7 +19,7 @@ export class QueryFailedInterceptor implements NestInterceptor {
             'Не получается удалить game, так как её нужно сначала удалить из slider',
           );
         }
-        return error;
+        return throwError(error);
       }),
     );
   }
