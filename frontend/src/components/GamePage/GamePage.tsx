@@ -10,6 +10,7 @@ import './GamePage.scss';
 
 export default function GamePage() {
   const [game, setGame] = useState<IGame>();
+  const [isFullDescription, setIsFullDescription] = useState<boolean>(false);
   const { id } = useParams();
   const { games } = useAppSelector((state) => state.games);
   const navigate = useNavigate();
@@ -39,6 +40,10 @@ export default function GamePage() {
     window.location.href = `https://oplata.info/asp2/pay_options.asp?id_d=${id}&ai=&ain=&air=&curr=API_13603_RUB&_subcurr=&lang=ru-RU&_ow=0&_ids_shop=${import.meta.env.VITE_DIGI_SHOP}&xml=&failpage=${import.meta.env.VITE_FAIL_PAGE}`;
   }
 
+  function handleChangeFullDescription() {
+    setIsFullDescription((state) => !state);
+  }
+
   return (
     <main className="main gamePage">
       <Link className="link" to={'/'}>
@@ -62,7 +67,7 @@ export default function GamePage() {
             ))}
           </div>
           <div className="gamePage__logo-container">
-            <GameLogo src={image} additionClass="gamePage__logo" orientation="portait" />
+            {image && <GameLogo src={image} additionClass="gamePage__logo" orientation="portait" />}
             <div className="gamePage__tag-container">
               {game?.tags.slice(0, 4).map((tag) => <GameTag tag={tag} key={tag.id} />)}
             </div>
@@ -70,19 +75,26 @@ export default function GamePage() {
           <div className="gamePage__info">
             <h2 className="gamePage__game-name">{game?.name}</h2>
             <p
-              className="gamePage__description"
+              className={`gamePage__description ${isFullDescription && 'gamePage__description_full'}`}
               dangerouslySetInnerHTML={{
                 __html: game?.description ? game?.description.replace(regex, '') : ''
-              }}
-            ></p>
+              }}></p>
+            <button
+              type="button"
+              className="gamePage__button"
+              onClick={handleChangeFullDescription}>
+              {isFullDescription ? 'скрыть' : 'Показать полностью'}
+            </button>
           </div>
           <div className="order-info">
-            <Price price={game?.price || 0} steamPrice={game?.steamPrice || ''} type="order" />
+            {game && <Price game={game} type="order" />}
             <ul className="order-info__list">
               <li className="order-info__list-item">Мгновенная доставка ✔</li>
               <li className="order-info__list-item">Товар в наличии ✔</li>
-              {game?.steamPrice.includes('pуб.') ? (
+              {game?.steamPrice.includes('руб.') ? (
                 <li className="order-info__list-item">Игра доступна в РФ и РБ ✔</li>
+              ) : game?.steamPrice.includes('Предзаказ') ? (
+                <li className="order-info__list-item">Данный товар является предзаказом</li>
               ) : (
                 <li className="order-info__list-item">Игра недоступна в РФ и РБ ❌</li>
               )}
@@ -92,6 +104,13 @@ export default function GamePage() {
             </button>
           </div>
         </div>
+        <section className="requirements">
+          <h3 className="requirements__heading">Системные требования</h3>
+          <div className="requirements__container">
+            <p dangerouslySetInnerHTML={{ __html: game?.minimal_requirements }} />
+            <p dangerouslySetInnerHTML={{ __html: game?.recomended_requirements }} />
+          </div>
+        </section>
       </section>
     </main>
   );

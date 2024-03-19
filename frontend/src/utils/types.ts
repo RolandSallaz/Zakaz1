@@ -67,6 +67,10 @@ export interface IGame {
   enabled: boolean;
   tags: ITag[];
   steamPrice: string;
+  coming_soon: boolean;
+  release_date: string;
+  minimal_requirements: string;
+  recomended_requirements: string;
 }
 
 export interface IGameCreateDto extends Omit<IGame, 'id'> {}

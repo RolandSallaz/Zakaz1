@@ -26,8 +26,7 @@ export const GameCard = memo(({ game, customLink, lastSales, hoverDate }: Props)
       to={customLink || `/games/${game.digiId}`}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
-      className={`gameCard`}
-    >
+      className={`gameCard`}>
       <div className={'gameCard__image-container'}>
         {hoverDate && isHovered && (
           <p className="gameCard__date">
@@ -39,7 +38,7 @@ export const GameCard = memo(({ game, customLink, lastSales, hoverDate }: Props)
           src={game.logo}
           alt={'Изображение игры'}
         />
-        {!lastSales && <Price price={game.price} steamPrice={game.steamPrice} />}
+        {!lastSales && <Price game={game} />}
       </div>
       <h3 className={'gameCard__name'}>{game.name}</h3>
     </Link>

@@ -44,7 +44,7 @@ export function SlickCard({ game }: Props) {
             />
           ))}
         </div>
-        <Price price={game.price} steamPrice={game.steamPrice} />
+        <Price game={game} />
       </div>
     </div>
   );

@@ -1,16 +1,18 @@
+import { IGame } from '../../utils/types';
 import './Price.scss';
 
 type Props = {
-  price: number;
-  steamPrice: string;
   type?: 'default' | 'slick' | 'order';
+  game: IGame;
 };
 
-export function Price({ price, steamPrice, type = 'default' }: Props) {
+export function Price({ type = 'default', game }: Props) {
   return (
     <div className={`price price_${type}`}>
-      <p className={`price__cost`}>{price}</p>
-      <p className={'price__cost price__cost_old'}>{steamPrice}</p>
+      <p className={`price__cost`}>{game.price}</p>
+      <p className={`price__cost ${game.coming_soon ? 'price__cost_preorder' : 'price__cost_old'}`}>
+        {game.steamPrice}
+      </p>
     </div>
   );
 }
