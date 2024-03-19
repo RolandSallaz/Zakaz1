@@ -8,6 +8,7 @@ import {
   deleteGameSelection,
   loadGamesFromDigi,
   postGame,
+  updateAllGames,
   updateGame,
   updateGameSelection
 } from '../../services/api';
@@ -103,6 +104,20 @@ export default function Admin() {
       .catch(handleError);
   }
 
+  function handleUpdateAllGames() {
+    const startTime = performance.now();
+    updateAllGames()
+      .then((res) => {
+        const endTime = performance.now();
+        const duration = (endTime - startTime) / 1000;
+        dispatch(
+          openSnackBar({ message: `Игры обновлены, это заняло ${duration.toFixed(2)} секунд` })
+        );
+        dispatch(loadGames(res));
+      })
+      .catch(handleError);
+  }
+
   function handleDeleteGame(digiId: number) {
     deleteGame(digiId)
       .then(() => {
@@ -145,7 +160,7 @@ export default function Admin() {
                     Редактировать или удалить
                   </NavLink>
                   <NavLink className={'link admin__link'} to="./digiload">
-                    Подгрузить с Digiseller
+                    Работа с Digiseller
                   </NavLink>
                 </div>
                 <Routes>
@@ -164,8 +179,7 @@ export default function Admin() {
                         ))}
                         options={games.map((item) => item.name)}
                       />
-                    }
-                  ></Route>
+                    }></Route>
                   <Route
                     path="edit/:id"
                     element={
@@ -179,12 +193,16 @@ export default function Admin() {
                         <h2 className="digiload__heading">
                           Подгрузить все игры, у которых в описании присутствует ссылка на steam
                         </h2>
-                        <button onClick={handleLoadGamesFromDigi} className="digiload__button">
-                          Подгрузить
-                        </button>
+                        <div className="digiload__container">
+                          <button onClick={handleLoadGamesFromDigi} className="digiload__button">
+                            Подгрузить новые игры
+                          </button>
+                          <button onClick={handleUpdateAllGames} className="digiload__button">
+                            Обновить все игры
+                          </button>
+                        </div>
                       </div>
-                    }
-                  ></Route>
+                    }></Route>
                 </Routes>
               </div>
             }
@@ -219,8 +237,7 @@ export default function Admin() {
                             </Link>
                             <button
                               className="gameSelection__button"
-                              onClick={() => handleDeleteGameSelection(item.id)}
-                            >
+                              onClick={() => handleDeleteGameSelection(item.id)}>
                               Удалить
                             </button>
                           </div>

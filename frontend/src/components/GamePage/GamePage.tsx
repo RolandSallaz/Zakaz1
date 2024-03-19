@@ -107,8 +107,12 @@ export default function GamePage() {
         <section className="requirements">
           <h3 className="requirements__heading">Системные требования</h3>
           <div className="requirements__container">
-            <p dangerouslySetInnerHTML={{ __html: game?.minimal_requirements }} />
-            <p dangerouslySetInnerHTML={{ __html: game?.recomended_requirements }} />
+            {game && (
+              <>
+                <p dangerouslySetInnerHTML={{ __html: game?.minimal_requirements }} />
+                <p dangerouslySetInnerHTML={{ __html: game?.recomended_requirements }} />
+              </>
+            )}
           </div>
         </section>
       </section>

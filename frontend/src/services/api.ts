@@ -112,6 +112,10 @@ export function loadGamesFromDigi(): Promise<IGame[]> {
   return _fetch({ url: `games/digi` });
 }
 
+export function updateAllGames(): Promise<IGame[]> {
+  return _fetch({ url: `games/digi`, method: 'PATCH' });
+}
+
 export function deleteGame(digiId: number): Promise<{ message: string }> {
   return _fetch({ url: `games/${digiId}`, method: 'DELETE' });
 }

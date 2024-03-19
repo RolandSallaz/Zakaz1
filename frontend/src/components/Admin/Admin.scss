@@ -51,4 +51,8 @@
     border: 1px solid $mainColor;
     padding: 10px 20px;
   }
+  &__container {
+    display: flex;
+    gap: 10px;
+  }
 }
