@@ -15,6 +15,7 @@ import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
 import { ISteamData, ISteamToGameEntity } from '@/types';
 import { Cron } from '@nestjs/schedule';
+import { Tag } from '@/tags/entities/tag.entity';
 
 @Injectable()
 export class GamesService {
@@ -129,18 +130,41 @@ export class GamesService {
       .getMany();
   }
 
-  async updateGame(id: number, updateGameDto: UpdateGameDto) {
+  async updateGame(
+    id: number,
+    updateGameDto: UpdateGameDto,
+    isAutomatic: boolean = false,
+  ) {
     const game = await this.gameRepository.findOneOrFail({
       where: { digiId: id },
     });
-
     const steamGame = await this.getSteamGame(updateGameDto.steamId);
 
-    game.tags = await Promise.all(
-      updateGameDto.tags.map(
-        async (tag) => await this.tagsService.findOneByName(tag),
+    let existingTags: Tag[] = [];
+
+    if (!isAutomatic) {
+      existingTags = await Promise.all(
+        updateGameDto.tags?.map(
+          async (tag) => await this.tagsService.findOneByName(tag),
+        ),
+      );
+    } else {
+      existingTags = game.tags
+        ? await Promise.all(
+            game.tags?.map(
+              async (tag) => await this.tagsService.findOneByName(tag),
+            ),
+          )
+        : [];
+    }
+
+    const steamTags = await Promise.all(
+      steamGame.tags.map(
+        async (tag) => await this.tagsService.findOrCreateByName({ name: tag }),
       ),
     );
+    game.tags = [...existingTags, ...steamTags];
+
     const digiItem = await this.digiService.fetchDigisellerItem(
       updateGameDto.digiId,
     );
@@ -200,11 +224,15 @@ export class GamesService {
     const games = await this.getAllGames();
 
     const updatedGamesPromises = games.map(async (game) => {
-      return this.updateGame(game.digiId, {
-        steamId: game.steamId,
-        tags: [],
-        digiId: game.digiId,
-      });
+      return this.updateGame(
+        game.digiId,
+        {
+          steamId: game.steamId,
+          tags: [],
+          digiId: game.digiId,
+        },
+        true,
+      );
     });
 
     return await Promise.all(updatedGamesPromises);
