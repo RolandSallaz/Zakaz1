@@ -10,6 +10,8 @@ import { TagsModule } from '@/tags/tags.module';
 import { UsersModule } from '@/users/users.module';
 import { DigiModule } from '@/digi/digi.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { Review } from '@/reviews/entities/review.entity';
+import { ReviewsModule } from '@/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     KeysModule,
     TagsModule,
     UsersModule,
+    ReviewsModule,
     forwardRef(() => DigiModule),
   ],
   providers: [GamesService],

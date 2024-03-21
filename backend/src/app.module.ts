@@ -18,6 +18,7 @@ import { UsersModule } from './users/users.module';
 import { InfoChaptersModule } from './info-chapters/info-chapters.module';
 import { SupportModule } from './support/support.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ReviewsModule } from './reviews/reviews.module';
 require('dotenv').config();
 
 @Module({
@@ -57,6 +58,7 @@ require('dotenv').config();
     DigiModule,
     InfoChaptersModule,
     SupportModule,
+    ReviewsModule,
   ],
   controllers: [AppController, FilesController],
 })

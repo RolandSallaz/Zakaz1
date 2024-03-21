@@ -1,4 +1,5 @@
 import { GamesService } from '@/games/games.service';
+import { Review } from '@/reviews/entities/review.entity';
 import { HttpException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import * as crypto from 'crypto';
 
@@ -89,5 +90,41 @@ export class DigiService {
         },
       },
     ).then((res) => res.json());
+  }
+
+  async getReviews(productId: number): Promise<Review[]> {
+    const data = await fetch(
+      `https://api.digiseller.ru/api/reviews?seller_id=${process.env.VITE_DIGI_SHOP}&product_id=${productId}&type=good&page=1&rows=1000`,
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    ).then((res) => res.json());
+    if (data.retval != 0) {
+      throw new HttpException('Ошибка получения отзывов', 500);
+    }
+    if (data.review) {
+      return data.review?.map((item) => ({
+        id: item.id,
+        date: item.date,
+        digiId: productId,
+        info: item.info,
+      }));
+    } else {
+      return [];
+    }
+  }
+
+  async checkStock(digiId: number): Promise<boolean> {
+    const data = await fetch(
+      `https://api.digiseller.ru/api/products/list?ids=${digiId}&lang=ru-RU`,
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    ).then((res) => res.json());
+    return data[0].in_stock == 1 ? true : false;
   }
 }

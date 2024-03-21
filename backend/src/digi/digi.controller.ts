@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { DigiService } from './digi.service';
 
 @Controller('digi')
@@ -8,5 +8,10 @@ export class DigiController {
   @Get('lastSales')
   sales() {
     return this.digiService.getLastSales();
+  }
+
+  @Get(':digiId')
+  checkStock(@Param('digiId') digiId: number) {
+    return this.digiService.checkStock(digiId);
   }
 }

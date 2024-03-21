@@ -16,6 +16,7 @@ import { Game } from './entities/game.entity';
 import { ISteamData, ISteamToGameEntity } from '@/types';
 import { Cron } from '@nestjs/schedule';
 import { Tag } from '@/tags/entities/tag.entity';
+import { ReviewsService } from '@/reviews/reviews.service';
 
 @Injectable()
 export class GamesService {
@@ -26,6 +27,8 @@ export class GamesService {
     private tagsService: TagsService,
     @Inject(forwardRef(() => DigiService))
     private digiService: DigiService,
+    @Inject(ReviewsService)
+    private reviewService: ReviewsService,
   ) {}
 
   async getSteamGame(steamId: number): Promise<ISteamToGameEntity> {
@@ -94,6 +97,11 @@ export class GamesService {
     game.price = digiItem.product.prices.initial.RUB;
     game.digiId = createGameDto.digiId;
     const { tags, ...formatedSteamGame } = steamGame;
+    //подгружаем отзывы
+    const reviews = await this.digiService.getReviews(createGameDto.digiId);
+    reviews.forEach(
+      async (item) => await this.reviewService.createIfNotExisr(item),
+    );
     return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }
 
@@ -176,6 +184,12 @@ export class GamesService {
     const { tags, ...formatedSteamGame } = steamGame;
     game.price = digiItem.product.prices.initial.RUB;
     game.digiId = updateGameDto.digiId;
+
+    //подгружаем отзывы
+    const reviews = await this.digiService.getReviews(updateGameDto.digiId);
+    reviews.forEach(
+      async (item) => await this.reviewService.createIfNotExisr(item),
+    );
     return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }
 

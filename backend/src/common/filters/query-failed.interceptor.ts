@@ -15,9 +15,7 @@ export class QueryFailedInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((error) => {
         if (error instanceof QueryFailedError) {
-          throw new ConflictException(
-            'Не получается удалить game, так как её нужно сначала удалить из slider',
-          );
+          throw new ConflictException(error.message);
         }
         return throwError(error);
       }),
