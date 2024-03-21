@@ -1,0 +1,41 @@
+@import '../../variables.scss';
+
+.review {
+  display: flex;
+  align-items: flex-start;
+  color: $mainColor;
+  gap: 10px;
+  background-color: $transparent-background;
+  border-radius: $averageBorderRadius;
+  padding: 10px 20px;
+  min-width: 320px;
+  &__container {
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  &__sub-container {
+    gap: 10px;
+    display: flex;
+  }
+  &__info_isRunning {
+    max-width: 320px;
+    text-wrap: nowrap;
+    white-space: nowrap; /* Предотвращает перенос текста на новую строку */
+    overflow: hidden; /* Скрывает содержимое, которое не помещается в контейнер */
+    text-overflow: ellipsis; /* Отображает многоточие (...) для обрезанного текста */
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .review {
+    flex-direction: column;
+    font-size: 15px;
+    min-width: auto;
+    &__container {
+    }
+    &__sub-container {
+      flex-direction: column;
+    }
+  }
+}

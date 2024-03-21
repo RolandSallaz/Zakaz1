@@ -2,7 +2,7 @@ import './GameLogo.scss';
 interface props {
   src: string;
   additionClass?: string;
-  orientation?: 'default' | 'portait';
+  orientation?: 'default' | 'portait' | 'gamePage';
 }
 
 export default function GameLogo({ src, additionClass, orientation = 'default' }: props) {

@@ -12,6 +12,7 @@ import {
   IInfoChapter,
   ILogin,
   IRequest,
+  IReview,
   ISlider,
   ISupportTickedDto,
   ITag,
@@ -208,4 +209,22 @@ export function getChapterInfo(link: string): Promise<IInfoChapter> {
 
 export function sendSupportTicked(dto: ISupportTickedDto): Promise<{ message: string }> {
   return _fetch({ url: 'support', method: 'POST', body: { ...dto } });
+}
+
+//reviews
+
+export function getReviewsBuyGame(digiId: number): Promise<IReview[]> {
+  return _fetch({ url: `reviews/${digiId}` });
+}
+
+export function getReviewsRandom(): Promise<IReview[]> {
+  return _fetch({ url: 'reviews/random' });
+}
+
+export function getReviewsAll(): Promise<IReview[]> {
+  return _fetch({ url: 'reviews' });
+}
+
+export function checkInStock(digiId: number): Promise<boolean> {
+  return _fetch({ url: `digi/${digiId}` });
 }

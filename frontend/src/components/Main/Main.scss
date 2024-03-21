@@ -1,7 +1,7 @@
 @import '../../variables';
 
 .main {
-  margin-top: 20px;
+  margin: 20px 0;
   flex-grow: 1;
   &__container {
     display: flex;
@@ -16,6 +16,49 @@
     &_subheading {
       font-size: 25px;
     }
+  }
+}
+
+.slick__section {
+  display: flex;
+  gap: 20px;
+}
+
+.slick-links * {
+  text-decoration: none;
+}
+
+.slick-links {
+  width: 100%;
+  height: 438px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: $mainColor;
+  border-radius: $averageBorderRadius;
+  &__item {
+    height: 100%;
+    background-color: $transparent-background;
+    border-radius: $averageBorderRadius;
+    display: flex;
+    position: relative;
+    &_active::after {
+      content: '';
+      height: 100%;
+      position: absolute;
+      margin-left: -10%;
+      background-color: $transparent-background;
+      z-index: -1;
+      width: 15%;
+    }
+  }
+  &__image {
+    border-radius: $averageBorderRadius;
+    height: 100%;
+    width: 170px;
+  }
+  &__name {
+    padding: 10px;
   }
 }
 
@@ -45,5 +88,8 @@
   }
   .autoComplete {
     width: 100%;
+  }
+  .slick-links {
+    display: none;
   }
 }

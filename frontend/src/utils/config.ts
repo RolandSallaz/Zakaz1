@@ -6,10 +6,6 @@ export const INFOCHAPTER: { name: string; link: string }[] = [
     link: 'guarantees'
   },
   {
-    name: 'Отзывы',
-    link: 'reviews'
-  },
-  {
     name: 'Соглашение',
     link: 'agreement'
   },

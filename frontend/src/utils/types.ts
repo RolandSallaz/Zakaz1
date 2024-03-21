@@ -120,3 +120,10 @@ export interface ISupportTickedDto {
   imageLink: string;
   trouble: string;
 }
+
+export interface IReview {
+  id: number;
+  date: Date;
+  info: string;
+  digiId: number;
+}

@@ -11,24 +11,25 @@ import {
   getLastSales
 } from '../../services/api';
 import { closeSnackBar } from '../../services/slices/appSlice';
+import { loadGameSelections } from '../../services/slices/gameSelectionSlice';
 import { loadGames, loadSaledGames } from '../../services/slices/gameSlice';
+import { loadSliders } from '../../services/slices/sliderSlice';
 import { loadTags } from '../../services/slices/tagSlice';
+import { INFOCHAPTER } from '../../utils/config';
 import Admin from '../Admin/Admin';
+import AdminLink from '../AdminLink/AdminLink';
 import Auth from '../Auth/Auth';
 import { Footer } from '../Footer/Footer';
 import GamePage from '../GamePage/GamePage';
 import { Header } from '../Header/Header';
+import InfoChapter from '../InfoChapter/InfoChapter';
 import { Lk } from '../Lk/Lk';
 import { Main } from '../Main/Main';
 import NotFound from '../NotFound/NotFound';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
-import './App.scss';
-import AdminLink from '../AdminLink/AdminLink';
-import { loadSliders } from '../../services/slices/sliderSlice';
-import { loadGameSelections } from '../../services/slices/gameSelectionSlice';
-import { INFOCHAPTER } from '../../utils/config';
-import InfoChapter from '../InfoChapter/InfoChapter';
+import ReviewsPage from '../ReviewsPage/ReviewsPage';
 import SupportForm from '../SupportForm/SupportForm';
+import './App.scss';
 
 function App() {
   const { snackBar } = useAppSelector((state) => state.app);
@@ -97,9 +98,7 @@ function App() {
             <ProtectedRoute adminRequire>
               <Admin />
             </ProtectedRoute>
-          }
-        ></Route>
-
+          }></Route>
         <Route path="/auth" element={<Auth />} />
         <Route path="/games/:id" element={<GamePage />} />
         {INFOCHAPTER.map((item, index) => (
@@ -110,6 +109,7 @@ function App() {
           />
         ))}
         <Route path="/support" element={<SupportForm />} />
+        <Route path="/reviews" element={<ReviewsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

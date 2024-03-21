@@ -1,5 +1,5 @@
-import { Autocomplete, Switch, TextField, createFilterOptions } from '@mui/material';
-import { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { Autocomplete, TextField, createFilterOptions } from '@mui/material';
+import { FormEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
@@ -93,9 +93,9 @@ export default function GameForm({ isEditing, onSubmit, onDelete }: IProps) {
   //     .catch(handleError);
   // };
 
-  function handleSwitchChange(e: ChangeEvent<HTMLInputElement>) {
-    setIsGameActive(e.target.checked);
-  }
+  // function handleSwitchChange(e: ChangeEvent<HTMLInputElement>) {
+  //   setIsGameActive(e.target.checked);
+  // }
 
   useEffect(() => {
     async function getData() {
@@ -171,10 +171,10 @@ export default function GameForm({ isEditing, onSubmit, onDelete }: IProps) {
       <h2 className="GameForm__heading">Основное лого игры</h2>
       <section className="GameForm__info GameForm__info_main">
         <div className="GameForm__container">
-          <label className={'GameForm__switch'}>
+          {/* <label className={'GameForm__switch'}>
             Доступно для продажи
             <Switch name="gameEnabled" defaultChecked={true} onChange={handleSwitchChange} />
-          </label>
+          </label> */}
 
           <Input
             name="steamId"
@@ -250,8 +250,7 @@ export default function GameForm({ isEditing, onSubmit, onDelete }: IProps) {
         <button
           type="button"
           className="GameForm__submit GameForm__submit_delete"
-          onClick={handleDelete}
-        >
+          onClick={handleDelete}>
           Удалить игру
         </button>
       )}

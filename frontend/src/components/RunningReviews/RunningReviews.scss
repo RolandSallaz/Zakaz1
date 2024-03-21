@@ -1,0 +1,36 @@
+@import '../../variables.scss';
+
+.running-reviews * {
+  text-decoration: none;
+}
+.running-reviews {
+  margin: 20px 0;
+  gap: 10px;
+  &__container {
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 420px;
+    justify-content: stretch;
+    margin: 0 20px;
+  }
+
+  &__img {
+    z-index: -1;
+    border-radius: $averageBorderRadius $averageBorderRadius 0 0;
+    position: relative;
+    height: 40px;
+    object-fit: cover;
+  }
+  &__heading {
+    top: 10px;
+    position: absolute;
+    background-color: $backgroundColor;
+    color: $mainColor;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: center;
+  }
+}
