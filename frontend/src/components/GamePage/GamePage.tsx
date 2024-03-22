@@ -30,6 +30,7 @@ export default function GamePage() {
     const src = targetImage.src;
     setImage(src);
   }
+
   useEffect(() => {
     const findGame = games.find((item) => item.digiId == Number(id));
     if (findGame) {
@@ -90,7 +91,11 @@ export default function GamePage() {
             {game && <Price game={game} type="order" />}
             <ul className="order-info__list">
               <li className="order-info__list-item">Мгновенная доставка ✔</li>
-              {isAviable && <li className="order-info__list-item">Товар в наличии ✔</li>}
+              {isAviable ? (
+                <li className="order-info__list-item">Товар в наличии ✔</li>
+              ) : (
+                <li className="order-info__list-item">К сожалению, товар закончился ❌</li>
+              )}
               {game?.steamPrice.includes('руб.') && (
                 <li className="order-info__list-item">Игра доступна в РФ и РБ ✔</li>
               )}

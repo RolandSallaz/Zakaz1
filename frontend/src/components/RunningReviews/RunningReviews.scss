@@ -25,12 +25,12 @@
     object-fit: cover;
   }
   &__heading {
-    top: 10px;
     position: absolute;
     background-color: $backgroundColor;
     color: $mainColor;
-    padding: 5px 10px;
+    padding: 2px 10px;
     display: flex;
     justify-content: center;
+    border-radius: 0 0 $averageBorderRadius $averageBorderRadius;
   }
 }

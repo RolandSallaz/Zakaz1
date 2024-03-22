@@ -12,9 +12,11 @@ export default function RunningReviews() {
   const [reviews, setReviews] = useState<IReview[]>([]);
   const { games } = useAppSelector((state) => state.games);
   const { handleError } = useErrorHandler();
+
   useEffect(() => {
     getReviewsRandom().then(setReviews).catch(handleError);
   }, []);
+
   return (
     <Marquee className="running-reviews">
       {reviews?.map((review) => (
@@ -23,9 +25,9 @@ export default function RunningReviews() {
             className="running-reviews__img"
             src={games.find((item) => item.digiId == review.digiId)?.logo}
           />
-          <h3 className="running-reviews__heading">
+          <h2 className="running-reviews__heading">
             {games?.find((item) => item.digiId == review.digiId)?.name || ''}
-          </h3>
+          </h2>
           <Review review={review} isRunning />
         </Link>
       ))}

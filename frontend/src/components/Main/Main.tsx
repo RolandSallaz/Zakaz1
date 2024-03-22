@@ -7,6 +7,7 @@ import LastSales from '../LastSales/LastSales';
 import RunningReviews from '../RunningReviews/RunningReviews';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import ReviewsPage from '../ReviewsPage/ReviewsPage';
 
 export function Main() {
   const { filteredGames } = useAppSelector((state) => state.games);
@@ -14,6 +15,9 @@ export function Main() {
   const { sliders } = useAppSelector((state) => state.sliders);
   const { gameSelections } = useAppSelector((state) => state.gameSelections);
   const [activeSlide, setActiveSlide] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const itemsPerPage = 25;
+  const totalPages = Math.ceil(filteredGames.length / itemsPerPage);
 
   const settings = {
     dots: true,
@@ -53,8 +57,20 @@ export function Main() {
       </section>
       <div className={'main__container'}>
         <section className={'cards'}>
-          {filteredGames?.map((game) => <GameCard game={game} key={game.id} />)}
+          {filteredGames
+            ?.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+            .map((game) => <GameCard game={game} key={game.id} />)}
         </section>
+        <div className="main__buttons">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={page === index + 1 ? 'reviews__button_active' : ''}
+              onClick={() => setPage(index + 1)}>
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
       <RunningReviews />
       <LastSales />

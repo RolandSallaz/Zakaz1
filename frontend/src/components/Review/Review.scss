@@ -7,35 +7,47 @@
   gap: 10px;
   background-color: $transparent-background;
   border-radius: $averageBorderRadius;
-  padding: 10px 20px;
+  padding: 10px 20px 20px;
   min-width: 320px;
   &__container {
-    gap: 20px;
+    gap: 10px;
     display: flex;
     flex-direction: column;
   }
   &__sub-container {
     gap: 10px;
     display: flex;
+    align-items: center;
   }
   &__info_isRunning {
-    max-width: 320px;
+    max-width: 250px;
     text-wrap: nowrap;
     white-space: nowrap; /* Предотвращает перенос текста на новую строку */
     overflow: hidden; /* Скрывает содержимое, которое не помещается в контейнер */
     text-overflow: ellipsis; /* Отображает многоточие (...) для обрезанного текста */
   }
+  &__avatar {
+    align-self: center;
+  }
 }
 
 @media screen and (max-width: 1279px) {
   .review {
-    flex-direction: column;
     font-size: 15px;
-    min-width: auto;
+    position: relative;
+    align-items: center;
     &__container {
+      width: 250px;
+      position: relative;
+      align-items: center;
     }
     &__sub-container {
       flex-direction: column;
+      align-items: center;
+      display: none;
+    }
+    &__info {
+      padding: 20px 0;
     }
   }
 }
