@@ -112,7 +112,7 @@ export default function Admin() {
         const duration = (endTime - startTime) / 1000;
         dispatch(
           openSnackBar({
-            message: `Прошло времени ${duration.toFixed(2)} секунд. Игр успешно обновлено ${res.games.length}. ${res.errorUpdates.length ? 'Игр обновлено с ошибкой ' + res.errorUpdates.map((game) => game.digiId).join(', ') : ''}`
+            message: `Прошло времени ${duration.toFixed(2)} секунд. Игр успешно обновлено ${res.games.length}. ${res.errorUpdates.length ? 'Игр обновлено с ошибкой ' + res.errorUpdates.map((game) => game.name).join(', ') : ''}`
           })
         );
         dispatch(loadGames([...res.games, ...res.errorUpdates]));
@@ -181,8 +181,7 @@ export default function Admin() {
                         ))}
                         options={games.map((item) => item.name)}
                       />
-                    }
-                  ></Route>
+                    }></Route>
                   <Route
                     path="edit/:id"
                     element={
@@ -205,8 +204,7 @@ export default function Admin() {
                           </button>
                         </div>
                       </div>
-                    }
-                  ></Route>
+                    }></Route>
                 </Routes>
               </div>
             }
@@ -241,8 +239,7 @@ export default function Admin() {
                             </Link>
                             <button
                               className="gameSelection__button"
-                              onClick={() => handleDeleteGameSelection(item.id)}
-                            >
+                              onClick={() => handleDeleteGameSelection(item.id)}>
                               Удалить
                             </button>
                           </div>

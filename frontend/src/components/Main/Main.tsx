@@ -1,13 +1,12 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import { useAppSelector } from '../../hooks/redux';
 import { GameCard } from '../GameCard/GameCard';
-import { SlickCard } from '../SlickCard/SlickCard';
-import './Main.scss';
 import LastSales from '../LastSales/LastSales';
 import RunningReviews from '../RunningReviews/RunningReviews';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import ReviewsPage from '../ReviewsPage/ReviewsPage';
+import { SlickCard } from '../SlickCard/SlickCard';
+import './Main.scss';
 
 export function Main() {
   const { filteredGames } = useAppSelector((state) => state.games);
@@ -46,8 +45,7 @@ export function Main() {
                 <Link
                   key={item.id}
                   to={`/games/${item.game.digiId}`}
-                  className={`slick-links__item ${index == activeSlide && 'slick-links__item_active'}`}
-                >
+                  className={`slick-links__item ${index == activeSlide && 'slick-links__item_active'}`}>
                   <img className="slick-links__image" src={item.game.logo} />
                   <p className="slick-links__name">{item.game.name}</p>
                 </Link>
@@ -67,8 +65,7 @@ export function Main() {
             <button
               key={index}
               className={page === index + 1 ? 'reviews__button_active' : ''}
-              onClick={() => setPage(index + 1)}
-            >
+              onClick={() => setPage(index + 1)}>
               {index + 1}
             </button>
           ))}
