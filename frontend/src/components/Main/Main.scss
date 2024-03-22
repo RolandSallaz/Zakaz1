@@ -3,6 +3,7 @@
 .main {
   margin: 20px 0;
   flex-grow: 1;
+
   &__container {
     display: flex;
     gap: 10px;
@@ -23,6 +24,10 @@
     display: flex;
     gap: 10px;
   }
+}
+
+.admin {
+  flex-direction: row;
 }
 
 .slick__section {

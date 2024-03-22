@@ -121,11 +121,13 @@ export default function GamePage() {
               className={`gamePage__description ${isFullDescription && 'gamePage__description_full'}`}
               dangerouslySetInnerHTML={{
                 __html: game?.description ? game?.description.replace(regex, '') : ''
-              }}></p>
+              }}
+            ></p>
             <button
               type="button"
               className="gamePage__button"
-              onClick={handleChangeFullDescription}>
+              onClick={handleChangeFullDescription}
+            >
               {isFullDescription ? 'скрыть' : 'Показать полностью'}
             </button>
           </div>
@@ -144,7 +146,8 @@ export default function GamePage() {
               Если не установлен Steam клиент, скачайте его для{' '}
               <a
                 href="https://steamcdn-a.akamaihd.net/client/installer/SteamSetup.exe"
-                target="_blank">
+                target="_blank"
+              >
                 Windows
               </a>{' '}
               (клиент также доступен на{' '}
@@ -205,7 +208,8 @@ export default function GamePage() {
             <button
               key={index}
               className={reviewsPage === index + 1 ? 'reviews__button_active' : ''}
-              onClick={() => setReviewsPage(index + 1)}>
+              onClick={() => setReviewsPage(index + 1)}
+            >
               {index + 1}
             </button>
           ))}

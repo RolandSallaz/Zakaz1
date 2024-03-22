@@ -113,7 +113,7 @@ export function loadGamesFromDigi(): Promise<IGame[]> {
   return _fetch({ url: `games/digi` });
 }
 
-export function updateAllGames(): Promise<IGame[]> {
+export function updateAllGames(): Promise<{ games: IGame[]; errorUpdates: IGame[] }> {
   return _fetch({ url: `games/digi`, method: 'PATCH' });
 }
 

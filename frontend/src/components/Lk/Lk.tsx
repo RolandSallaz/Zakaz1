@@ -10,11 +10,11 @@ type Props = {
 
 export function Lk({ children, additionalClass }: Props) {
   return (
-    <main className={`main Lk ${additionalClass}`}>
+    <main className={`main Lk`}>
       <Link className="link Lk__link" to={'/'}>
         Вернуться на главную
       </Link>
-      <div className="main__container">{children}</div>
+      <div className={`main__container ${additionalClass}`}>{children}</div>
     </main>
   );
 }
