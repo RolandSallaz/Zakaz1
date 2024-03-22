@@ -234,21 +234,30 @@ export class GamesService {
   }
 
   @Cron('0 * * * *')
-  async updateAllGames(): Promise<Game[]> {
+  async updateAllGames(): Promise<{ games: Game[]; errorUpdates: Game[] }> {
     const games = await this.getAllGames();
+    const updatedGames: Game[] = [];
+    const errorUpdates: Game[] = [];
 
-    const updatedGamesPromises = games.map(async (game) => {
-      return this.updateGame(
-        game.digiId,
-        {
-          steamId: game.steamId,
-          tags: [],
-          digiId: game.digiId,
-        },
-        true,
-      );
-    });
+    await Promise.all(
+      games.map(async (game) => {
+        try {
+          await this.updateGame(
+            game.digiId,
+            {
+              steamId: game.steamId,
+              tags: [],
+              digiId: game.digiId,
+            },
+            true,
+          );
+          updatedGames.push(game);
+        } catch (error) {
+          errorUpdates.push(game);
+        }
+      }),
+    );
 
-    return await Promise.all(updatedGamesPromises);
+    return { games: updatedGames, errorUpdates };
   }
 }
