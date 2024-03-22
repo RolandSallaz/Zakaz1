@@ -110,7 +110,7 @@ export class DigiService {
     if (data.review) {
       return data.review?.map((item) => ({
         id: item.id,
-        date: item.date,
+        date: new Date(item.date),
         digiId: productId,
         info: item.info,
       }));
