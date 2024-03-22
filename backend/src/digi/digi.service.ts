@@ -102,7 +102,10 @@ export class DigiService {
       },
     ).then((res) => res.json());
     if (data.retval != 0) {
-      throw new HttpException('Ошибка получения отзывов', 500);
+      throw new HttpException(
+        `Ошибка получения отзывов retval ${data.retval}`,
+        500,
+      );
     }
     if (data.review) {
       return data.review?.map((item) => ({
