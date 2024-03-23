@@ -7,7 +7,7 @@ export default function SystemInfo() {
   const [systemInfo, setSystemInfo] = useState<ISystemInfo>();
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:3000');
+    const socket = io(import.meta.env.VITE_SERVER_WS || 'http://localhost:3000');
 
     function intervalDataSend() {
       return setInterval(() => {
