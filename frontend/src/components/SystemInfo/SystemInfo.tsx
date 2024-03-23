@@ -1,33 +1,40 @@
-import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { useEffect, useRef, useState } from 'react';
+import { Socket, io } from 'socket.io-client';
 import { ISystemInfo } from '../../utils/types';
 import './SystemInfo.scss';
 
+interface Timeout {
+  ref(): void;
+  unref(): void;
+}
+
 export default function SystemInfo() {
   const [systemInfo, setSystemInfo] = useState<ISystemInfo>();
+  const intervalIdRef = useRef<Timeout | null>(null);
+  const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_SERVER_WS || 'http://localhost:3000');
+    socketRef.current = io(import.meta.env.VITE_SERVER_WS || 'http://localhost:3000');
 
     function intervalDataSend() {
-      return setInterval(() => {
-        socket.emit('getSystemInfo');
-      }, 1000);
+      socketRef.current?.emit('getSystemInfo');
     }
 
-    const intervalId = intervalDataSend();
-
-    socket.on('connect', () => {
-      intervalDataSend();
+    socketRef.current.on('connect', () => {
+      intervalIdRef.current = setInterval(intervalDataSend, 1000) as unknown as Timeout;
     });
 
-    socket.on('systemInfo', (data) => {
+    socketRef.current.on('systemInfo', (data: ISystemInfo) => {
       setSystemInfo(data);
     });
 
     return () => {
-      socket.disconnect();
-      clearInterval(intervalId);
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current as unknown as number);
+      }
     };
   }, []);
 
