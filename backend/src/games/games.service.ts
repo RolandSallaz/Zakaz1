@@ -99,8 +99,10 @@ export class GamesService {
     const { tags, ...formatedSteamGame } = steamGame;
     //подгружаем отзывы
     const reviews = await this.digiService.getReviews(createGameDto.digiId);
-    reviews.forEach(
-      async (item) => await this.reviewService.createIfNotExisr(item),
+    await Promise.all(
+      reviews.map(
+        async (item) => await this.reviewService.createIfNotExisr(item),
+      ),
     );
     return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }
@@ -187,8 +189,10 @@ export class GamesService {
 
     //подгружаем отзывы
     const reviews = await this.digiService.getReviews(updateGameDto.digiId);
-    reviews.forEach(
-      async (item) => await this.reviewService.createIfNotExisr(item),
+    await Promise.all(
+      reviews.map(
+        async (item) => await this.reviewService.createIfNotExisr(item),
+      ),
     );
     return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }

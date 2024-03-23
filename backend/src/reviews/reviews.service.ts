@@ -12,16 +12,18 @@ export class ReviewsService {
   ) {}
 
   async createIfNotExisr(createReviewDto: CreateReviewDto): Promise<Review> {
-    const review = await this.reviewRepository.findOne({
-      where: { id: createReviewDto.id },
-    });
-
-    if (!review) {
+    try {
       const newReview = this.reviewRepository.create(createReviewDto);
       return await this.reviewRepository.save(newReview);
+    } catch (error) {
+      if (error.code === '23505') {
+        const review = await this.reviewRepository.findOneOrFail({
+          where: { id: createReviewDto.id },
+        });
+        return review;
+      }
+      throw error;
     }
-
-    return review;
   }
 
   async findAll(): Promise<Review[]> {
@@ -45,7 +47,7 @@ export class ReviewsService {
     return await this.reviewRepository
       .createQueryBuilder('entity')
       .orderBy('RANDOM()')
-      // .take(10)
+      .take(10)
       .getMany();
   }
 }
