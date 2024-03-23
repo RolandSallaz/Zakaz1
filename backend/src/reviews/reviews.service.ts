@@ -11,16 +11,14 @@ export class ReviewsService {
     private reviewRepository: Repository<Review>,
   ) {}
 
-  async createIfNotExisr(createReviewDto: CreateReviewDto): Promise<Review> {
+  async createIfNotExisr(createReviewDto: CreateReviewDto): Promise<boolean> {
     try {
       const newReview = this.reviewRepository.create(createReviewDto);
-      return await this.reviewRepository.save(newReview);
+      await this.reviewRepository.save(newReview);
+      return true;
     } catch (error) {
       if (error.code === '23505') {
-        const review = await this.reviewRepository.findOneOrFail({
-          where: { id: createReviewDto.id },
-        });
-        return review;
+        return false;
       }
       throw error;
     }
