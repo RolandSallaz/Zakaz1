@@ -4,20 +4,30 @@ import { ISystemInfo } from '../../utils/types';
 import './SystemInfo.scss';
 
 export default function SystemInfo() {
-  const [systemInfo, setSystemInfo] = useState<ISystemInfo>({});
+  const [systemInfo, setSystemInfo] = useState<ISystemInfo>();
 
   useEffect(() => {
     const socket = io('http://localhost:3000');
 
+    function intervalDataSend() {
+      return setInterval(() => {
+        socket.emit('getSystemInfo');
+      }, 1000);
+    }
+
+    const intervalId = intervalDataSend();
+
     socket.on('connect', () => {
-      socket.emit('getSystemInfo');
+      intervalDataSend();
     });
 
     socket.on('systemInfo', (data) => {
       setSystemInfo(data);
     });
+
     return () => {
       socket.disconnect();
+      clearInterval(intervalId);
     };
   }, []);
 
