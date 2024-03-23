@@ -5,7 +5,13 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  padding: 20px;
+  margin-top: 20px;
+  &__container {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+  }
   &__title {
     margin: 0 auto;
   }

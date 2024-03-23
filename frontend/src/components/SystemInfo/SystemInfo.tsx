@@ -34,25 +34,31 @@ export default function SystemInfo() {
   return (
     <div className="systemInfo">
       <h2 className="systemInfo__title">Данные о системе</h2>
-      <section className="systemInfo__section">
-        <h3 className="systemInfo__section-title">Озу</h3>
-        <p className="systemInfo__section-text">Всего {systemInfo?.ram?.totalMemory} GB</p>
-        <p className="systemInfo__section-text">Использовано {systemInfo?.ram?.usedMemory} GB</p>
-        <p className="systemInfo__section-text">Свободно {systemInfo?.ram?.freeMemory} GB</p>
-        <p className="systemInfo__section-text">
-          Используется сервером {systemInfo?.ram?.usedMemory} MB
-        </p>
-      </section>
-      <section className="systemInfo__section">
-        <h3 className="systemInfo__section-title">Память</h3>
-        {systemInfo?.disk?.space?.map((disk, index) => (
-          <div key={index} className="systemInfo__disk">
-            <p className="systemInfo__disk-info">Диск {index + 1}</p>
-            <p className="systemInfo__disk-info">Размер {disk.sizeInGB} GB</p>
-            <p className="systemInfo__disk-info">Занято {disk.usedInGB} GB</p>
-          </div>
-        ))}
-      </section>
+      <div className="systemInfo__container">
+        <section className="systemInfo__section">
+          <h3 className="systemInfo__section-title">CPU</h3>
+          <p className="systemInfo__section-text">Нагрузка {systemInfo?.cpu}%</p>
+        </section>
+        <section className="systemInfo__section">
+          <h3 className="systemInfo__section-title">Озу</h3>
+          <p className="systemInfo__section-text">Всего {systemInfo?.ram?.totalMemory} GB</p>
+          <p className="systemInfo__section-text">Использовано {systemInfo?.ram?.usedMemory} GB</p>
+          <p className="systemInfo__section-text">Свободно {systemInfo?.ram?.freeMemory} GB</p>
+          <p className="systemInfo__section-text">
+            Используется сервером {systemInfo?.ram?.usedMemory} MB
+          </p>
+        </section>
+        <section className="systemInfo__section">
+          <h3 className="systemInfo__section-title">Память</h3>
+          {systemInfo?.disk?.space?.map((disk, index) => (
+            <div key={index} className="systemInfo__disk">
+              <p className="systemInfo__disk-info">Диск {index + 1}</p>
+              <p className="systemInfo__disk-info">Размер {disk.sizeInGB} GB</p>
+              <p className="systemInfo__disk-info">Занято {disk.usedInGB} GB</p>
+            </div>
+          ))}
+        </section>
+      </div>
     </div>
   );
 }
