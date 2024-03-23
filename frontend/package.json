@@ -31,6 +31,7 @@
     "react-router-dom": "^6.22.1",
     "react-slick": "^0.30.2",
     "sass": "^1.71.0",
+    "socket.io-client": "^4.7.5",
     "ws": "^8.16.0"
   },
   "devDependencies": {

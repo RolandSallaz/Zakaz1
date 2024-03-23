@@ -13,13 +13,16 @@ import {
   updateGameSelection
 } from '../../services/api';
 import { openSnackBar } from '../../services/slices/appSlice';
+import { loadGameSelections } from '../../services/slices/gameSelectionSlice';
 import { loadGames } from '../../services/slices/gameSlice';
+import { INFOCHAPTER } from '../../utils/config';
 import {
   IGameCreateDto,
   IGameSelectionDto,
   IGameSelectionUpdateDto,
   IGameUpdateDto
 } from '../../utils/types';
+import FooterChapterForm from '../FooterChapterForm/FooterChapterForm';
 import { GameCard } from '../GameCard/GameCard';
 import GameForm from '../GameForm/GameForm';
 import GameSelectionForm from '../GameSelectionForm/GameSelectionForm';
@@ -27,11 +30,9 @@ import { Lk } from '../Lk/Lk';
 import SectionWithSearch from '../SectionWithSearch/SectionWithSearch';
 import { SidePanel } from '../SidePanel/SidePanel';
 import SliderManager from '../SliderManager/SliderManager';
+import SystemInfo from '../SystemInfo/SystemInfo';
 import TagManager from '../TagManager/TagManager';
 import './Admin.scss';
-import { loadGameSelections } from '../../services/slices/gameSelectionSlice';
-import { INFOCHAPTER } from '../../utils/config';
-import FooterChapterForm from '../FooterChapterForm/FooterChapterForm';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -146,6 +147,9 @@ export default function Admin() {
         </NavLink>
         <NavLink className="link admin__link" to="./info-chapter">
           Разделы с информацией
+        </NavLink>
+        <NavLink className="link admin__link" to="./system-info">
+          Состояние сервера
         </NavLink>
       </SidePanel>
       <div className="admin__container">
@@ -273,6 +277,7 @@ export default function Admin() {
               </Routes>
             }
           />
+          <Route path="system-info" element={<SystemInfo />} />
         </Routes>
       </div>
     </Lk>

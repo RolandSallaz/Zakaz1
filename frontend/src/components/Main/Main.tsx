@@ -15,7 +15,7 @@ export function Main() {
   const { gameSelections } = useAppSelector((state) => state.gameSelections);
   const [activeSlide, setActiveSlide] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
-  const itemsPerPage = 25;
+  const itemsPerPage = window.innerWidth > 1279 ? 25 : 5;
   const totalPages = Math.ceil(filteredGames.length / itemsPerPage);
 
   const settings = {

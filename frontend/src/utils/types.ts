@@ -127,3 +127,19 @@ export interface IReview {
   info: string;
   digiId: number;
 }
+
+export interface ISystemInfo {
+  cpu: string;
+  disk: {
+    space: {
+      usedInGB: string;
+      sizeInGB: string;
+    }[];
+  };
+  ram: {
+    totalMemory: string;
+    freeMemory: string;
+    usedMemory: string;
+    nodeMemory: string;
+  };
+}

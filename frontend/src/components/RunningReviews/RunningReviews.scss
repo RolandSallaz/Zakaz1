@@ -32,5 +32,9 @@
     display: flex;
     justify-content: center;
     border-radius: 0 0 $averageBorderRadius $averageBorderRadius;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
