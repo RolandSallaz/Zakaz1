@@ -11,17 +11,9 @@ export class ReviewsService {
     private reviewRepository: Repository<Review>,
   ) {}
 
-  async createIfNotExisr(createReviewDto: CreateReviewDto): Promise<boolean> {
-    try {
-      const newReview = this.reviewRepository.create(createReviewDto);
-      await this.reviewRepository.save(newReview);
-      return true;
-    } catch (error) {
-      if (error.code === '23505') {
-        return false;
-      }
-      throw error;
-    }
+  async create(createReviewDto: CreateReviewDto) {
+    const newReview = this.reviewRepository.create(createReviewDto);
+    return await this.reviewRepository.save(newReview);
   }
 
   async findAll(): Promise<Review[]> {

@@ -99,11 +99,16 @@ export class GamesService {
     const { tags, ...formatedSteamGame } = steamGame;
     //подгружаем отзывы
     const reviews = await this.digiService.getReviews(createGameDto.digiId);
-    await Promise.all(
-      reviews.map(
-        async (item) => await this.reviewService.createIfNotExisr(item),
-      ),
-    );
+    const reviewPromises = reviews.map(async (item) => {
+      try {
+        await this.reviewService.create(item);
+      } catch (error) {
+        console.error(
+          `Ошибка при обработке отзыва с id ${item.id}: ${error.message}`,
+        );
+      }
+    });
+    await Promise.all(reviewPromises);
     return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }
 
@@ -189,11 +194,16 @@ export class GamesService {
 
     //подгружаем отзывы
     const reviews = await this.digiService.getReviews(updateGameDto.digiId);
-    await Promise.all(
-      reviews.map(
-        async (item) => await this.reviewService.createIfNotExisr(item),
-      ),
-    );
+    const reviewPromises = reviews.map(async (item) => {
+      try {
+        await this.reviewService.create(item);
+      } catch (error) {
+        console.error(
+          `Ошибка при обработке отзыва с id ${item.id}: ${error.message}`,
+        );
+      }
+    });
+    await Promise.all(reviewPromises);
     return await this.gameRepository.save({ ...game, ...formatedSteamGame });
   }
 
