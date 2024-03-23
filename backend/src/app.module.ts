@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,14 +12,15 @@ import { EmailModule } from './email/email.module';
 import { FilesController } from './files/files.controller';
 import { GamesModule } from './games/games.module';
 import { GameselectionModule } from './gameselection/gameselection.module';
+import { InfoChaptersModule } from './info-chapters/info-chapters.module';
 import { KeysModule } from './keys/keys.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import { SliderModule } from './slider/slider.module';
+import { SupportModule } from './support/support.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
-import { InfoChaptersModule } from './info-chapters/info-chapters.module';
-import { SupportModule } from './support/support.module';
-import { ScheduleModule } from '@nestjs/schedule';
-import { ReviewsModule } from './reviews/reviews.module';
+import { SystemInfoModule } from './system-info/system-info.module';
+
 require('dotenv').config();
 
 @Module({
@@ -59,6 +61,7 @@ require('dotenv').config();
     InfoChaptersModule,
     SupportModule,
     ReviewsModule,
+    SystemInfoModule,
   ],
   controllers: [AppController, FilesController],
 })
