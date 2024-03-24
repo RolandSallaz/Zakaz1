@@ -1,6 +1,9 @@
 import { steamGameFetch } from '@/common/filters/helpers/fetchApi';
 import { DigiService } from '@/digi/digi.service';
+import { ReviewsService } from '@/reviews/reviews.service';
+import { Tag } from '@/tags/entities/tag.entity';
 import { TagsService } from '@/tags/tags.service';
+import { ISteamData, ISteamToGameEntity } from '@/types';
 import {
   HttpException,
   Inject,
@@ -8,15 +11,12 @@ import {
   NotFoundException,
   forwardRef,
 } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
-import { ISteamData, ISteamToGameEntity } from '@/types';
-import { Cron } from '@nestjs/schedule';
-import { Tag } from '@/tags/entities/tag.entity';
-import { ReviewsService } from '@/reviews/reviews.service';
 
 @Injectable()
 export class GamesService {
@@ -253,24 +253,25 @@ export class GamesService {
     const updatedGames: Game[] = [];
     const errorUpdates: Game[] = [];
 
-    await Promise.all(
-      games.map(async (game) => {
-        try {
-          await this.updateGame(
-            game.digiId,
-            {
-              steamId: game.steamId,
-              tags: [],
-              digiId: game.digiId,
-            },
-            true,
-          );
-          updatedGames.push(game);
-        } catch (error) {
-          errorUpdates.push(game);
-        }
-      }),
-    );
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    for (const game of games) {
+      try {
+        await this.updateGame(
+          game.digiId,
+          {
+            steamId: game.steamId,
+            tags: [],
+            digiId: game.digiId,
+          },
+          true,
+        );
+        updatedGames.push(game);
+      } catch (error) {
+        errorUpdates.push(game);
+      }
+      await delay(50);
+    }
 
     return { games: updatedGames, errorUpdates };
   }

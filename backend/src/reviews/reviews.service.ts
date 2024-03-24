@@ -11,9 +11,16 @@ export class ReviewsService {
     private reviewRepository: Repository<Review>,
   ) {}
 
-  async create(createReviewDto: CreateReviewDto) {
-    const newReview = this.reviewRepository.create(createReviewDto);
-    return await this.reviewRepository.save(newReview);
+  async create(createReviewDto: CreateReviewDto): Promise<Review> {
+    const review = await this.reviewRepository.findOne({
+      where: { id: createReviewDto.id },
+    });
+    if (review) {
+      return review;
+    } else {
+      const newReview = this.reviewRepository.create(createReviewDto);
+      return await this.reviewRepository.save(newReview);
+    }
   }
 
   async findAll(): Promise<Review[]> {

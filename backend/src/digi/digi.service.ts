@@ -2,6 +2,7 @@ import { GamesService } from '@/games/games.service';
 import { Review } from '@/reviews/entities/review.entity';
 import { HttpException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import * as crypto from 'crypto';
+import { parse, format } from 'date-fns';
 
 require('dotenv').config();
 
@@ -107,10 +108,14 @@ export class DigiService {
         500,
       );
     }
+
     if (data.review) {
       return data.review?.map((item) => ({
         id: item.id,
-        date: item.date,
+        date: format(
+          parse(item.date, 'dd.MM.yyyy HH:mm:ss', new Date()),
+          'yyyy-MM-dd HH:mm:ss',
+        ),
         digiId: productId,
         info: item.info,
       }));

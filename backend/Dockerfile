@@ -11,9 +11,6 @@ CMD npm run migration:run
 FROM node:21-alpine As production
 WORKDIR /app
 
-RUN apk add --no-cache tzdata
-RUN ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-
 COPY package*.json ./
 
 RUN npm i --omit=dev && npm i -g pm2
