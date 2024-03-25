@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /#/admin/  # Запрещаем доступ к папке администратора
+Sitemap: https://www.steamland.ru/sitemap.xml

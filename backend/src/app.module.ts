@@ -20,6 +20,8 @@ import { SupportModule } from './support/support.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 import { SystemInfoModule } from './system-info/system-info.module';
+import { SitemapService } from './sitemap/sitemap.service';
+import { SitemapModule } from './sitemap/sitemap.module';
 
 require('dotenv').config();
 
@@ -62,7 +64,9 @@ require('dotenv').config();
     SupportModule,
     ReviewsModule,
     SystemInfoModule,
+    SitemapModule,
   ],
   controllers: [AppController, FilesController],
+  providers: [SitemapService],
 })
 export class AppModule {}

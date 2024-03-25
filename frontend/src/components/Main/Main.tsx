@@ -45,9 +45,12 @@ export function Main() {
                 <Link
                   key={item.id}
                   to={`/games/${item.game.digiId}`}
-                  className={`slick-links__item ${index == activeSlide && 'slick-links__item_active'}`}
-                >
-                  <img className="slick-links__image" src={item.game.logo} />
+                  className={`slick-links__item ${index == activeSlide && 'slick-links__item_active'}`}>
+                  <img
+                    className="slick-links__image"
+                    src={item.game.logo}
+                    alt={`Купить игру ${item.game.name} дешевле чем в Steam`}
+                  />
                   <p className="slick-links__name">{item.game.name}</p>
                 </Link>
               ))
@@ -66,8 +69,7 @@ export function Main() {
             <button
               key={index}
               className={page === index + 1 ? 'reviews__button_active' : ''}
-              onClick={() => setPage(index + 1)}
-            >
+              onClick={() => setPage(index + 1)}>
               {index + 1}
             </button>
           ))}

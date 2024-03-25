@@ -52,6 +52,16 @@ export default function GamePage() {
       .catch(console.log);
   }, [navigate]);
 
+  useEffect(() => {
+    if (game) {
+      document.title = `Купить ${game?.name} для Steam недорого | STEAMLAND.RU`;
+    }
+
+    return () => {
+      document.title = 'STEAMLAND.RU - Интернет магазин недорогих ключей ';
+    };
+  }, [game]);
+
   function handleBuyRedirect() {
     window.location.href = `https://oplata.info/asp2/pay_options.asp?id_d=${id}&ai=&ain=&air=&curr=API_13603_RUB&_subcurr=&lang=ru-RU&_ow=0&_ids_shop=${import.meta.env.VITE_DIGI_SHOP}&xml=&failpage=${import.meta.env.VITE_FAIL_PAGE}`;
   }
@@ -121,13 +131,11 @@ export default function GamePage() {
               className={`gamePage__description ${isFullDescription && 'gamePage__description_full'}`}
               dangerouslySetInnerHTML={{
                 __html: game?.description ? game?.description.replace(regex, '') : ''
-              }}
-            ></p>
+              }}></p>
             <button
               type="button"
               className="gamePage__button"
-              onClick={handleChangeFullDescription}
-            >
+              onClick={handleChangeFullDescription}>
               {isFullDescription ? 'скрыть' : 'Показать полностью'}
             </button>
           </div>
@@ -146,8 +154,7 @@ export default function GamePage() {
               Если не установлен Steam клиент, скачайте его для{' '}
               <a
                 href="https://steamcdn-a.akamaihd.net/client/installer/SteamSetup.exe"
-                target="_blank"
-              >
+                target="_blank">
                 Windows
               </a>{' '}
               (клиент также доступен на{' '}
@@ -208,8 +215,7 @@ export default function GamePage() {
             <button
               key={index}
               className={reviewsPage === index + 1 ? 'reviews__button_active' : ''}
-              onClick={() => setReviewsPage(index + 1)}
-            >
+              onClick={() => setReviewsPage(index + 1)}>
               {index + 1}
             </button>
           ))}

@@ -1,17 +1,14 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { GamesService } from './games.service';
-import { GamesController } from './games.controller';
-import { JwtModule } from '@nestjs/jwt';
-import { Game } from './entities/game.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { KeysService } from '@/keys/keys.service';
+import { DigiModule } from '@/digi/digi.module';
 import { KeysModule } from '@/keys/keys.module';
+import { ReviewsModule } from '@/reviews/reviews.module';
 import { TagsModule } from '@/tags/tags.module';
 import { UsersModule } from '@/users/users.module';
-import { DigiModule } from '@/digi/digi.module';
-import { ScheduleModule } from '@nestjs/schedule';
-import { Review } from '@/reviews/entities/review.entity';
-import { ReviewsModule } from '@/reviews/reviews.module';
+import { Module, forwardRef } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Game } from './entities/game.entity';
+import { GamesController } from './games.controller';
+import { GamesService } from './games.service';
 
 @Module({
   imports: [
