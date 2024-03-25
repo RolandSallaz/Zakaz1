@@ -2,7 +2,7 @@ import { GamesService } from '@/games/games.service';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { createWriteStream } from 'fs';
 import { Cron } from '@nestjs/schedule';
-import * as Docker from 'dockerode';
+import Docker from 'dockerode';
 
 require('dotenv').config();
 @Injectable()
