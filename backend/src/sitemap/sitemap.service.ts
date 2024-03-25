@@ -1,22 +1,25 @@
 import { GamesService } from '@/games/games.service';
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import Docker from 'dockerode';
 import { createWriteStream } from 'fs';
 import { Cron } from '@nestjs/schedule';
+import * as Docker from 'dockerode';
+
 require('dotenv').config();
 @Injectable()
 export class SitemapService implements OnModuleInit {
   constructor(private readonly gameService: GamesService) {}
 
   async onModuleInit() {
-    await this.generateAndMoveSitemap();
+    try {
+      await this.generateAndMoveSitemap();
+      console.log('Sitemap successfully generated and moved.');
+    } catch (error) {
+      console.error('Error generating or moving sitemap:', error);
+    }
   }
 
   @Cron('0 * * * *')
   async generateAndMoveSitemap(): Promise<void> {
-    if (process.env.DEV) {
-      return;
-    }
     // Генерация sitemap.xml
     const games = await this.gameService.getAllGames();
     const sitemapContent = this.generateSitemapContent(games);
@@ -26,8 +29,9 @@ export class SitemapService implements OnModuleInit {
     // Перенос sitemap.xml в контейнер фронтенда
     const docker = new Docker({ socketPath: '/var/run/docker.sock' });
     const frontendContainer = docker.getContainer('frontend');
-    await frontendContainer.putArchive(sitemapPath, {
-      path: '/usr/share/nginx/html/',
+    await frontendContainer.putArchive({
+      src: sitemapPath,
+      dst: '/usr/share/nginx/html/',
     });
   }
 
@@ -38,21 +42,20 @@ export class SitemapService implements OnModuleInit {
 
     // Добавляем ссылку на главную страницу
     sitemapContent += '<url>\n';
-    sitemapContent += `<loc>${process.env.DOMAIN}/</loc>\n`;
+    sitemapContent += '<loc>https://steamland.ru/</loc>\n';
     sitemapContent += '<changefreq>daily</changefreq>\n';
     sitemapContent += '<priority>1.0</priority>\n';
     sitemapContent += '</url>\n';
 
     // Добавляем ссылки на игры
     for (const game of games) {
-      const url = `${process.env.DOMAIN}/#/games/${game.digiId}`;
+      const url = `https://steamland.ru/#/games/${game.digiId}`;
       sitemapContent += '<url>\n';
       sitemapContent += `<loc>${url}</loc>\n`;
       sitemapContent += '</url>\n';
     }
 
     sitemapContent += '</urlset>';
-    console.log('sitemap создан и перемещен');
     return sitemapContent;
   }
 
