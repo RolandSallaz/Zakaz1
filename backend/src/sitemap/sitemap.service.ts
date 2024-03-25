@@ -2,7 +2,6 @@ import { GamesService } from '@/games/games.service';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { createWriteStream } from 'fs';
 import { Cron } from '@nestjs/schedule';
-import Docker from 'dockerode';
 
 require('dotenv').config();
 @Injectable()
@@ -20,19 +19,10 @@ export class SitemapService implements OnModuleInit {
 
   @Cron('0 * * * *')
   async generateAndMoveSitemap(): Promise<void> {
-    // Генерация sitemap.xml
     const games = await this.gameService.getAllGames();
     const sitemapContent = this.generateSitemapContent(games);
-    const sitemapPath = 'sitemap.xml';
+    const sitemapPath = '/app/sitemap/sitemap.xml';
     await this.saveSitemap(sitemapPath, sitemapContent);
-
-    // Перенос sitemap.xml в контейнер фронтенда
-    const docker = new Docker({ socketPath: '/var/run/docker.sock' });
-    const frontendContainer = docker.getContainer('frontend');
-    await frontendContainer.putArchive({
-      src: sitemapPath,
-      dst: '/usr/share/nginx/html/',
-    });
   }
 
   private generateSitemapContent(games: any[]): string {

@@ -16,7 +16,7 @@ services:
       - postgres
     volumes:
       - ./backend/public/uploads:/app/public/uploads
-      - /var/run/docker.sock:/var/run/docker.sock
+      - sitemap_volume:/app/sitemap
 
   postgres:
     container_name: "database"
@@ -45,6 +45,7 @@ services:
       - backend
     volumes:
       - ./ssl:/etc/ssl
+      - sitemap_volume:/usr/share/nginx/html
 
 networks:
   net:
