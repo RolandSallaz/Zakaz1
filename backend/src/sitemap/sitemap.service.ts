@@ -42,14 +42,14 @@ export class SitemapService implements OnModuleInit {
 
     // Добавляем ссылку на главную страницу
     sitemapContent += '<url>\n';
-    sitemapContent += '<loc>https://steamland.ru/</loc>\n';
+    sitemapContent += `<loc>${process.env.DOMAIN}/</loc>\n`;
     sitemapContent += '<changefreq>daily</changefreq>\n';
     sitemapContent += '<priority>1.0</priority>\n';
     sitemapContent += '</url>\n';
 
     // Добавляем ссылки на игры
     for (const game of games) {
-      const url = `https://steamland.ru/#/games/${game.digiId}`;
+      const url = `${process.env.DOMAIN}/#/games/${game.digiId}`;
       sitemapContent += '<url>\n';
       sitemapContent += `<loc>${url}</loc>\n`;
       sitemapContent += '</url>\n';
