@@ -1,6 +1,6 @@
 import { GamesService } from '@/games/games.service';
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import * as Docker from 'dockerode';
+import Docker from 'dockerode';
 import { createWriteStream } from 'fs';
 import { Cron } from '@nestjs/schedule';
 require('dotenv').config();
@@ -24,7 +24,7 @@ export class SitemapService implements OnModuleInit {
     await this.saveSitemap(sitemapPath, sitemapContent);
 
     // Перенос sitemap.xml в контейнер фронтенда
-    const docker = new Docker();
+    const docker = new Docker({ socketPath: '/var/run/docker.sock' });
     const frontendContainer = docker.getContainer('frontend');
     await frontendContainer.putArchive(sitemapPath, {
       path: '/usr/share/nginx/html/',
