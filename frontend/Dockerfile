@@ -6,7 +6,7 @@ RUN npm i
 COPY . .
 RUN npm run build
 
-FROM nginx:3.17-alpine
+FROM nginx:stable-alpine3.17
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 COPY ./default.conf /etc/nginx/conf.d
