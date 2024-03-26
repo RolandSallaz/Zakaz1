@@ -8,8 +8,7 @@ export class RobotsController {
   constructor(private readonly robotsService: RobotsService) {}
 
   @Get()
-  @UseGuards(AdminRoleAuthGuard)
-  findAll() {
+  getRobots() {
     return this.robotsService.getRobots();
   }
 

@@ -4,7 +4,7 @@ import fs from 'fs';
 @Injectable()
 export class RobotsService {
   private readonly robotsPath: string;
-  constructor(@Inject('ROBOTS_PATH') robotsPath: string) {
+  constructor() {
     this.robotsPath = '/app/sitemap/robots.txt';
   }
   async getRobots(): Promise<string> {
