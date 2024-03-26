@@ -17,6 +17,7 @@ export default function GameLogo({
       className={`GameLogo ${additionClass} GameLogo_orientation_${orientation}`}
       src={src}
       alt={alt}
+      loading="lazy"
     />
   );
 }

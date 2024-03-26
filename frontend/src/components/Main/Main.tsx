@@ -50,6 +50,7 @@ export function Main() {
                     className="slick-links__image"
                     src={item.game.logo}
                     alt={`Купить игру ${item.game.name} дешевле чем в Steam`}
+                    loading="lazy"
                   />
                   <p className="slick-links__name">{item.game.name}</p>
                 </Link>

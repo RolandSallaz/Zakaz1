@@ -16,14 +16,15 @@ export default function RunningReviews() {
   useEffect(() => {
     getReviewsRandom().then(setReviews).catch(handleError);
   }, []);
-
   return (
     <Marquee className="running-reviews">
       {reviews?.map((review) => (
         <Link key={review.id} to={`/games/${review.digiId}`} className="running-reviews__container">
           <img
             className="running-reviews__img"
+            alt={'Отзыв игры'}
             src={games.find((item) => item.digiId == review.digiId)?.logo}
+            loading="lazy"
           />
           <h2 className="running-reviews__heading">
             {games?.find((item) => item.digiId == review.digiId)?.name || ''}
