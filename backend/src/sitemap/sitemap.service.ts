@@ -11,7 +11,6 @@ export class SitemapService implements OnModuleInit {
   async onModuleInit() {
     try {
       await this.generateAndMoveSitemap();
-      console.log('Sitemap successfully generated and moved.');
     } catch (error) {
       console.error('Error generating or moving sitemap:', error);
     }
@@ -19,6 +18,9 @@ export class SitemapService implements OnModuleInit {
 
   @Cron('0 * * * *')
   async generateAndMoveSitemap(): Promise<void> {
+    if (process.env.DEV) {
+      return;
+    }
     const games = await this.gameService.getAllGames();
     const sitemapContent = this.generateSitemapContent(games);
     const sitemapPath = '/app/sitemap/sitemap.xml';
