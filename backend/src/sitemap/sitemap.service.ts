@@ -23,7 +23,7 @@ export class SitemapService implements OnModuleInit {
     }
     const games = await this.gameService.getAllGames();
     const sitemapContent = this.generateSitemapContent(games);
-    const sitemapPath = '/app/sitemap/sitemap.xml';
+    const sitemapPath = '/app/nginx/sitemap.xml';
     await this.saveSitemap(sitemapPath, sitemapContent);
   }
 

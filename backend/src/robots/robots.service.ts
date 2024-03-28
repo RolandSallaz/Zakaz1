@@ -7,7 +7,7 @@ require('dotenv').config();
 export class RobotsService {
   private readonly robotsPath: string;
   constructor() {
-    this.robotsPath = '/app/sitemap/robots.txt';
+    this.robotsPath = '/app/nginx/robots.txt';
   }
   async getRobots(): Promise<{ data: string }> {
     const data = await fetch(`${process.env.DOMAIN}/robots.txt`)
