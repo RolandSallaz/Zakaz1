@@ -10,17 +10,12 @@ export class RobotsService {
     this.robotsPath = '/app/sitemap/robots.txt';
   }
   async getRobots(): Promise<{ data: string }> {
-    if (process.env.DEV) {
-      throw new HttpException('Недоступно в DEV режиме', 403);
-    }
-    let fileData: string;
-    await fs.readFile(this.robotsPath, (err, data) => {
-      if (err) {
+    const data = await fetch(`${process.env.DOMAIN}/robots.txt`)
+      .then((res) => res.text())
+      .catch((err) => {
         throw new HttpException(err.message, 500);
-      }
-      fileData = data.toString();
-    });
-    return { data: fileData };
+      });
+    return { data };
   }
 
   async update(updateRobotDto: UpdateRobotDto): Promise<{ message: string }> {
