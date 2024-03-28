@@ -33,6 +33,9 @@ services:
   frontend:
     container_name: "frontend"
     env_file: .env
+    volumes:
+      - ./ssl:/etc/ssl
+      - sitemap_volume:/usr/share/nginx/html
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -43,9 +46,6 @@ services:
       - net
     depends_on:
       - backend
-    volumes:
-      - ./ssl:/etc/ssl
-      - sitemap_volume:/usr/share/nginx/html
 
 networks:
   net:
