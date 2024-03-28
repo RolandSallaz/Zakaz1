@@ -1,7 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Input from '../Input/Input';
 import './RobotsForm.scss';
-import { sendRobots } from '../../services/api';
+import { getRobots, sendRobots } from '../../services/api';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import { useAppDispatch } from '../../hooks/redux';
 import { openSnackBar } from '../../services/slices/appSlice';
@@ -21,6 +21,12 @@ export default function RobotsForm() {
       })
       .catch(handleError);
   }
+
+  useEffect(() => {
+    getRobots()
+      .then((res) => setRobots(res.data))
+      .catch(handleError);
+  }, []);
 
   return (
     <form className="RobotsForm" onSubmit={handleSubmit}>

@@ -240,3 +240,7 @@ export function sendStats(digiId: number, action: 'visit' | 'buyClick') {
 export function sendRobots(text: string) {
   return _fetch({ url: 'robots', method: 'PATCH', body: { text } });
 }
+
+export function getRobots(): Promise<{ data: string }> {
+  return _fetch({ url: 'robots' });
+}
