@@ -45,7 +45,8 @@ export function Main() {
                 <Link
                   key={item.id}
                   to={`/games/${item.game.digiId}`}
-                  className={`slick-links__item ${index == activeSlide && 'slick-links__item_active'}`}>
+                  className={`slick-links__item ${index == activeSlide && 'slick-links__item_active'}`}
+                >
                   <img
                     className="slick-links__image"
                     src={item.game.logo}
@@ -70,7 +71,8 @@ export function Main() {
             <button
               key={index}
               className={page === index + 1 ? 'reviews__button_active' : ''}
-              onClick={() => setPage(index + 1)}>
+              onClick={() => setPage(index + 1)}
+            >
               {index + 1}
             </button>
           ))}

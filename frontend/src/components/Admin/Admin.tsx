@@ -27,9 +27,11 @@ import { GameCard } from '../GameCard/GameCard';
 import GameForm from '../GameForm/GameForm';
 import GameSelectionForm from '../GameSelectionForm/GameSelectionForm';
 import { Lk } from '../Lk/Lk';
+import RobotsForm from '../RobotsForm/RobotsForm';
 import SectionWithSearch from '../SectionWithSearch/SectionWithSearch';
 import { SidePanel } from '../SidePanel/SidePanel';
 import SliderManager from '../SliderManager/SliderManager';
+import StatsPage from '../StatsPage/StatsPage';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import TagManager from '../TagManager/TagManager';
 import './Admin.scss';
@@ -151,6 +153,12 @@ export default function Admin() {
         <NavLink className="link admin__link" to="./system-info">
           Состояние сервера
         </NavLink>
+        <NavLink className="link admin__link" to="./robots">
+          robots.txt
+        </NavLink>
+        <NavLink className="link admin__link" to="./stats">
+          Статистика
+        </NavLink>
       </SidePanel>
       <div className="admin__container">
         <Routes>
@@ -186,7 +194,7 @@ export default function Admin() {
                         options={games.map((item) => item.name)}
                       />
                     }
-                  ></Route>
+                  />
                   <Route
                     path="edit/:id"
                     element={
@@ -210,7 +218,7 @@ export default function Admin() {
                         </div>
                       </div>
                     }
-                  ></Route>
+                  />
                 </Routes>
               </div>
             }
@@ -281,6 +289,8 @@ export default function Admin() {
             }
           />
           <Route path="system-info" element={<SystemInfo />} />
+          <Route path="robots" element={<RobotsForm />} />
+          <Route path="stats" element={<StatsPage />} />
         </Routes>
       </div>
     </Lk>

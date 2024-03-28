@@ -2,7 +2,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
 import useErrorHandler from '../../hooks/useErrorHandler';
-import { checkInStock, getGameById, getReviewsBuyGame } from '../../services/api';
+import { checkInStock, getGameById, getReviewsBuyGame, sendStats } from '../../services/api';
 import { IGame, IReview } from '../../utils/types';
 import GameLogo from '../GameLogo/GameLogo';
 import { GameTag } from '../GameTag/GameTag';
@@ -17,7 +17,7 @@ export default function GamePage() {
   const { games } = useAppSelector((state) => state.games);
   const [image, setImage] = useState<string>('');
   const [reviewsPage, setReviewsPage] = useState<number>(1);
-  const [isAviable, setIsAviable] = useState<boolean>(false);
+  const [isAviable, setIsAviable] = useState<boolean | null>(null);
   const { handleError } = useErrorHandler();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -50,6 +50,7 @@ export default function GamePage() {
     checkInStock(Number(id))
       .then((res) => setIsAviable(Boolean(res)))
       .catch(console.log);
+    sendStats(Number(id), 'visit').catch(console.log);
   }, [navigate]);
 
   useEffect(() => {
@@ -63,7 +64,8 @@ export default function GamePage() {
   }, [game]);
 
   function handleBuyRedirect() {
-    window.location.href = `https://oplata.info/asp2/pay_options.asp?id_d=${id}&ai=&ain=&air=&curr=API_13603_RUB&_subcurr=&lang=ru-RU&_ow=0&_ids_shop=${import.meta.env.VITE_DIGI_SHOP}&xml=&failpage=${import.meta.env.VITE_FAIL_PAGE}`;
+    sendStats(Number(id), 'buyClick').catch(console.log);
+    // window.location.href = `https://oplata.info/asp2/pay_options.asp?id_d=${id}&ai=&ain=&air=&curr=API_13603_RUB&_subcurr=&lang=ru-RU&_ow=0&_ids_shop=${import.meta.env.VITE_DIGI_SHOP}&xml=&failpage=${import.meta.env.VITE_FAIL_PAGE}`;
   }
 
   function handleChangeFullDescription() {
@@ -101,9 +103,8 @@ export default function GamePage() {
             {game && <Price game={game} type="order" />}
             <ul className="order-info__list">
               <li className="order-info__list-item">Мгновенная доставка ✔</li>
-              {isAviable ? (
-                <li className="order-info__list-item">Товар в наличии ✔</li>
-              ) : (
+              {isAviable && <li className="order-info__list-item">Товар в наличии ✔</li>}
+              {isAviable === false && (
                 <li className="order-info__list-item">К сожалению, товар закончился ❌</li>
               )}
               {game?.steamPrice.includes('руб.') && (
@@ -116,9 +117,15 @@ export default function GamePage() {
                 <li className="order-info__list-item">Игра недоступна в РФ и РБ ❌</li>
               )}
             </ul>
-            <button type="button" className="order-info__buy-button" onClick={handleBuyRedirect}>
-              Купить
-            </button>
+            <form id="digiselller_form" action="https://oplata.info/asp2/pay.asp" method="post">
+              <input type="hidden" name="id_d" value={id} />
+              <input type="hidden" name="typecurr" value="WMR" />
+              <input type="hidden" name="lang" value="ru-RU" />
+              <input type="hidden" name="failpage" value={`https://steamland.ru/#/games/${id}`} />
+              <button type="submit" className="order-info__buy-button" onClick={handleBuyRedirect}>
+                Купить
+              </button>
+            </form>
           </div>
         </div>
         <div className="gamePage__tag-container">

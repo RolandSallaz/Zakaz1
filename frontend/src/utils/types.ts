@@ -143,3 +143,9 @@ export interface ISystemInfo {
     nodeMemory: string;
   };
 }
+
+export interface IStat {
+  digiId: number;
+  date: Date;
+  action: string;
+}

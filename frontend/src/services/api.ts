@@ -228,3 +228,15 @@ export function getReviewsAll(): Promise<IReview[]> {
 export function checkInStock(digiId: number): Promise<boolean> {
   return _fetch({ url: `digi/${digiId}` });
 }
+
+//stats
+
+export function sendStats(digiId: number, action: 'visit' | 'buyClick') {
+  return _fetch({ url: 'stats', method: 'POST', body: { digiId, action } });
+}
+
+//robots
+
+export function sendRobots(text: string) {
+  return _fetch({ url: 'robots', method: 'PATCH', body: { text } });
+}
