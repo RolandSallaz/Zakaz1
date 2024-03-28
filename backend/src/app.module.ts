@@ -23,6 +23,7 @@ import { SystemInfoModule } from './system-info/system-info.module';
 import { SitemapService } from './sitemap/sitemap.service';
 import { SitemapModule } from './sitemap/sitemap.module';
 import { RobotsModule } from './robots/robots.module';
+import { StatsModule } from './stats/stats.module';
 
 require('dotenv').config();
 
@@ -67,6 +68,7 @@ require('dotenv').config();
     SystemInfoModule,
     SitemapModule,
     RobotsModule,
+    StatsModule,
   ],
   controllers: [AppController, FilesController],
   providers: [SitemapService],
