@@ -46,7 +46,6 @@ services:
       - backend
     volumes:
       - ./ssl:/etc/ssl
-      - nginx_volume:/usr/share/nginx/html
 
 networks:
   net:
