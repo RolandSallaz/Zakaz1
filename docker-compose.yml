@@ -27,6 +27,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - nginx_volume:/app/nginx
     networks:
       - net
 
@@ -45,6 +46,7 @@ services:
       - backend
     volumes:
       - ./ssl:/etc/ssl
+      - nginx_volume:/usr/share/nginx/html
 
 networks:
   net:
