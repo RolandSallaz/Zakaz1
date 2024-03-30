@@ -46,6 +46,7 @@ services:
       - backend
     volumes:
       - ./ssl:/etc/ssl
+      - nginx_volume:/usr/share/nginx/html
 
 networks:
   net:
@@ -54,3 +55,4 @@ networks:
 volumes:
   postgres_data:
   nginx_volume:
+    driver: local
