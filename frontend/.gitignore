@@ -9,7 +9,7 @@ lerna-debug.log*
 
 default.conf
 public/fk-verify.html
-
+.idea
 node_modules
 dist
 dist-ssr
