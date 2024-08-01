@@ -1,0 +1,39 @@
+@import "../../variables.scss";
+.search {
+  width: 100%;
+  flex-grow: 1;
+  position: relative;
+  &__input {
+    width: 100%;
+    background-color: $backgroundColor;
+    border: none;
+    padding: 0 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    height: 60px;
+    color: $mainTextColor;
+
+    &:focus {
+      outline-style: solid;
+      outline-color: $mainColor;
+      border: none;
+    }
+  }
+  &__container {
+    background-color: $backgroundColor;
+    display: flex;
+    flex-direction: column;
+    border-radius: $averageBorderRadius;
+    z-index: 99;
+    position: absolute;
+    width: 100%;
+  }
+  &__link {
+    background-color: $backgroundColor !important;
+    width: 100% !important;
+    border-radius: $averageBorderRadius !important;
+    color: $mainColor !important;
+    padding: 10px 30px !important;
+    z-index: 99 !important;
+  }
+}

@@ -1,9 +1,0 @@
-@import '../../variables.scss';
-.RobotsForm {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  &__button {
-    border: 1px solid $mainColor;
-  }
-}

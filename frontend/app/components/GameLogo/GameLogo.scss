@@ -1,0 +1,32 @@
+.GameLogo {
+  flex-grow: 1;
+  object-position: center;
+  &_orientation {
+    &_default {
+    }
+    &_portait {
+      height: 337px;
+      width: 325px;
+    }
+    &_gamePage {
+      width: 460px;
+    }
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .GameLogo {
+    width: 200px;
+    z-index: 2;
+    &_orientation {
+      &_default {
+        width: 100%;
+        max-width: 100%;
+      }
+      &_portait {
+        height: 337px;
+        width: 100%;
+      }
+    }
+  }
+}

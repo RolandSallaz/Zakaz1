@@ -1,0 +1,25 @@
+@import "../../variables.scss";
+.input-box {
+  color: $mainColor;
+  position: relative;
+  &__input {
+    padding: 10px;
+    border-radius: 11px;
+    background: none;
+    color: $mainColor;
+  }
+  &__label {
+    position: absolute;
+    width: 100%;
+    left: 10px;
+    top: -20px;
+    padding: 0 5px;
+    border: none;
+    background: none;
+    font-size: 15px;
+    &_row-count {
+      top: auto;
+      bottom: 10px;
+    }
+  }
+}

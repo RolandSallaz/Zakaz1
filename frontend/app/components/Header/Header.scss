@@ -1,0 +1,105 @@
+@import "../../variables";
+
+.header {
+  display: flex;
+  flex-direction: column;
+  color: $mainTextColor;
+  gap: 10px;
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    height: 60px;
+  }
+  &__sub-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  &__avatar {
+    width: "60px";
+    height: "60px";
+  }
+  &__link {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    width: 165px;
+    display: flex;
+    justify-content: center;
+    &_logo {
+      font-size: 40px;
+      height: 100%;
+      width: 265px;
+      text-transform: uppercase;
+    }
+  }
+  &__heading {
+    color: $mainColor;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 20px 0;
+    text-align: center;
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+  &__search-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+}
+
+.login-button {
+  padding: 0 10px;
+  border: none;
+  border-radius: $averageBorderRadius;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1a1918;
+  color: $mainColor;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  &__logo {
+    background-color: $mainColor;
+    padding: 1px;
+    border-radius: 50%;
+    width: 40px;
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .header {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      height: 100%;
+    }
+    &__link {
+      align-self: flex-end;
+      display: flex;
+      justify-content: center;
+      &_logo {
+        width: 100%;
+        font-size: 30px;
+      }
+    }
+    &__search-container {
+      flex-direction: column;
+    }
+    &__sub-container {
+      justify-content: center;
+    }
+  }
+  .autoComplete_header {
+    width: 100%;
+  }
+}

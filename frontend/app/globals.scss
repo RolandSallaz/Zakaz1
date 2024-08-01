@@ -1,0 +1,141 @@
+@import "./variables";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #212228;
+  margin: 0;
+  height: 100%;
+  overflow-x: hidden;
+  min-height: 100%;
+  margin: 0 auto;
+  font-family: sans-serif, Raleway, Ubuntu;
+  max-width: 1340px;
+  padding: 2em 2em 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  &::after {
+    z-index: -2;
+    content: "";
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+
+    position: absolute;
+    background: linear-gradient(
+      180deg,
+      rgba(49, 97, 64, 0.2) 0%,
+      rgba(0, 0, 0, 0) 30%
+    );
+    background-repeat: no-repeat;
+  }
+}
+
+header,
+main,
+footer {
+  flex-shrink: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: $mainColor;
+  text-decoration: none;
+}
+
+img {
+  width: 100%;
+}
+
+.link {
+  padding: 5px 10px;
+  text-decoration: none;
+  color: $mainColor;
+  background-color: $transparent-background;
+  border-radius: $averageBorderRadius;
+}
+
+.button {
+  background: none;
+  border: none;
+  color: $mainColor;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: $mainColor;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
+}
+
+input {
+  color: $mainColor;
+  border: none;
+  background: none;
+  background-color: $backgroundColor;
+  padding: 10px;
+  border-radius: $averageBorderRadius;
+}
+
+button {
+  border: none;
+  background: none;
+  color: $mainColor;
+  cursor: pointer;
+}
+
+.MuiAutocomplete-root .MuiFormControl-root .MuiInputBase-root {
+  color: $mainColor !important;
+  top: 10px;
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border: none;
+  outline: none;
+  border: 1px solid $mainColor;
+}
+
+.MuiAutocomplete-popper .MuiAutocomplete-option {
+  background-color: $transparent-background !important;
+}
+
+@media screen and (max-width: 1279px) {
+  body {
+    padding: 0.3em 0.3em 0;
+  }
+}
+
+.error {
+  color: $mainColor;
+  margin: auto;
+}
