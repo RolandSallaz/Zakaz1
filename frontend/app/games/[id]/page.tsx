@@ -14,7 +14,7 @@ export async function generateMetadata({
   try {
     const game = await fetchData(id);
     const title = game
-      ? `Купить игру ${game?.name} недорого | ${process.env.NEXT_PUBLIC_SHOP_NAM}`
+      ? `Купить игру ${game?.name} недорого | ${process.env.NEXT_PUBLIC_SHOP_NAME}`
       : "Загрузка...";
     const description = game ? game.description : "";
     const images = game
