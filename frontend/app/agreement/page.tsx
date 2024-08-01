@@ -13,6 +13,7 @@ async function fetchData() {
 
 export default async function Page() {
   const content = await fetchData();
+  console.log(content);
   if (!content) {
     return <div className="error">Ошибка загрузки данных.</div>;
   }
