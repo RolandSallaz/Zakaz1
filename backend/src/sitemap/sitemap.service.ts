@@ -8,7 +8,7 @@ export class SitemapService {
   constructor(private gamesService: GamesService) {}
   sitemapXmlCache;
   sitemapTimeoutMs = 1000 * 60 * 60;
-  domain = process.env.DOMAIN || 'https://localhost';
+  domain = process.env.DOMAIN || 'http://localhost';
 
   async get(res: Response) {
     res.set('Content-Type', 'text/xml'); //1 час кеш
