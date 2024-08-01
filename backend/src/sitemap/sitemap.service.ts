@@ -22,8 +22,7 @@ export class SitemapService {
     });
     items.forEach((item) => {
       smStream.write({
-        url: `/games/${item.id}`,
-        changefreq: 'monthly',
+        url: `/games/${item.digiId}`,
         priority: 1,
       });
     });
