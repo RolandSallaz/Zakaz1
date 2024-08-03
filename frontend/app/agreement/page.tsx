@@ -4,22 +4,17 @@ import { INFOCHAPTER } from "../lib/utils/config";
 import InfoChapter from "../components/InfoChapter/InfoChapter";
 async function fetchData() {
   try {
-    return await getChapterInfo(INFOCHAPTER.agreement.link);
+    return await getChapterInfo(INFOCHAPTER.contacts.link);
   } catch (error) {
     console.error("Error fetching item:", error);
-    const err = error as Error;
-    return err.message;
+    return null;
   }
 }
 
 export default async function Page() {
   const content = await fetchData();
-  if (typeof content === "string") {
-    return (
-      <div className="error">
-        Ошибка загрузки данных. {INFOCHAPTER.agreement.link} {content}
-      </div>
-    );
+  if (!content) {
+    return <div className="error">Ошибка загрузки данных.</div>;
   }
 
   return <InfoChapter heading={content.heading} text={content.text} />;
