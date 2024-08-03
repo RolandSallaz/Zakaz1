@@ -6,6 +6,7 @@ import InitialDataLoader from "./lib/services/InitialDataLoader";
 import { Header } from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
 import Head from "next/head";
+import YandexMetricaProvider from "./components/YandexMetricaProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -28,6 +29,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isProduction = process.env.NODE_ENV === "production";
+
   return (
     <html lang="ru">
       <Head>
@@ -38,6 +41,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          {isProduction && <YandexMetricaProvider />}
         </body>
         <InitialDataLoader />
       </ReduxProvider>
