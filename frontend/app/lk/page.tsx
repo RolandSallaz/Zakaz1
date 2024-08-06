@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { Lk } from "../components/Lk/Lk";
 import { ProtectedRoute } from "../components/ProtectedRoute/ProtectedRoute";
 
 export default function page() {
   return (
-    <ProtectedRoute>
-      <Lk />
-    </ProtectedRoute>
+    <Suspense>
+      <ProtectedRoute>
+        <Lk />
+      </ProtectedRoute>
+    </Suspense>
   );
 }

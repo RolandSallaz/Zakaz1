@@ -1,6 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 import NotFound from "./components/NotFound/NotFound";
 
 export default function notFound() {
-  return <NotFound />;
+  return (
+    <Suspense>
+      <NotFound />
+    </Suspense>
+  );
 }
