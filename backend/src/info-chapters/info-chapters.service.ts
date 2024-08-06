@@ -19,9 +19,16 @@ export class InfoChaptersService {
   }
 
   async findOne(link: string): Promise<InfoChapter> {
-    return await this.infoChapterRepository.findOne({
+    const chapter = await this.infoChapterRepository.findOne({
       where: { link: link },
     });
+    if (chapter) {
+      return chapter;
+    } else {
+      const newChapter = new InfoChapter();
+      newChapter.text = 'Повторите позже';
+      newChapter.heading = 'Ошибка загрузки';
+    }
   }
 
   async update(
