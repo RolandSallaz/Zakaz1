@@ -28,6 +28,7 @@ export class InfoChaptersService {
       const newChapter = new InfoChapter();
       newChapter.text = 'Повторите позже';
       newChapter.heading = 'Ошибка загрузки';
+      return newChapter;
     }
   }
 
