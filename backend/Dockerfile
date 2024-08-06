@@ -13,4 +13,5 @@ WORKDIR /app
 
 COPY package*.json ./
 
+COPY --from=builder /app/dist ./dist
 CMD npm run start:prod
